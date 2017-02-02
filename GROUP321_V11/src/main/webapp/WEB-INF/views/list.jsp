@@ -300,18 +300,44 @@ width: 150px;
 			
 			document.getElementById('mainList').appendChild(viewList);
 		
-			
 			$('#list'+id).sortable({
-				connectWith: ".list",
-				update : function() {
-					var result2 = $('#list'+id).sortable('toArray');
-					console.log(id);
-			
-					console.log('value: ' + result2);
-	 				console.log(result2.length);
-				}
-
+				connectWith : '.list',
+				update : function(ev,ui) {
+					var result1 = $('#list'+id).sortable('toArray');
+		 			var targetId= ev.target.id;
+		 			var parentId = ev.toElement.parentElement.id;
+		 			var cardArr= '';
+		 			
+		 			if(targetId == parentId){
+		 				console.log(parentId);
+		 				console.log(targetId);
+		 				
+	 					for(var i = 0 ; i < result1.length; i++){
+	 						if(i < (result1.length-1)){ 
+	 							cardArr += result1[i]+',';
+							}else{
+								cardArr += result1[i];
+							}
+	 					
+	 					}
+		 			
+		 				$.ajax({
+		 					url:'/main/moveCard',
+			 				method:'post',
+			 				data:{
+			 					
+			 					bnum:b_num,
+			 					lnum:id,
+			 					cnum:ev.toElement.id,
+			 					msg : cardArr,
+			 					length : result1.length
+			 				}
+		 				
+			 			}).done();
+		 			}
+				}  
 			});
+			
 		});
 	}
 
