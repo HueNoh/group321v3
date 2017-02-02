@@ -68,6 +68,14 @@ public class WebSocket {
 							client.getBasicRemote().sendText(id + ":" + msg + ":" + access + ":" + b_num);
 						}
 					}
+				}else if("move".equals(access)){
+					System.out.println(msg);
+					for (int i = 0; i < bs_num.size(); i++) {
+						if ((int) bs_num.get(i) == b_num) {
+							Session client = clients.get(i);
+							client.getBasicRemote().sendText(id + ":" + msg + ":" + access + ":" + b_num);
+						}
+					}
 				}
 
 			}

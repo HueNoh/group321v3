@@ -11,7 +11,7 @@
 		</div>
 		<div class="dis sub">
 			<input type="submit" style="width: 100%; height: 100%;" value="send"
-				onclick="send()" />
+				onclick="send(inputMessage.value,'message','${sessionScope.id}')" />
 		</div>
 	</div>
 </div>
@@ -48,7 +48,6 @@
 				alert(msg);
 			}
 
-			console.log(chatOnOff);
 
 			$('.display').append(html);
 			$('.display').append('<br><br><br>');
@@ -91,6 +90,11 @@
 				$('#user').empty();
 				$('#user').append(userHtml);
 			}
+		} else if("move" == access){
+			if (id != sessionId){
+				console.log(msg);
+				$('#'+id).html(msg);
+			}
 		}
 
 	}
@@ -100,7 +104,6 @@
 				'width=400, height=300, left=500, top=400');
 	}
 	function onOpen(event) {
-		console.log('open');
 
 		$.ajax({
 			method : 'post',
@@ -184,37 +187,44 @@
 
 	}
 
-	function send() {
-
+	function send(msg, acc, id) {
+		console.log(id);
 		var message = inputMessage.value;
 		var msg = {
-			"userId" : sessionId,
-			"msg" : message,
-			"access" : 'message',
+			"userId" : id,
+			"msg" : msg,
+			"access" : acc,
 			"b_num" : '${b_num}'
 		}
+		if ('message' == acc) {
+			console.log('1');
+			var jsonStr = JSON.stringify(msg);
+			$.ajax({
+				method : 'post',
+				url : '/chat/chatMsg',
+				data : {
+					JSON : jsonStr
 
-		var jsonStr = JSON.stringify(msg);
-		$.ajax({
-			method : 'post',
-			url : '/chat/chatMsg',
-			data : {
-				JSON : jsonStr
+				}
 
-			}
+			}).done(function(msg) {
 
-		}).done(function(msg) {
+				var jObj = JSON.parse(msg);
+				if ('001' == jObj.error) {
+					webSocket.send(jsonStr);
+					$('#inputMessage').val('');
+					$('#inputMessage').focus();
+				} else {
+					console.log('error');
+				}
 
-			var jObj = JSON.parse(msg);
-			if ('001' == jObj.error) {
-				webSocket.send(jsonStr);
-				$('#inputMessage').val('');
-				$('#inputMessage').focus();
-			} else {
-				console.log('error');
-			}
+			});
+		} else {
+			console.log('2');
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
 
-		});
+		}
 
 	}
 </script>

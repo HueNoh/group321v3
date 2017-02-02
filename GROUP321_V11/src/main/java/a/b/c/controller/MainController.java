@@ -57,11 +57,11 @@ public class MainController {
 
 				return loginChk(map, request, session, "list");
 			} else {
-				return "redirect:/main/board";
+				return loginChk(map, request, session, "list");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			return "redirect:/main/board";
+			return loginChk(map, request, session, "list");
 		}
 
 	}
@@ -143,8 +143,9 @@ public class MainController {
 			@RequestParam Map map) {
 		map.put("listArr", map.get("data"));
 		List list = memberService.moveList(map);
-		return new Gson().toJson("aa");
+		return new Gson().toJson(map);
 	}
+	
 	@RequestMapping(value = "/moveCard", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
