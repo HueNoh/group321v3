@@ -1,0 +1,53 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.chatBoard {
+	width: 100%;
+	height: 100%;
+}
+
+#user {
+	float: left;
+	width: 25%;
+	height: 100%;
+}
+
+#dis {
+	float: left;
+	width: 75%;
+	height: 100%;
+}
+
+.display {
+	overflow-y: scroll;
+	width: 100%;
+	height: 90%;
+}
+
+.inputMsg {
+	float: left;
+	width: 80%;
+	height: 10%;
+}
+
+.sub {
+	float: left;
+	width: 20%;
+	height: 10%;
+}
+
+.memberMsg {
+	margin-left: 150px auto;
+	float: left;
+	background-color: #FAED7D;
+	margin-top: 10px auto;
+}
+
+.myMsg {
+	text-align: right;
+	float: right;
+	margin-left: 150px auto;
+	background-color: #B7F0B1;
+}

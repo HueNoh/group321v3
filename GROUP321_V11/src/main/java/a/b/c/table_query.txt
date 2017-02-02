@@ -1,0 +1,139 @@
+﻿create database group321;
+
+use group321;
+
+-- 회원테이블 생성
+create table tb_member(
+m_id varchar(255),
+m_pw varchar(255),
+primary key(m_id)
+);
+
+-- 회원상세 테이블 생성
+create table tb_member_detail(
+m_id varchar(255),
+m_name varchar(255),
+m_lv int,
+regdate datetime default current_timestamp,
+primary key(m_id)
+);
+
+-- 회원아이디 제약조건 설정
+alter table tb_member_detail add constraint foreign key fk_tb_member_detail_01 (m_id) references tb_member(m_id) on delete cascade on update cascade;
+
+-- 루트 테이블 생성
+create table tb_root(
+b_num int,
+primary key(b_num)
+);
+
+-- 보드 멤버 테이블 생성
+create table tb_board_members(
+b_num int,
+m_id varchar(255),
+primary key(b_num, m_id)
+);
+
+-- 회원 아이디와 보드번호를 가져옴
+alter table tb_board_members add constraint foreign key fk_tb_board_01 (b_num) references tb_root(b_num) on delete cascade on update cascade;
+alter table tb_board_members add constraint foreign key fk_tb_board_02 (m_id) references tb_member(m_id) on delete cascade on update cascade;
+
+-- 순서 테이블 생성
+create table tb_board(
+b_num int,
+l_num int,
+c_num int,
+title varchar(255),
+cate varchar(255),
+m_id varchar(255),
+regdate datetime default current_timestamp,
+primary key(b_num, l_num, c_num)
+);
+
+-- 보드멤버 테이블과 관계
+alter table tb_board add constraint foreign key fk_tb_board_01 (b_num) references tb_root(b_num) on delete cascade on update cascade;
+alter table tb_board add constraint foreign key fk_tb_board_02 (m_id) references tb_member(m_id) on delete set null on update cascade;
+
+-- 히스토리 테이블 생성
+create table tb_history(
+b_num int,
+h_num int,
+content varchar(255),
+regdate datetime default current_timestamp,
+primary key(b_num, h_num)
+);
+
+alter table tb_history add constraint foreign key fk_tb_history_01 (b_num) references tb_root(b_num) on delete cascade on update cascade;
+
+-- 파일 업로드 테이블
+create table tb_file(
+b_num int,
+f_num int,
+filename varchar(255),
+location varchar(255),
+m_id varchar(255),
+regdate datetime default current_timestamp,
+primary key(b_num, f_num)
+);
+
+alter table tb_file add constraint foreign key fk_tb_file_01 (b_num) references tb_root(b_num) on delete cascade on update cascade;
+alter table tb_file add constraint foreign key fk_tb_file_02 (m_id) references tb_member(m_id) on delete set null on update cascade;
+
+-- 채팅 테이블
+create table tb_chat(
+b_num int,
+ch_num int,
+content varchar(255),
+m_id varchar(255),
+regdate datetime default current_timestamp,
+primary key(b_num, ch_num)
+);
+
+alter table tb_chat add constraint foreign key fk_tb_chat_01 (b_num) references tb_root(b_num) on delete cascade on update cascade;
+alter table tb_chat add constraint foreign key fk_tb_chat_02 (m_id) references tb_member(m_id) on delete set null on update cascade;
+
+-- 카드 테이블
+create table tb_card(
+c_key int,
+content varchar(255),
+label varchar(255),
+regdate datetime default current_timestamp,
+primary key(c_key)
+);
+
+-- 카드 매칭테이블
+create table tb_map(
+b_num int,
+l_num int,
+c_num int,
+c_key int,
+primary key(b_num, l_num, c_num)
+);
+
+alter table tb_map add constraint foreign key fk_tb_map_01 (b_num, l_num, c_num) references tb_board(b_num, l_num, c_num) on delete cascade on update cascade;
+alter table tb_map add constraint foreign key fk_tb_map_02 (c_key) references tb_card(c_key) on delete cascade on update cascade;
+
+-- 카드 댓글 테이블
+create table tb_card_reply(
+c_key int,
+r_num int,
+m_id varchar(255),
+content varchar(255),
+regdate datetime default current_timestamp,
+primary key(c_key, r_num)
+);
+
+alter table tb_card_reply add constraint foreign key fk_tb_card_reply_01 (c_key) references tb_card(c_key) on delete cascade on update cascade;
+alter table tb_card_reply add constraint foreign key fk_tb_card_reply_02 (m_id) references tb_member(m_id) on delete set null on update cascade;
+
+-- 링크 첨부 테이블
+create table tb_link(
+c_key int,
+seq int,
+content varchar(255),
+regdate datetime default current_timestamp,
+primary key(c_key, seq)
+);
+
+alter table tb_link add constraint foreign key fk_tb_link_01 (c_key) references tb_card(c_key) on delete cascade on update cascade;
+
