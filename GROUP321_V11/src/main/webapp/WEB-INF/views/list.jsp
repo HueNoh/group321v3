@@ -44,7 +44,10 @@ width: 150px;
 
 #content, #mainList {
 	height: 100%;
-	overflow:;
+	
+}
+. g3-container {
+	overflow-x: scroll;
 }
 </style>
 <script>
@@ -77,7 +80,7 @@ width: 150px;
 
 
 	var b_num = '${b_num}';
-	
+	var numOfList = 0; // 전체 리스트 갯수
 	
 	window.onload = function() {
 
@@ -245,10 +248,31 @@ width: 150px;
 				
 
 			});
-
+			numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
+			console.log('length_onload: '+numOfList);
+			setWidthOnload(numOfList); // Onload 시 전체 width 설정
 		});
 	};
 	
+	function setWidthOnload(num) {
+		if(num > 10) {
+			var currentWidth = $('.g3-container').width();
+			var margin = $(".viewList").css("margin").replace('px', '');
+			var listWidth = $('.viewList').width()+margin*2;
+			var afterWidth = currentWidth + listWidth*(num-10);
+			$('.g3-container').css('width',afterWidth);
+		}
+	}
+	
+	function setWidthAddList(num) {
+		if(num > 10) {
+			var currentWidth = $('.g3-container').width();
+			var margin = $(".viewList").css("margin").replace('px', '');
+			var listWidth = $('.viewList').width()+margin*2;
+			var afterWidth = currentWidth + listWidth;
+			$('.g3-container').css('width',afterWidth);
+		}
+	}
 
 	function addList() {
 		$.ajax({
@@ -297,8 +321,11 @@ width: 150px;
 			viewList.appendChild(div); 
 			viewList.appendChild(list_foot); 
 			
-			
 			document.getElementById('mainList').appendChild(viewList);
+			
+			numOfList = $('.viewList').length;
+			console.log('length_addList: '+numOfList);
+			setWidthAddList(numOfList);
 		
 			$('#list'+id).sortable({
 				connectWith : '.list',
@@ -403,7 +430,7 @@ width: 150px;
 			<img src="/resources/images/logo.JPG" alt="Main" class="main_img">
 		</div>
 	</nav>
-	<div canvas="container" align="right">
+	<div class="g3-container" canvas="container" align="right">
 		<p>
 			<a href="#" class="js-toggle-right-slidebar">☰</a>
 		</p>
