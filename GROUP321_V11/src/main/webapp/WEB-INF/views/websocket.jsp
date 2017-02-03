@@ -25,7 +25,7 @@
 	var userHtml = '';
 
 	function onMessage(event) {
-
+		console.log(event);
 		var spMsg = event.data;
 		var arrMsg = spMsg.split(":");
 		var id = arrMsg[0];
@@ -47,7 +47,6 @@
 
 				alert(msg);
 			}
-
 
 			$('.display').append(html);
 			$('.display').append('<br><br><br>');
@@ -90,10 +89,48 @@
 				$('#user').empty();
 				$('#user').append(userHtml);
 			}
-		} else if("move" == access){
-			if (id != sessionId){
+		} else if ("move" == access) {
+			if (id != sessionId) {
 				console.log(msg);
-				$('#'+id).html(msg);
+				$('#' + id).html(msg);
+				/*  $('#'+id).sortable({
+				        connectWith : '.list',
+				        update : function(ev,ui) {  
+				        	send(ev.target.innerHTML,'move');
+				           var result1 = $('#list'+id).sortable('toArray');
+				            var targetId= ev.target.id;
+				            var parentId = ev.toElement.parentElement.id;
+				            var cardArr= '';
+				            
+				            if(targetId == parentId){
+				               console.log(parentId);
+				               console.log(targetId);
+				               
+				               for(var i = 0 ; i < result1.length; i++){
+				                  if(i < (result1.length-1)){ 
+				                     cardArr += result1[i]+',';
+				                 }else{
+				                    cardArr += result1[i];
+				                 }
+				               
+				               }
+				            
+				               $.ajax({
+				                  url:'/main/moveCard',
+				                  method:'post',
+				                  data:{
+				                     
+				                     bnum:b_num,
+				                     lnum:id,
+				                     cnum:ev.toElement.id,
+				                     msg : cardArr,
+				                     length : result1.length
+				                  }
+				               
+				               }).done();
+				            }
+				        }  
+				     }); */
 			}
 		}
 
@@ -104,7 +141,7 @@
 				'width=400, height=300, left=500, top=400');
 	}
 	function onOpen(event) {
-
+		console.log(event);
 		$.ajax({
 			method : 'post',
 			url : '/chat/viewMsg',
@@ -181,10 +218,9 @@
 		alert(event.data);
 	}
 
-	function onClose(event) {
-
-		alert('close');
-
+	function onClose() {
+		
+		console.log('efsd');
 	}
 
 	function send(msg, acc, id) {
@@ -219,11 +255,13 @@
 				}
 
 			});
-		} else {
+		} else if('move' == acc) {
 			console.log('2');
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 
+		}else if('close' == acc){
+			webSocket.send(jsonStr);
 		}
 
 	}

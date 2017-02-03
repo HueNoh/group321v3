@@ -52,10 +52,9 @@ width: 150px;
 </style>
 <script>
 
-   var chatOnOff = false;
    
 
-   document.onkeydown = refl;
+/*    document.onkeydown = refl;
    
 	function refl() {
 		if(event.keyCode == 116){
@@ -63,19 +62,23 @@ width: 150px;
     	    return false;
     	}
    } 
-   
+    */
    var webSocket = new WebSocket('ws://211.183.8.14/socket');
+   webSocket.onopen = function(event) {
+	   onOpen(event)
+	
+   };
+   webSocket.onclose = function(){
+	   onClose()
+   };
    webSocket.onerror = function(event) {
       onError(event)
    };
-   webSocket.onopen = function(event) {
-      onOpen(event)
-
-   };
    webSocket.onmessage = function(event) {
       onMessage(event)
-
+	
    }; 
+	
    
 
    var b_num = '${b_num}';
@@ -251,6 +254,14 @@ width: 150px;
          numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
          console.log('length_onload: '+numOfList);
          setWidthOnload(numOfList); // Onload 시 전체 width 설정
+         
+         $('.list').on('click', function() {
+     		alert('effaf');
+     		
+     	});
+        
+        $('.list').trigger('drop');
+        
       });
    };
    
@@ -429,6 +440,8 @@ width: 150px;
       });
 
    }
+   
+   
 </script>
 </head>
 <body>

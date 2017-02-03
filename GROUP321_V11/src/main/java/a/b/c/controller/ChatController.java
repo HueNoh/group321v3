@@ -83,20 +83,22 @@ public class ChatController {
 		JsonObject jObj = new JsonObject();
 		JsonArray juArr = new JsonArray();
 
-		WebSocket.users.add(session.getAttribute("id"));
-		WebSocket.bs_num.add(b_num);
+		WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("userId",
+				session.getAttribute("id"));
+		WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("b_num", b_num);
 
 		try {
-			for (int i = 0; i < WebSocket.users.size(); i++) {
+			for (int i = 0; i < WebSocket.clients.size(); i++) {
+
 				JsonObject obj = new JsonObject();
-				obj.addProperty("userId", (String) WebSocket.users.get(i));
-				obj.addProperty("b_num", (int) WebSocket.bs_num.get(i));
+				obj.addProperty("userId", (String) WebSocket.clients.get(i).getUserProperties().get("userId"));
+				obj.addProperty("b_num", (int) WebSocket.clients.get(i).getUserProperties().get("b_num"));
 				juArr.add(obj);
 			}
 
 			JsonObject jSize = new JsonObject();
 
-			jSize.addProperty("size", WebSocket.users.size());
+			jSize.addProperty("size", WebSocket.clients.size());
 
 			jObj.add("size", jSize);
 			jObj.add("userId", juArr);
