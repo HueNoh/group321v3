@@ -25,7 +25,6 @@
 	var userHtml = '';
 
 	function onMessage(event) {
-		console.log(event);
 		var spMsg = event.data;
 		var arrMsg = spMsg.split(":");
 		var id = arrMsg[0];
@@ -89,49 +88,66 @@
 				$('#user').empty();
 				$('#user').append(userHtml);
 			}
-		} else if ("move" == access) {
+		} else if ("listMove" == access) {
 			if (id != sessionId) {
-				console.log(msg);
+				
 				$('#' + id).html(msg);
-				/*  $('#'+id).sortable({
-				        connectWith : '.list',
-				        update : function(ev,ui) {  
-				        	send(ev.target.innerHTML,'move');
-				           var result1 = $('#list'+id).sortable('toArray');
-				            var targetId= ev.target.id;
-				            var parentId = ev.toElement.parentElement.id;
-				            var cardArr= '';
-				            
-				            if(targetId == parentId){
-				               console.log(parentId);
-				               console.log(targetId);
-				               
-				               for(var i = 0 ; i < result1.length; i++){
-				                  if(i < (result1.length-1)){ 
-				                     cardArr += result1[i]+',';
-				                 }else{
-				                    cardArr += result1[i];
-				                 }
-				               
-				               }
-				            
-				               $.ajax({
-				                  url:'/main/moveCard',
-				                  method:'post',
-				                  data:{
-				                     
-				                     bnum:b_num,
-				                     lnum:id,
-				                     cnum:ev.toElement.id,
-				                     msg : cardArr,
-				                     length : result1.length
-				                  }
-				               
-				               }).done();
-				            }
-				        }  
-				     }); */
+
+				$.each($('#' + id)[0].childNodes, function(i) {
+					var cardSortId= "list"+this.id;
+					var lnum=this.id;
+					console.log("aewf: "+cardSortId);
+					
+					$('#' + cardSortId).sortable({
+						connectWith : '.list',
+			            update : function(ev,ui) {  
+			                
+		           			send(ev.target.innerHTML,'cardMove', cardSortId);
+			            	
+			                var result1 = $('#' + cardSortId).sortable('toArray');
+			                var targetId= ev.target.id;
+			                var parentId = ev.toElement.parentElement.id;
+			                var cardArr= '';
+			                if(targetId == parentId){
+			                	
+			               		console.log(ev.target.innerHTML);
+			                   for(var i = 0 ; i < result1.length; i++){
+			                      if(i < (result1.length-1)){ 
+			                         cardArr += result1[i]+',';
+			                     }else{
+			                        cardArr += result1[i];
+			                     }
+			                   
+			                   }
+			                   
+			                   
+			                   console.log(lnum);
+			                   
+			                
+			       $.ajax({
+			                      url:'/main/moveCard',
+			                      method:'post',
+			                      data:{
+			                         
+			                         bnum:'${b_num}',
+			                         lnum:lnum,
+			                         cnum:ev.toElement.id,
+			                         msg : cardArr,
+			                         length : result1.length
+			                     }
+			                   
+			                   }).done(); 
+			                }
+			            }  
+					});
+				});
+
 			}
+		} else if ("cardMove" == access) {
+			if (id != sessionId) {
+				$('#' + id).html(msg);
+			}
+
 		}
 
 	}
@@ -141,7 +157,6 @@
 				'width=400, height=300, left=500, top=400');
 	}
 	function onOpen(event) {
-		console.log(event);
 		$.ajax({
 			method : 'post',
 			url : '/chat/viewMsg',
@@ -219,21 +234,18 @@
 	}
 
 	function onClose() {
-		
-		console.log('efsd');
+
 	}
 
-	function send(msg, acc, id) {
-		console.log(id);
-		var message = inputMessage.value;
+	function send(message, acc, id) {
 		var msg = {
 			"userId" : id,
-			"msg" : msg,
+			"msg" : message,
 			"access" : acc,
 			"b_num" : '${b_num}'
 		}
+		
 		if ('message' == acc) {
-			console.log('1');
 			var jsonStr = JSON.stringify(msg);
 			$.ajax({
 				method : 'post',
@@ -255,12 +267,18 @@
 				}
 
 			});
-		} else if('move' == acc) {
-			console.log('2');
+		} else if ('listMove' == acc) {
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 
-		}else if('close' == acc){
+		} else if ('cardMove' == acc) {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+
+		}else if ('close' == acc) {
+			webSocket.send(jsonStr);
+		} else if ("boardCreate"== acc){
+			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 		}
 

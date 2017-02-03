@@ -23,6 +23,63 @@
 }
 </style>
 <script>
+	var sessionId = '${sessionScope.id}';
+	var createDiv = '';
+	var webSocket = new WebSocket('ws://211.183.8.14/socket');
+	webSocket.onopen = function(event) {
+		onOpen(event)
+
+	};
+	webSocket.onclose = function() {
+		onClose()
+	};
+	webSocket.onerror = function(event) {
+		onError(event)
+	};
+	webSocket.onmessage = function(event) {
+		onMessage(event)
+
+	};
+	function onMessage(event) {
+		var spMsg = event.data;
+		var arrMsg = spMsg.split(":");
+		var id = arrMsg[0];
+		var msg = arrMsg[1];
+		var access = arrMsg[2];
+
+		if ("boardCreate" == access) {
+			if (id != sessionId) {
+				createDiv += msg;
+				$('#' + id).html(createDiv);
+			}
+		}
+	}
+	function onOpen(event) {
+
+	}
+	function onError(event) {
+		alert(event.data);
+	}
+
+	function onClose() {
+
+	}
+
+	function send(message, acc, id) {
+		console.log('efsef: ' + message);
+		var msg = {
+			"userId" : id,
+			"msg" : message,
+			"access" : acc,
+			"create" : 'board'
+		}
+
+		if ("boardCreate" == acc) {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+		}
+	}
+
 	window.onload = function() {
 		$.ajax({
 			url : '/main/searchBoard',
@@ -52,6 +109,7 @@
 	};
 
 	function addBoard() {
+
 		$.ajax({
 			method : 'post',
 			url : '/main/createBoard',
@@ -76,6 +134,10 @@
 			div.appendChild(aTag);
 
 			document.getElementById('createBoard').appendChild(div);
+			var boardHtml = $('#board' + arrBoard.b_num)[0].outerHTML;
+			console.log($('#board' + arrBoard.b_num));
+			send(boardHtml, 'boardCreate', 'createBoard');
+			console.log(boardHtml);
 		});
 	}
 </script>

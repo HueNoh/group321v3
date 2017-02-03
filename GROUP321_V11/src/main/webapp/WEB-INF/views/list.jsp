@@ -8,46 +8,47 @@
 <meta charset="utf-8">
 <title>List</title>
 <meta name="viewport"
-   content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="/resources/css/slidebars.css">
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/style.css">
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
-.viewList, #addList{
-   width: 150px;
-   height: 100%;
-   margin: 5px;
-   border: 1px solid black;
-   float: left;
+.viewList, #addList {
+	width: 150px;
+	height: 100%;
+	margin: 5px;
+	border: 1px solid black;
+	float: left;
 }
-.list{
-width: 150px;
-   height: 100%;
-   float: left;
+
+.list {
+	width: 150px;
+	height: 100%;
+	float: left;
 }
 
 .list_body {
-   width: 90%;
+	width: 90%;
 }
 
 .list_foot {
-   width: 90%;
+	width: 90%;
 }
 
 .list-card {
-   width: 90%;
-   border: 1px solid black;
-   float: left;
+	width: 90%;
+	border: 1px solid black;
+	float: left;
 }
 
 #content, #mainList {
-   height: 100%;
-   
+	height: 100%;
 }
+
 .g3-container {
-   overflow-x: scroll;
+	overflow-x: scroll;
 }
 </style>
 <script>
@@ -89,8 +90,7 @@ width: 150px;
       $('#mainList').sortable({
          update : function(ev,ui) {
             var result = $('#mainList').sortable('toArray');
-            send(ev.target.innerHTML,'move','mainList');
-            
+            send(ev.target.innerHTML,'listMove','mainList');
             var moveData=new Object();
             var msg= '';
             for(var i = 0 ; i < result.length; i++){
@@ -102,10 +102,8 @@ width: 150px;
                 
              }
              
-             console.log(msg);
              moveData = result;
              
-             console.log(JSON.stringify(moveData));
              var data = JSON.stringify(moveData);
              $.ajax({
                 url : '/main/moveList',
@@ -194,10 +192,8 @@ width: 150px;
                       var parentId = ev.toElement.parentElement.id;
                       var cardArr= '';
                       
+ 		              send(ev.target.innerHTML,'cardMove','list'+id);
                       if(targetId == parentId){
-                         console.log(parentId);
-                         console.log(targetId);
- 		               	 send(ev.target.innerHTML,'move','list'+id);
                          
                          for(var i = 0 ; i < result1.length; i++){
                             if(i < (result1.length-1)){ 
@@ -222,7 +218,6 @@ width: 150px;
                          
                          }).done();
                       }else{
-                    		send(ev.target.innerHTML,'move','list'+id); 
                       }
                   }  
                });
@@ -252,7 +247,6 @@ width: 150px;
 
          });
          numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
-         console.log('length_onload: '+numOfList);
          setWidthOnload(numOfList); // Onload 시 전체 width 설정
          
          $('.list').on('click', function() {
@@ -341,22 +335,19 @@ width: 150px;
          document.getElementById('mainList').appendChild(viewList);
          
          numOfList = $('.viewList').length;
-         console.log('length_addList: '+numOfList);
          setWidthAddList(numOfList);
       
          $('#list'+id).sortable({
             connectWith : '.list',
             update : function(ev,ui) {  
-            	send(ev.target.innerHTML,'move');
+            	
                var result1 = $('#list'+id).sortable('toArray');
                 var targetId= ev.target.id;
                 var parentId = ev.toElement.parentElement.id;
                 var cardArr= '';
                 
                 if(targetId == parentId){
-                   console.log(parentId);
-                   console.log(targetId);
-                   
+                send(ev.target.innerHTML,'cardMove','list'+id);
                    for(var i = 0 ; i < result1.length; i++){
                       if(i < (result1.length-1)){ 
                          cardArr += result1[i]+',';
@@ -418,7 +409,6 @@ width: 150px;
 
 
          newCard.appendChild(createCardText);
-         console.log(id);
          document.getElementById('list'+id).appendChild(newCard);
       });
       
@@ -435,7 +425,6 @@ width: 150px;
          }
       }).done(function(msg) {
 
-         console.log(msg);
          cardModal.style.display = "block";
       });
 
@@ -445,113 +434,113 @@ width: 150px;
 </script>
 </head>
 <body>
-   <nav>
-      <div align="center" class="nav">
-         <img src="/resources/images/logo.JPG" alt="Main" class="main_img">
-      </div>
-   </nav>
-   <div class="g3-container" canvas="container" align="right">
-      <p>
-         <a href="#" class="js-toggle-right-slidebar">☰</a>
-      </p>
-      <div class="content">
-         <div id="mainList" class="mainList"></div>
-         <div id="addList" onclick="addList();">Create</div>
-      </div>
+	<nav>
+		<div align="center" class="nav">
+			<img src="/resources/images/logo.JPG" alt="Main" class="main_img">
+		</div>
+	</nav>
+	<div class="g3-container" canvas="container" align="right">
+		<p>
+			<a href="#" class="js-toggle-right-slidebar">☰</a>
+		</p>
+		<div class="content">
+			<div id="mainList" class="mainList"></div>
+			<div id="addList" onclick="addList();">Create</div>
+		</div>
 
-   </div>
+	</div>
 
-   <div off-canvas="slidebar-2 right shift">
-      <ul class="menu">
-         <a class="menu-icon" href="#"><i class="icon-reorder"></i></a>
-         <ul class="side-menu">
-            <h2 class="title">Menu</h2>
-            <li class="link"><a href="#" class="link_tag1">Board</a></li>
-            <li class="link"><a href="#" class="link_tag2" id="myBtn">History</a>
-            </li>
-            <li class="link"><a href="#" onclick="openChat();"
-               class="link_tag3 js-close-right-slidebar">Chatting</a></li>
-            <li class="link"><a href="#" class="link_tag4">File</a></li>
-            <li class="link"><a href="#" class="link_tag5">Members</a></li>
-         </ul>
-      </ul>
-   </div>
+	<div off-canvas="slidebar-2 right shift">
+		<ul class="menu">
+			<a class="menu-icon" href="#"><i class="icon-reorder"></i></a>
+			<ul class="side-menu">
+				<h2 class="title">Menu</h2>
+				<li class="link"><a href="#" class="link_tag1">Board</a></li>
+				<li class="link"><a href="#" class="link_tag2" id="myBtn">History</a>
+				</li>
+				<li class="link"><a href="#" onclick="openChat();"
+					class="link_tag3 js-close-right-slidebar">Chatting</a></li>
+				<li class="link"><a href="#" class="link_tag4">File</a></li>
+				<li class="link"><a href="#" class="link_tag5">Members</a></li>
+			</ul>
+		</ul>
+	</div>
 
 
-   <div id="myModal" class="modal">
-      <div class="modal-content">
-         <span id="hisClose" class="close">&times;</span>
-         <p>
-            Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-            <br> MKMinsik Kim added menu view study to to do listJan 16 at
-            3:42 PM<br> <br> MKMinsik Kim added event hadling study to
-            to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
-            do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
-            Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
-            Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-            MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-            Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-            <br> MKMinsik Kim added menu view study to to do listJan 16 at
-            3:42 PM<br> <br> MKMinsik Kim added event hadling study to
-            to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
-            do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
-            Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
-            Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-            MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-            Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-            <br> MKMinsik Kim added menu view study to to do listJan 16 at
-            3:42 PM<br> <br> MKMinsik Kim added event hadling study to
-            to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
-            do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
-            Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
-            Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-            MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-            Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-            <br> MKMinsik Kim added menu view study to to do listJan 16 at
-            3:42 PM<br> <br> MKMinsik Kim added event hadling study to
-            to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
-            do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
-            Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
-            Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-            MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-            Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-            <br> MKMinsik Kim added menu view study to to do listJan 16 at
-            3:42 PM<br> <br> MKMinsik Kim added event hadling study to
-            to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
-            do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
-            Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
-            Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-            MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-         </p>
-      </div>
-   </div>
-   <div id="mySidenavChat" class="sidenav-chat">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
-      <jsp:include page="websocket.jsp" flush="false"></jsp:include>
-   </div>
-   <div id="cardModal" class="modal">
-      <div class="modal-content">
-         <p>
-            <span id="cardClose" class="close">&times;</span>
-         </p>
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span id="hisClose" class="close">&times;</span>
+			<p>
+				Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
+				<br> MKMinsik Kim added menu view study to to do listJan 16 at
+				3:42 PM<br> <br> MKMinsik Kim added event hadling study to
+				to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
+				do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
+				Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
+				Kim added list to this boardJan 16 at 10:38 AM<br> <br>
+				MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
+				Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
+				<br> MKMinsik Kim added menu view study to to do listJan 16 at
+				3:42 PM<br> <br> MKMinsik Kim added event hadling study to
+				to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
+				do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
+				Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
+				Kim added list to this boardJan 16 at 10:38 AM<br> <br>
+				MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
+				Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
+				<br> MKMinsik Kim added menu view study to to do listJan 16 at
+				3:42 PM<br> <br> MKMinsik Kim added event hadling study to
+				to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
+				do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
+				Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
+				Kim added list to this boardJan 16 at 10:38 AM<br> <br>
+				MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
+				Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
+				<br> MKMinsik Kim added menu view study to to do listJan 16 at
+				3:42 PM<br> <br> MKMinsik Kim added event hadling study to
+				to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
+				do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
+				Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
+				Kim added list to this boardJan 16 at 10:38 AM<br> <br>
+				MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
+				Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
+				<br> MKMinsik Kim added menu view study to to do listJan 16 at
+				3:42 PM<br> <br> MKMinsik Kim added event hadling study to
+				to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim added to
+				do list to this boardJan 16 at 3:42 PM<br> <br> MKMinsik
+				Kim added ++ to listJan 16 at 3:23 PM<br> <br> MKMinsik
+				Kim added list to this boardJan 16 at 10:38 AM<br> <br>
+				MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
+			</p>
+		</div>
+	</div>
+	<div id="mySidenavChat" class="sidenav-chat">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
+		<jsp:include page="websocket.jsp" flush="false"></jsp:include>
+	</div>
+	<div id="cardModal" class="modal">
+		<div class="modal-content">
+			<p>
+				<span id="cardClose" class="close">&times;</span>
+			</p>
 
-         <div id="cardView">
-            <div id="card-header"></div>
-            <p>add Comment</p>
-            <div id="card-comment">
-               <textarea cols="25" rows="5"></textarea>
+			<div id="cardView">
+				<div id="card-header"></div>
+				<p>add Comment</p>
+				<div id="card-comment">
+					<textarea cols="25" rows="5"></textarea>
 
-            </div>
-            <p>댓글</p>
-            <div id="card-repl"></div>
-         </div>
-      </div>
-   </div>
+				</div>
+				<p>댓글</p>
+				<div id="card-repl"></div>
+			</div>
+		</div>
+	</div>
 
 
 </body>
 <script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="/resources/js/jquery-ui.js"></script>
 <script src="/resources/js/slidebars.js"></script>
 <script src="/resources/js/slidebars.atj.js"></script>
