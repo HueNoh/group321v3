@@ -157,6 +157,15 @@ public class MainController {
 		List list = memberService.moveCard(map);
 		return new Gson().toJson("aa");
 	}
+	
+	@RequestMapping(value = "/addComment", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String addComment(Locale locale, Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam Map map) {
+		System.out.println(map);
+		return new Gson().toJson("aa");
+	}
 
 	public String loginChk(@RequestParam Map map, HttpServletRequest request, HttpSession session, String route) {
 		session = request.getSession(false);
