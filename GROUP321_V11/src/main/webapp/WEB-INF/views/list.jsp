@@ -610,9 +610,11 @@
 			<p><span id="cardClose" class="close">&times;</span></p>
 			<div id="cardView" class="cardView">
 				<div class="card-detail-main" >
+				
 					<input type="hidden" id="boardNum">
 					<input type="hidden" id="listNum">
 					<input type="hidden" id="cardNum">
+					
 					<h1>card title</h1>
 					<div id="descId">
 <!-- 					<div class="card-desc"> -->
