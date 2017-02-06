@@ -477,7 +477,6 @@
 	}
 
 	function cardView(b_num, l_num, c_num) {
-		alert('dd');
 		  $.ajax({
 		         method : 'post',
 		         url : '/main/selectCardDetail',
@@ -487,13 +486,35 @@
 		            cnum : c_num
 		         }
 		      }).done(function(msg) {
+		    	  
+				document.getElementById('boardNum').value = b_num;
+				document.getElementById('listNum').value = l_num;
+				document.getElementById('cardNum').value = c_num;
 		        cardModal.style.display = "block";
 		      });
 
 	}
+	function comment() {
+		
+		$.ajax({
+	         method : 'post',
+	         url : '/main/addComment',
+	         data : {
+	            bnum : $('#boardNum')[0].value,
+	            lnum : $('#listNum')[0].value,
+	            cnum : $('#cardNum')[0].value,
+	            comment : $('#commentArea')[0].value
+	            
+	         }
+	      }).done(function(msg) {
+	    	  
+	      });
+		
+	}
 </script>
 </head>
 <body>
+
 	<header id="header" class="clearfix">
 		<a href="/main/board"><h1>PROJECT 321</h1></a> <a href="#"
 			class="btn_board"><span>Boards</span></a>
@@ -589,17 +610,17 @@
 			<p><span id="cardClose" class="close">&times;</span></p>
 			<div id="cardView" class="cardView">
 				<div class="card-detail-main" >
+					<input type="hidden" id="boardNum">
+					<input type="hidden" id="listNum">
+					<input type="hidden" id="cardNum">
 					<h1>card title</h1>
 					<div id="descId">
 <!-- 					<div class="card-desc"> -->
-						<a href="#" class="glyphicon glyphicon-pencil desc-tag" onclick="descPop();">&nbsp;description...</a>
+						<a href="#" class="	 glyphicon-pencil desc-tag" onclick="descPop();">&nbsp;description...</a>
 					</div>
-					
 					<h3>Add Comment</h3>
-					<form action="">
-						<textarea rows="10" cols="80"></textarea>
-						<input type="submit" value="SAVE">
-					</form>
+						<textarea rows="10" cols="80" id="commentArea"></textarea>
+						<input type="button" value="SAVE" onclick="comment();">
 					<div>Comments Area(for Append)</div>
 				</div>
 				
