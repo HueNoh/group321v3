@@ -17,12 +17,14 @@
 	margin: 5px;
 	border: 1px solid black;
 	float: left;
+	border-radius: 5px;
 }
 
 #content {
 	height: 100%;
 	padding-top: 100px;
 }
+.board {}
 </style>
 <script>
 	window.onload = function() {
