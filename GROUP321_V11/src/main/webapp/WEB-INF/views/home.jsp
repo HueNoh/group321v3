@@ -8,7 +8,7 @@
 <script src="/resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="/resources/css/style_hs.css">
 <script>
-	
+
 </script>
 </head>
 <body>

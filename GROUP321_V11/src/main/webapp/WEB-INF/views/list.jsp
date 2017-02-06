@@ -149,7 +149,7 @@
 	         update : function(ev,ui) {
 	        	 
 	            var result = $('#mainList').sortable('toArray');
-	            send(ev.target.innerHTML,'listMove','${sessionScope.id}','mainList');
+	            send(ev.target.innerHTML,'listMove','mainList');
 	            var moveData=new Object();
 	            var msg= '';
 	            for(var i = 0 ; i < result.length; i++){
@@ -251,7 +251,7 @@
 	                      var parentId = ev.toElement.parentElement.id;
 	                      var cardArr= '';
 	                      
-	 		              send(ev.target.innerHTML,'cardMove','${sessionScope.id}','list'+id);
+	 		              send(ev.target.innerHTML,'cardMove','list'+id);
 	                      if(targetId == parentId){
 	                         
 	                         for(var i = 0 ; i < result1.length; i++){
@@ -404,7 +404,7 @@
 	                 var cardArr= '';
 	                 
 	                 if(targetId == parentId){
-	                 send(ev.target.innerHTML,'cardMove','${sessionScope.id}','list'+id);
+	                 send(ev.target.innerHTML,'cardMove','list'+id);
 	                    for(var i = 0 ; i < result1.length; i++){
 	                       if(i < (result1.length-1)){ 
 	                          cardArr += result1[i]+',';
@@ -432,7 +432,7 @@
 	          });
 	          
 	          var listHtml = $('#mainList')[0].innerHTML;
-	          send(listHtml,'listCreate','${sessionScope.id}', 'mainList');
+	          send(listHtml,'listCreate', 'mainList');
 	       
 	       });
 	      
@@ -471,7 +471,7 @@
 		         document.getElementById('list'+id).appendChild(newCard);
 		         
 		         var cardHtml = $('#list'+id)[0].innerHTML;
-		          send(cardHtml,'cardCreate', '${sessionScope.id}','list'+id);
+		          send(cardHtml,'cardCreate','list'+id);
 		      });
 
 	}

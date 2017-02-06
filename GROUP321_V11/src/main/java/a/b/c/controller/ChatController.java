@@ -81,21 +81,24 @@ public class ChatController {
 		Gson gson = new Gson();
 
 		int b_num = Integer.valueOf((String) map.get("b_num"));
-		String userId= (String) map.get("userId");
+		String userId = (String) map.get("userId");
 		JsonArray jArr = new JsonArray();
 		JsonObject jObj = new JsonObject();
 		JsonArray juArr = new JsonArray();
 		if (0 < WebSocket.clients.size()) {
-			WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("userId",
-					userId);
+			WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("userId", userId);
 			WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("b_num", b_num);
-
+			System.out.println(WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().get("b_num"));
 			try {
 				for (int i = 0; i < WebSocket.clients.size(); i++) {
 
 					JsonObject obj = new JsonObject();
-					obj.addProperty("userId", (String) WebSocket.clients.get(i).getUserProperties().get("userId"));
-					obj.addProperty("b_num", (int) WebSocket.clients.get(i).getUserProperties().get("b_num"));
+					if (null != WebSocket.clients.get(i).getUserProperties().get("userId")) {
+						obj.addProperty("userId", (String) WebSocket.clients.get(i).getUserProperties().get("userId"));
+					}
+					if (null != WebSocket.clients.get(i).getUserProperties().get("b_num")) {
+						obj.addProperty("b_num", (int) WebSocket.clients.get(i).getUserProperties().get("b_num"));
+					}
 					juArr.add(obj);
 				}
 
@@ -121,13 +124,13 @@ public class ChatController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
-			
+		} else {
+
 			jObj.addProperty("size", 0);
 			jObj.addProperty("userId", userId);
 			jObj.addProperty("msg", "error");
 		}
-			
+
 		return gson.toJson(jObj);
 	}
 

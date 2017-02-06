@@ -151,6 +151,7 @@ public class MainController {
 	@ResponseBody
 	public String moveCard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
+		System.out.println("move: " +map);
 		map.put("cardArr", map.get("msg"));
 		System.out.println(map);
 		List list = memberService.moveCard(map);

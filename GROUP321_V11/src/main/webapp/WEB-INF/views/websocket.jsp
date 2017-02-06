@@ -11,7 +11,7 @@
 		</div>
 		<div class="dis sub">
 			<input type="submit" style="width: 100%; height: 100%;" value="send"
-				onclick="send(inputMessage.value,'message','${sessionScope.id}','null')" />
+				onclick="send(inputMessage.value,'message','${sessionScope.id}')" />
 		</div>
 	</div>
 </div>
@@ -95,88 +95,116 @@
 
 				$('#' + id).html(msg);
 
-				$
-						.each(
-								$('#' + divId)[0].childNodes,
-								function(i) {
-									var cardSortId = "list" + this.divId;
-									var lnum = this.divId;
-									console.log("aewf: " + cardSortId);
+				$.each($('#' + id)[0].childNodes, function(i) {
+					var cardSortId = "list" + this.id;
+					var lnum = this.id;
+					console.log("aewf: " + cardSortId);
 
-									$('#' + cardSortId)
-											.sortable(
-													{
-														connectWith : '.list',
-														update : function(ev,
-																ui) {
+					$('#' + cardSortId).sortable({
+						connectWith : '.list',
+						update : function(ev, ui) {
 
-															send(
-																	ev.target.innerHTML,
-																	'cardMove',
-																	cardSortId);
+							send(ev.target.innerHTML, 'cardMove', cardSortId);
 
-															var result1 = $(
-																	'#'
-																			+ cardSortId)
-																	.sortable(
-																			'toArray');
-															var targetId = ev.target.id;
-															var parentId = ev.toElement.parentElement.id;
-															var cardArr = '';
-															if (targetId == parentId) {
+							var result1 = $('#' + cardSortId).sortable('toArray');
+							var targetId = ev.target.id;
+							var parentId = ev.toElement.parentElement.id;
+							var cardArr = '';
+							if (targetId == parentId) {
 
-																console
-																		.log(ev.target.innerHTML);
-																for (var i = 0; i < result1.length; i++) {
-																	if (i < (result1.length - 1)) {
-																		cardArr += result1[i]
-																				+ ',';
-																	} else {
-																		cardArr += result1[i];
-																	}
+								console.log(ev.target.innerHTML);
+								for (var i = 0; i < result1.length; i++) {
+									if (i < (result1.length - 1)) {
+										cardArr += result1[i] + ',';
+									} else {
+										cardArr += result1[i];
+									}
 
-																}
+								}
 
-																console
-																		.log(lnum);
+								console.log(lnum);
 
-																$
-																		.ajax(
-																				{
-																					url : '/main/moveCard',
-																					method : 'post',
-																					data : {
+								$.ajax({
+									url : '/main/moveCard',
+									method : 'post',
+									data : {
 
-																						bnum : '${b_num}',
-																						lnum : lnum,
-																						cnum : ev.toElement.id,
-																						msg : cardArr,
-																						length : result1.length
-																					}
+										bnum : '${b_num}',
+										lnum : lnum,
+										cnum : ev.toElement.id,
+										msg : cardArr,
+										length : result1.length
+									}
 
-																				})
-																		.done();
-															}
-														}
-													});
-								});
-
+								}).done();
+							}
+						}
+					});
+				});
 			}
 		} else if ("cardMove" == access) {
 			console.log('cardMove');
 			if (id != sessionId) {
-				$('#' + divId).html(msg);
+				$('#' + id).html(msg);
+				
+				
 			}
 
 		} else if ('listCreate' == access) {
 			if (id != sessionId) {
 				console.log(msg);
-				$('#' + divId).html(msg);
+				$('#' + id).html(msg);
+				$.each($('#' + id)[0].childNodes, function(i) {
+					var cardSortId = "list" + this.id;
+					var lnum = this.id;
+					console.log("aewf: " + cardSortId);
+
+					$('#' + cardSortId).sortable({
+						connectWith : '.list',
+						update : function(ev, ui) {
+
+							send(ev.target.innerHTML, 'cardMove', cardSortId);
+
+							var result1 = $('#' + cardSortId).sortable('toArray');
+							var targetId = ev.target.id;
+							var parentId = ev.toElement.parentElement.id;
+							var cardArr = '';
+							if (targetId == parentId) {
+
+								console.log(ev.target.innerHTML);
+								for (var i = 0; i < result1.length; i++) {
+									if (i < (result1.length - 1)) {
+										cardArr += result1[i] + ',';
+									} else {
+										cardArr += result1[i];
+									}
+
+								}
+
+								console.log(lnum);
+
+								$.ajax({
+									url : '/main/moveCard',
+									method : 'post',
+									data : {
+
+										bnum : '${b_num}',
+										lnum : lnum,
+										cnum : ev.toElement.id,
+										msg : cardArr,
+										length : result1.length
+									}
+
+								}).done();
+							}
+						}
+					});
+				});
 			}
 		} else if ("cardCreate" == access) {
 			console.log(id)
 			if (id != sessionId) {
-				$('#' + divId).html(msg);
+				$('#' + id).html(msg);
 			}
 
 		}
