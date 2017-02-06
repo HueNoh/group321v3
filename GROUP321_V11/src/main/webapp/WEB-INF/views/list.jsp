@@ -38,11 +38,11 @@
 	width: 90%;
 }
 
-.list-card {
+/* .list-card {
 	width: 90%;
 	border: 1px solid black;
 	float: left;
-}
+} */
 
 #content, #mainList {
 	height: 100%;
@@ -50,7 +50,7 @@
 }
 
 .g3-container {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 #content {
@@ -102,18 +102,19 @@
 .cardView {
 	overflow: hidden;
 }
-.img-label {
+.btn-label {
 	margin-right: 15px;
 	margin-bottom: 5px;
 }
-.img-attachment {
+.btn-attachment {
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
-.img-delete {
+.btn-delete {
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
+
 </style>
 <script>
 	/*    document.onkeydown = refl;
@@ -516,8 +517,11 @@
 <body>
 
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1>PROJECT 321</h1></a> <a href="#"
-			class="btn_board"><span>Boards</span></a>
+		<a href="/main/board"><h1 style="top: -10px;">PROJECT 321</h1></a>
+		<a href="#"class="btn_board">
+			<img alt="board" src="/resources/images/btn_board.png" class="btn-board">
+			<span>&nbsp;&nbsp;Boards</span>
+		</a>
 		<form action="#" method="post" id="sch_main_wrap">
 			<fieldset>
 				<input type="text" name="sch_main" id="sch_main">
@@ -526,7 +530,7 @@
 		</form>
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div style="position: fixed; height: 50px; margin-top: 50px;">dd</div>
+	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
@@ -629,27 +633,27 @@
 				<div class="card-detail-sidebar">
 					<button>
 <!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
-						<span><img alt="label" src="/resources/images/img-label.png" width="20px" height="20px" class="img-label">&nbsp;Label</span>
+						<span><img alt="label" src="/resources/images/btn-label.png" width="20px" height="20px" class="btn-label">&nbsp;Label</span>
 					</button>
 					<br><br>
 					<button >
 <!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
-						<span><img alt="label" src="/resources/images/img-attachment.png" width="20px" height="20px" class="img-attachment">&nbsp;Attachment</span>
+						<span><img alt="label" src="/resources/images/btn-attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
 					</button>
 					<br><br>
 					<button >
 <!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
-						<span><img alt="label" src="/resources/images/img-delete.png" width="20px" height="20px" class="img-delete">&nbsp;Delete</span>
+						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;Delete</span>
 					</button>
 					<br><br>
 					<button >
 <!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
-						<span><img alt="label" src="/resources/images/img-delete.png" width="20px" height="20px" class="img-delete">&nbsp;empty1</span>
+						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty1</span>
 					</button>
 					<br><br>
 					<button >
 <!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
-						<span><img alt="label" src="/resources/images/img-delete.png" width="20px" height="20px" class="img-delete">&nbsp;empty2</span>
+						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty2</span>
 					</button>
 					<br><br>
 				</div>

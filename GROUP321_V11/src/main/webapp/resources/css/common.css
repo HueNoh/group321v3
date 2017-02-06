@@ -38,6 +38,6 @@ button, input[type=button], input[type=submit], input[type=reset]{cursor:pointer
 	 margin: 10px 5px; position: relative; }
 .viewList h3{position: relative; padding:10px; font-size: 18px; font-weight: bold;}
 .viewList .btn_listmenu{position: absolute;top: 10px; right: 10px;width: 16px;height: 16px; background: url(../imgs/btn_listmenu.png) 0 0 no-repeat; border: none; text-indent: -9999px;}
-.infolist{background-color: #fff; margin: 8px 10px; border-radius: 5px; padding:10px;}
+.list-card{background-color: #fff; margin: 8px 10px; border-radius: 5px; padding:10px;}
 .btn_add_cardlist{display: block; padding:10px 15px; font-weight: bold;}
 .btn_add_cardlist:hover{background-color: #ccc; text-decoration: underline}
