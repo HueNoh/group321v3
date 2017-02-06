@@ -23,21 +23,39 @@ button, input[type=button], input[type=submit], input[type=reset]{cursor:pointer
 #header {width: 100%;height: 50px;line-height: 50px; z-index: 9999; background-color: #026aa7; position: fixed;}
 #header h1{color: #dfdfdf; font-size: 30px; display: inline-block; position: absolute; left: 50%; margin-left: -93.6px;}
 #header h1:hover{color: #fff;}
-.btn_board{background: url(../imgs/btn_board.png) 8px center no-repeat; padding:0 10px 0 30px; background-color: #4994c0; margin-left: 10px; border-radius: 5px; float: left; display: inline-block; height: 35px; line-height: 35px; margin-top: 7px;}
+.btn_board{background: url(../images/btn_board.png) 8px center no-repeat; padding:0 10px 0 30px; background-color: #4994c0; margin-left: 10px; border-radius: 5px; float: left; display: inline-block; height: 35px; line-height: 35px; margin-top: 7px;}
 .btn_board span{color: #fff; font-weight: bold;}
 #sch_main_wrap{position: relative; float: left; margin-left: 10px;}
 #sch_main_wrap input[type="text"]{background-color: #4994c0;height: 35px;padding:0 20px 0 10px; border: none; border-radius: 5px;}
-#sch_main_wrap .btn_ico_sch{background: url(../imgs/ico_sch.png) 0 0 no-repeat; width: 24px; height: 24px;display: inline-block; position: absolute; top: 14px; right: 3px;}
+#sch_main_wrap .btn_ico_sch{background: url(../images/ico_sch.png) 0 0 no-repeat; width: 24px; height: 24px;display: inline-block; position: absolute; top: 14px; right: 3px;}
 
 
 #container{ height: 100%;}
-.btn_menu{text-indent: -9999px; background: url(../imgs/btn_sidebar.png) 0 0 no-repeat; position: absolute; right: -45px; top: 10px; width: 37px;height: 37px;border: none;}
+.btn_menu{text-indent: -9999px; background: url(../images/btn_sidebar.png) 0 0 no-repeat; position: absolute; right: -45px; top: 10px; width: 37px;height: 37px;border: none;}
 .content_wrap{position: relative; margin:0 50px;}
 .board_tit{display: block; font-size: 40px; color: #000;font-weight: bold; padding:20px 0 30px 0;}
 .viewList{background-color: #dfdfdf; display: inline-block; width: 270px; float: left;border-radius: 5px;
 	 margin: 10px 5px; position: relative; }
 .viewList h3{position: relative; padding:10px; font-size: 18px; font-weight: bold;}
-.viewList .btn_listmenu{position: absolute;top: 10px; right: 10px;width: 16px;height: 16px; background: url(../imgs/btn_listmenu.png) 0 0 no-repeat; border: none; text-indent: -9999px;}
+.viewList .btn_listmenu{position: absolute;top: 10px; right: 10px;width: 16px;height: 16px; background: url(../images/btn_listmenu.png) 0 0 no-repeat; border: none; text-indent: -9999px;}
 .list-card{background-color: #fff; margin: 8px 10px; border-radius: 5px; padding:10px;}
 .btn_add_cardlist{display: block; padding:10px 15px; font-weight: bold;}
 .btn_add_cardlist:hover{background-color: #ccc; text-decoration: underline}
+
+.title-bar {width: 100%; position: fixed; height: 50px; margin-top: 50px;}
+.title-main {font-weight: bold; position: absolute; left: 5%; top: 30%; font-size: 20px;}
+
+#content {height: 100%;	padding-top: 100px;}
+#content .board {border-radius: 5px; background-color: #0094ae; font-weight: bold; font-size: 14px;}
+.board a {color: #ffffff;}
+#addBoard, #addList {border-radius: 5px; background-color: #bcbcbc;}
+#addBoard, .createBoard, .board {
+	width: 150px;
+	height: 100px;
+	margin: 5px;
+	float: left;
+	padding: 10px;
+	color: #6c6c6c;
+	font-weight: bold;
+}
+

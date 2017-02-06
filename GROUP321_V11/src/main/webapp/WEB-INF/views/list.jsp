@@ -20,7 +20,7 @@
 	width: 150px;
 	height: 100%;
 	margin: 5px;
-	border: 1px solid black;
+	border: 1px solid grey;
 	float: left;
 }
 
@@ -515,12 +515,11 @@
 </script>
 </head>
 <body>
-
+	
+	<!-- 상단바 -->
 	<header id="header" class="clearfix">
 		<a href="/main/board"><h1 style="top: -10px;">PROJECT 321</h1></a>
-		<a href="#"class="btn_board">
-			<img alt="board" src="/resources/images/btn_board.png" class="btn-board">
-			<span>&nbsp;&nbsp;Boards</span>
+		<a href="#"class="btn_board"><span>Boards</span>
 		</a>
 		<form action="#" method="post" id="sch_main_wrap">
 			<fieldset>
@@ -530,8 +529,11 @@
 		</form>
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
+	<!-- 타이틀바 -->
+	<div class="title-bar"><span class="title-main">List</span></div>
+	
 	<div id="content">
+		<!-- 리스트 -->
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
 			<div class="content">
@@ -540,7 +542,7 @@
 			</div>
 
 		</div>
-
+		<!-- 사이드메뉴 -->
 		<div off-canvas="slidebar-2 right shift" style="z-index: 9999;">
 			<ul class="menu">
 				<a class="menu-icon" href="#"><i class="icon-reorder"></i></a>
@@ -556,8 +558,7 @@
 				</ul>
 			</ul>
 		</div>
-
-
+		<!-- 히스토리 -->
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span id="hisClose" class="close">&times;</span>

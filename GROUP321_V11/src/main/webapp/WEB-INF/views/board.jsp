@@ -11,20 +11,7 @@
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <style>
-#addBoard, .createBoard, .board {
-	width: 150px;
-	height: 150px;
-	margin: 5px;
-	border: 1px solid black;
-	float: left;
-	border-radius: 5px;
-}
 
-#content {
-	height: 100%;
-	padding-top: 100px;
-}
-.board {}
 </style>
 <script>
 	var sessionId = '${sessionScope.id}';
@@ -147,6 +134,7 @@
 </script>
 </head>
 <body>
+	<!-- 상단바 -->
 	<header id="header" class="clearfix">
 		<a href="/main/board"><h1>PROJECT 321</h1></a> <a href="#"
 			class="btn_board"><span>Boards</span></a>
@@ -157,7 +145,9 @@
 			<a href="#"><span class="btn_ico_sch"></span></a>
 		</form>
 	</header>
-	<div style="position: fixed; height: 50px; margin-top: 50px;">dd</div>
+	<!-- 타이틀바 -->
+	<div class="title-bar"><span class="title-main">Board</span></div>
+	<!-- 보드 -->
 	<div id="content">
 		<div id="viewBoard"></div>
 		<div id="createBoard"></div>
