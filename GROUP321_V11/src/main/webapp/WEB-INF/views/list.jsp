@@ -67,6 +67,7 @@
 	 } 
 	 */
 	var webSocket = new WebSocket('ws://211.183.8.14/socket');
+	 
 	webSocket.onopen = function(event) {
 		onOpen(event)
 
@@ -84,11 +85,11 @@
 
 	var b_num = '${b_num}';
 	var numOfList = 0; // 전체 리스트 갯수
-
 	window.onload = function() {
 
 	      $('#mainList').sortable({
 	         update : function(ev,ui) {
+	        	 
 	            var result = $('#mainList').sortable('toArray');
 	            send(ev.target.innerHTML,'listMove','mainList');
 	            var moveData=new Object();
@@ -296,7 +297,7 @@
 	          }
 
 	       }).done(function(msg) {
-	             
+	            
 	          var arrList = JSON.parse(msg);
 	          var id = arrList.l_num;
 	          var div = document.createElement('div');
@@ -373,7 +374,12 @@
 	             }  
 	          });
 	          
+	          var listHtml = $('#mainList')[0].innerHTML;
+	          send(listHtml,'listCreate', 'mainList');
+	       
 	       });
+	      
+	      
 	}
 
 	function addCard(l_num, id) {
@@ -404,11 +410,15 @@
 
 		         newCard.appendChild(createCardText);
 		         document.getElementById('list'+id).appendChild(newCard);
+		         
+		         var cardHtml = $('#list'+id)[0].innerHTML;
+		          send(cardHtml,'cardCreate', 'list'+id);
 		      });
 
 	}
 
 	function cardView(b_num, l_num, c_num) {
+		
 		  $.ajax({
 		         method : 'post',
 		         url : '/main/selectCardDetail',
@@ -418,8 +428,10 @@
 		            cnum : c_num
 		         }
 		      }).done(function(msg) {
-
-		         cardModal.style.display = "block";
+				 var cardView=JSON.parse(msg);
+				/* $('#card-header').innerHTML=cardView[0].title; */
+				document.getElementById('card-header').innerHTML=cardView[0].title;
+		        cardModal.style.display = "block";
 		      });
 
 	}
@@ -542,6 +554,7 @@
 <script src="/resources/js/jquery-ui.js"></script>
 <script src="/resources/js/slidebars.js"></script>
 <script src="/resources/js/slidebars.atj.js"></script>
+<script src="/resources/js/sortable.atj.js"></script>
 <script src="/resources/js/scripts.js"></script>
 
 </html>

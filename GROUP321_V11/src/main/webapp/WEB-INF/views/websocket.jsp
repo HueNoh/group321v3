@@ -23,7 +23,7 @@
 
 	var html = '';
 	var userHtml = '';
-
+	var createList='';
 	function onMessage(event) {
 		var spMsg = event.data;
 		var arrMsg = spMsg.split("::");
@@ -31,9 +31,7 @@
 		var msg = arrMsg[1];
 		var access = arrMsg[2];
 		var b_num = arrMsg[3];
-		
-		console.log(event.data);
-		
+
 		if ("message" == access) {
 			if (id == sessionId) {
 
@@ -94,61 +92,71 @@
 			if (id != sessionId) {
 				console.log(id);
 				console.log(sessionId);
-				
+
 				$('#' + id).html(msg);
 
 				$.each($('#' + id)[0].childNodes, function(i) {
-					var cardSortId= "list"+this.id;
-					var lnum=this.id;
-					console.log("aewf: "+cardSortId);
-					
+					var cardSortId = "list" + this.id;
+					var lnum = this.id;
+					console.log("aewf: " + cardSortId);
+
 					$('#' + cardSortId).sortable({
 						connectWith : '.list',
-			            update : function(ev,ui) {  
-			                
-		           			send(ev.target.innerHTML,'cardMove', cardSortId);
-			            	
-			                var result1 = $('#' + cardSortId).sortable('toArray');
-			                var targetId= ev.target.id;
-			                var parentId = ev.toElement.parentElement.id;
-			                var cardArr= '';
-			                if(targetId == parentId){
-			                	
-			               		console.log(ev.target.innerHTML);
-			                   for(var i = 0 ; i < result1.length; i++){
-			                      if(i < (result1.length-1)){ 
-			                         cardArr += result1[i]+',';
-			                     }else{
-			                        cardArr += result1[i];
-			                     }
-			                   
-			                   }
-			                   
-			                   
-			                   console.log(lnum);
-			                   
-			                
-			       $.ajax({
-			                      url:'/main/moveCard',
-			                      method:'post',
-			                      data:{
-			                         
-			                         bnum:'${b_num}',
-			                         lnum:lnum,
-			                         cnum:ev.toElement.id,
-			                         msg : cardArr,
-			                         length : result1.length
-			                     }
-			                   
-			                   }).done(); 
-			                }
-			            }  
+						update : function(ev, ui) {
+
+							send(ev.target.innerHTML, 'cardMove', cardSortId);
+
+							var result1 = $('#' + cardSortId).sortable('toArray');
+							var targetId = ev.target.id;
+							var parentId = ev.toElement.parentElement.id;
+							var cardArr = '';
+							if (targetId == parentId) {
+
+								console.log(ev.target.innerHTML);
+								for (var i = 0; i < result1.length; i++) {
+									if (i < (result1.length - 1)) {
+										cardArr += result1[i] + ',';
+									} else {
+										cardArr += result1[i];
+									}
+
+								}
+
+								console.log(lnum);
+
+								$.ajax({
+									url : '/main/moveCard',
+									method : 'post',
+									data : {
+
+										bnum : '${b_num}',
+										lnum : lnum,
+										cnum : ev.toElement.id,
+										msg : cardArr,
+										length : result1.length
+									}
+
+								}).done();
+							}
+						}
 					});
 				});
 
 			}
 		} else if ("cardMove" == access) {
 			console.log('cardMove');
+			if (id != sessionId) {
+				$('#' + id).html(msg);
+			}
+
+		} else if ('listCreate' == access) {
+			if (id != sessionId) {
+				
+				
+				console.log(msg);
+				$('#'+id).html(msg);
+			}
+		} else if ("cardCreate" == access) {
 			if (id != sessionId) {
 				$('#' + id).html(msg);
 			}
@@ -172,64 +180,71 @@
 				function(json) {
 
 					/* 
-					새로 접속한 클라이언트의 정보를 서버에 전송.
-					 */
-					var info = {
-						"userId" : sessionId,
-						"msg" : 'open',
-						"access" : 'open',
-						"b_num" : '${b_num}'
-					}
-					var jsonStr = JSON.stringify(info);
-					webSocket.send(jsonStr);
-
-					/* 
 					접속시 DB에 저장되있던 이전 데이터들을 SELECT하여
 					화면에 뿌려준다
 					 */
 					var jObj = JSON.parse(json);
-					var jArr = jObj.msg;
-					var juArr = jObj.userId;
-					var jSize = jObj.size;
+					if (null != jObj) {
+						var jArr = jObj.msg;
+						var juArr = jObj.userId;
+						var jSize = jObj.size;
+						/* 
+						새로 접속한 클라이언트의 정보를 서버에 전송.
+						 */
 
-					$.each(jArr, function(i) {
-						if (jArr[i].id == sessionId) {
-							html = '<div class="dis myMsg">'
-									+ '<img src="#" onclick="profile(\''
-									+ jArr[i].id + '\');"/>' + jArr[i].msg
-									+ '<br/>' + jArr[i].id + '</div>';
-
-						} else {
-							html = '<div class="dis memberMsg">'
-									+ '<img src="#" onclick="profile(\''
-									+ jArr[i].id + '\');"/>' + jArr[i].msg
-									+ '<br/>' + jArr[i].id + '</div>';
+						var info = {
+							"userId" : sessionId,
+							"msg" : 'open',
+							"access" : 'open',
+							"b_num" : '${b_num}'
 						}
+						var jsonStr = JSON.stringify(info);
+						webSocket.send(jsonStr);
 
-						$('.display').append(html);
+						$.each(jArr, function(i) {
+							if (jArr[i].id == sessionId) {
+								html = '<div class="dis myMsg">'
+										+ '<img src="#" onclick="profile(\''
+										+ jArr[i].id + '\');"/>' + jArr[i].msg
+										+ '<br/>' + jArr[i].id + '</div>';
 
-						$('.display').append('<br><br><br>');
-					});
-					$(".display").scrollTop($(".display")[0].scrollHeight);
+							} else {
+								html = '<div class="dis memberMsg">'
+										+ '<img src="#" onclick="profile(\''
+										+ jArr[i].id + '\');"/>' + jArr[i].msg
+										+ '<br/>' + jArr[i].id + '</div>';
+							}
 
-					/* 
-					새로 접속한 클라이언트에게 이전에 접속해있는 클라이언트들의
-					아이디를 받아오는 메서드.
-					접속한 유저의 id들의 값을 저장하고있는 juArr의 사이즈에서
-					새로 접속한 클라이언트의 id값을 제외한 다른 클라이언트의
-					id를 div에 뿌린다.
-					 */
-					var size = jSize.size - 1;
+							$('.display').append(html);
 
-					for (var i = 0; i < size; i++) {
-						if ('${b_num}' == juArr[i].b_num) {
+							$('.display').append('<br><br><br>');
+						});
+						$(".display").scrollTop($(".display")[0].scrollHeight);
 
-							userHtml += juArr[i].userId + '<br/>';
+						/* 
+						새로 접속한 클라이언트에게 이전에 접속해있는 클라이언트들의
+						아이디를 받아오는 메서드.
+						접속한 유저의 id들의 값을 저장하고있는 juArr의 사이즈에서
+						새로 접속한 클라이언트의 id값을 제외한 다른 클라이언트의
+						id를 div에 뿌린다.
+						 */
+
+						var size = jSize.size - 1;
+
+						for (var i = 0; i < size; i++) {
+							if ('${b_num}' == juArr[i].b_num) {
+
+								userHtml += juArr[i].userId + '<br/>';
+							}
+
 						}
+						$('#user').append(userHtml);
+					} else {
+						webSocket.onopen = function(event) {
+							onOpen(event)
 
+						};
 					}
-					$('#user').append(userHtml);
-
 				});
 
 	}
@@ -249,7 +264,7 @@
 			"access" : acc,
 			"b_num" : '${b_num}'
 		}
-		
+
 		if ('message' == acc) {
 			var jsonStr = JSON.stringify(msg);
 			$.ajax({
@@ -280,9 +295,15 @@
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 
-		}else if ('close' == acc) {
+		} else if ('close' == acc) {
 			webSocket.send(jsonStr);
-		} else if ("boardCreate"== acc){
+		} else if ("boardCreate" == acc) {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+		} else if ('listCreate==acc') {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+		} else if ('cardCreate==acc') {
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 		}

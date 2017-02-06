@@ -73,21 +73,30 @@ public class WebSocket {
 								}
 							}
 						} else if ("listMove".equals(access)) {
-							System.out.println(msg);
-							System.out.println(access);
 
 							for (int i = 0; i < clients.size(); i++) {
 								if ((int) clients.get(i).getUserProperties().get("b_num") == b_num) {
-									System.out.println(access);
 									Session client = clients.get(i);
 									client.getBasicRemote().sendText(id + "::" + msg + "::" + access + "::" + b_num);
 								}
 							}
 						} else if ("cardMove".equals(access)) {
-							System.out.println(msg);
 							for (int i = 0; i < clients.size(); i++) {
 								if ((int) clients.get(i).getUserProperties().get("b_num") == b_num) {
-									System.out.println("cardMove");
+									Session client = clients.get(i);
+									client.getBasicRemote().sendText(id + "::" + msg + "::" + access + "::" + b_num);
+								}
+							}
+						} else if("listCreate".equals(access)){
+							for (int i = 0; i < clients.size(); i++) {
+								if ((int) clients.get(i).getUserProperties().get("b_num") == b_num) {
+									Session client = clients.get(i);
+									client.getBasicRemote().sendText(id + "::" + msg + "::" + access + "::" + b_num);
+								}
+							}
+						}else if("cardCreate".equals(access)){
+							for (int i = 0; i < clients.size(); i++) {
+								if ((int) clients.get(i).getUserProperties().get("b_num") == b_num) {
 									Session client = clients.get(i);
 									client.getBasicRemote().sendText(id + "::" + msg + "::" + access + "::" + b_num);
 								}
@@ -132,6 +141,7 @@ public class WebSocket {
 	public void onOpen(Session session) {
 		// Add session to the connected sessions set
 		clients.add(session);
+		System.out.println(clients);
 
 	}
 
