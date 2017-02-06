@@ -87,229 +87,175 @@
 
 	window.onload = function() {
 
-		$('#mainList').sortable({
-			update : function(ev, ui) {
-				var result = $('#mainList').sortable('toArray');
-				send(ev.target.innerHTML, 'move', 'mainList');
+	      $('#mainList').sortable({
+	         update : function(ev,ui) {
+	            var result = $('#mainList').sortable('toArray');
+	            send(ev.target.innerHTML,'listMove','mainList');
+	            var moveData=new Object();
+	            var msg= '';
+	            for(var i = 0 ; i < result.length; i++){
+	                if(i<(result.length-1)){ 
+	                  msg+= result[i]+',';
+	               }else{
+	                  msg+= result[i];
+	               }
+	                
+	             }
+	             
+	             moveData = result;
+	             
+	             var data = JSON.stringify(moveData);
+	             $.ajax({
+	                url : '/main/moveList',
+	                method : 'post',
+	                data : {
+	                   data : msg,
+	                   length : result.length,
+	                   bnum : b_num
+	                }
+	                
+	             }).done();
+	             
+	         }
 
-				var moveData = new Object();
-				var msg = '';
-				for (var i = 0; i < result.length; i++) {
-					if (i < (result.length - 1)) {
-						msg += result[i] + ',';
-					} else {
-						msg += result[i];
-					}
+	      });
+	      
+	      $.ajax({
+	         url : '/main/searchList',
+	         method : 'post',
+	         data : {
+	            bnum : b_num
+	         }
+	      }).done(function(msg) {
+	         
+	         var listArr = JSON.parse(msg);
+	         
+	         $.each(listArr, function(i) {
 
-				}
+	            var l_num = listArr[i].l_num;
+	            var id = l_num;
+	            var div = document.createElement('div');
+	            div.id= 'list'+id;
+	            div.className = 'list';
+	            
+	            var viewList = document.createElement('div');
+	            viewList.id = id;
+	            viewList.className= 'viewList';
+	            
+	            
+	            var list_foot = document.createElement('div');
+	            list_foot.className= 'list_foot';
+	            
+	            var addCardDiv = document.createElement('div');
+	            addCardDiv.className = 'addCard';
+	          
+	            var aTag = document.createElement('a');
+	            var createAText = document.createTextNode('addCard');
+	            
+	            
+	            $.ajax({
+	               url : '/main/searchCard',
+	               method : 'post',
+	               data : {
+	                  bnum : b_num,
+	                  lnum : l_num
+	               }
+	            }).done(function(msg) {
+	               var cardArr = JSON.parse(msg);
+	               
+	               $.each(cardArr, function(i) {
+	                  var cardDiv = document.createElement('div');
+	                  var c_num= cardArr[i].c_num;
+	                  
+	                  cardDiv.id= c_num;
+	                  cardDiv.className = 'list-card';
+	                  cardDiv.onclick =function() {
+	                     cardView(b_num,l_num,c_num)
+	                  };
+	                  
+	                  var createCardText = document.createTextNode('card'+c_num );
+	                  
+	                  
+	                  cardDiv.appendChild(createCardText);
+	                  div.appendChild(cardDiv);
+	                  
+	                  
 
-				console.log(msg);
-				moveData = result;
+	               });
+	               
+	                
+	               $('#list'+id).sortable({
+	                  connectWith : '.list',
+	                  update : function(ev,ui) {
+	                     var result1 = $('#list'+id).sortable('toArray');
+	                      var targetId= ev.target.id;
+	                      var parentId = ev.toElement.parentElement.id;
+	                      var cardArr= '';
+	                      
+	 		              send(ev.target.innerHTML,'cardMove','list'+id);
+	                      if(targetId == parentId){
+	                         
+	                         for(var i = 0 ; i < result1.length; i++){
+	                            if(i < (result1.length-1)){ 
+	                               cardArr += result1[i]+',';
+	                           }else{
+	                              cardArr += result1[i];
+	                           }
+	                         
+	                         }
+	                      
+	                         $.ajax({
+	                            url:'/main/moveCard',
+	                            method:'post',
+	                            data:{
+	                               
+	                               bnum:b_num,
+	                               lnum:id,
+	                               cnum:ev.toElement.id,
+	                               msg : cardArr,
+	                               length : result1.length
+	                            }
+	                         
+	                         }).done();
+	                      }else{
+	                      }
+	                  }  
+	               });
+	               
 
-				console.log(JSON.stringify(moveData));
-				var data = JSON.stringify(moveData);
-				$.ajax({
-					url : '/main/moveList',
-					method : 'post',
-					data : {
-						data : msg,
-						length : result.length,
-						bnum : b_num
-					}
+	            });
+	            
+	            
+	            
+	            aTag.setAttribute('href', '#');
+	            aTag.setAttribute('className', 'aaaa');
+	            aTag.setAttribute('onClick', 'addCard(' + l_num
+	                  + ',\'' + id + '\')');
+	            aTag.appendChild(createAText);
+	            
+	            addCardDiv.appendChild(aTag); 
+	            list_foot.appendChild(addCardDiv); 
+	            
+	            viewList.appendChild(div); 
+	            viewList.appendChild(list_foot); 
+	            
+	            
+	            
+	            
+	             document.getElementById('mainList').appendChild(viewList); 
+	            
 
-				}).done();
+	         });
+							
+	         numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
+							
+	         console.log('length_onload: ' + numOfList);
+						
+	         setWidthOnload(numOfList); // Onload 시 전체 width 설정
 
-			}
 
-		});
-
-		$
-				.ajax({
-					url : '/main/searchList',
-					method : 'post',
-					data : {
-						bnum : b_num
-					}
-				})
-				.done(
-						function(msg) {
-
-							var listArr = JSON.parse(msg);
-
-							$
-									.each(
-											listArr,
-											function(i) {
-
-												var l_num = listArr[i].l_num;
-												var id = l_num;
-												var div = document
-														.createElement('div');
-												div.id = 'list' + id;
-												div.className = 'list';
-
-												var viewList = document
-														.createElement('div');
-												viewList.id = id;
-												viewList.className = 'viewList';
-
-												var list_foot = document
-														.createElement('div');
-												list_foot.className = 'list_foot';
-
-												var addCardDiv = document
-														.createElement('div');
-												addCardDiv.className = 'addCard';
-
-												var aTag = document
-														.createElement('a');
-												var createAText = document
-														.createTextNode('addCard');
-
-												$
-														.ajax(
-																{
-																	url : '/main/searchCard',
-																	method : 'post',
-																	data : {
-																		bnum : b_num,
-																		lnum : l_num
-																	}
-																})
-														.done(
-																function(msg) {
-																	var cardArr = JSON
-																			.parse(msg);
-
-																	$
-																			.each(
-																					cardArr,
-																					function(
-																							i) {
-																						var cardDiv = document
-																								.createElement('div');
-																						var c_num = cardArr[i].c_num;
-
-																						cardDiv.id = c_num;
-																						cardDiv.className = 'list-card';
-																						cardDiv.onclick = function() {
-																							cardView(
-																									b_num,
-																									l_num,
-																									c_num)
-																						};
-
-																						var createCardText = document
-																								.createTextNode('card'
-																										+ c_num);
-
-																						cardDiv
-																								.appendChild(createCardText);
-																						div
-																								.appendChild(cardDiv);
-
-																					});
-
-																	$(
-																			'#list'
-																					+ id)
-																			.sortable(
-																					{
-																						connectWith : '.list',
-																						update : function(
-																								ev,
-																								ui) {
-																							var result1 = $(
-																									'#list'
-																											+ id)
-																									.sortable(
-																											'toArray');
-																							var targetId = ev.target.id;
-																							var parentId = ev.toElement.parentElement.id;
-																							var cardArr = '';
-
-																							if (targetId == parentId) {
-																								console
-																										.log(parentId);
-																								console
-																										.log(targetId);
-																								send(
-																										ev.target.innerHTML,
-																										'move',
-																										'list'
-																												+ id);
-
-																								for (var i = 0; i < result1.length; i++) {
-																									if (i < (result1.length - 1)) {
-																										cardArr += result1[i]
-																												+ ',';
-																									} else {
-																										cardArr += result1[i];
-																									}
-
-																								}
-
-																								$
-																										.ajax(
-																												{
-																													url : '/main/moveCard',
-																													method : 'post',
-																													data : {
-
-																														bnum : b_num,
-																														lnum : id,
-																														cnum : ev.toElement.id,
-																														msg : cardArr,
-																														length : result1.length
-																													}
-
-																												})
-																										.done();
-																							} else {
-																								send(
-																										ev.target.innerHTML,
-																										'move',
-																										'list'
-																												+ id);
-																							}
-																						}
-																					});
-
-																});
-
-												aTag.setAttribute('href', '#');
-												aTag.setAttribute('className',
-														'aaaa');
-												aTag.setAttribute('onClick',
-														'addCard(' + l_num
-																+ ',\'' + id
-																+ '\')');
-												aTag.appendChild(createAText);
-
-												addCardDiv.appendChild(aTag);
-												list_foot
-														.appendChild(addCardDiv);
-
-												viewList.appendChild(div);
-												viewList.appendChild(list_foot);
-
-												document.getElementById(
-														'mainList')
-														.appendChild(viewList);
-
-											});
-							numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
-							console.log('length_onload: ' + numOfList);
-							setWidthOnload(numOfList); // Onload 시 전체 width 설정
-
-							$('.list').on('click', function() {
-								alert('effaf');
-
-							});
-
-							$('.list').trigger('drop');
-
-						});
+						
+	      });
 	};
 
 	function setWidthOnload(num) {
@@ -339,145 +285,142 @@
 	}
 
 	function addList() {
-		$.ajax({
-			method : 'post',
-			url : '/main/createList',
-			data : {
-				id : '${sessionScope.id}',
-				title : 'TestTitle',
-				bnum : b_num
+	      $.ajax({
+	          method : 'post',
+	          url : '/main/createList',
+	          data : {
+	             id : '${sessionScope.id}',
+	             title : 'TestTitle',
+	             bnum : b_num
 
-			}
+	          }
 
-		}).done(
-				function(msg) {
+	       }).done(function(msg) {
+	             
+	          var arrList = JSON.parse(msg);
+	          var id = arrList.l_num;
+	          var div = document.createElement('div');
+	          div.id = 'list'+id;
+	          div.className = 'list';
 
-					var arrList = JSON.parse(msg);
-					var id = arrList.l_num;
-					var div = document.createElement('div');
-					div.id = 'list' + id;
-					div.className = 'list';
+	                   
+	          var viewList = document.createElement('div');
+	          viewList.id = id;
+	          viewList.className= 'viewList';
+	          
+	          
+	          var list_foot = document.createElement('div');
+	          list_foot.className= 'list_foot';
 
-					var viewList = document.createElement('div');
-					viewList.id = id;
-					viewList.className = 'viewList';
+	          var addCardDiv = document.createElement('div');
+	          addCardDiv.className = 'addCard';
+	          
+	          var aTag = document.createElement('a');
+	          var createAText = document.createTextNode('addCard');
+	          aTag.setAttribute('href', '#');
+	          aTag.setAttribute('className', 'aaaa');
+	          aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
+	                + ',\'' + id + '\')');
 
-					var list_foot = document.createElement('div');
-					list_foot.className = 'list_foot';
+	          aTag.appendChild(createAText);
 
-					var addCardDiv = document.createElement('div');
-					addCardDiv.className = 'addCard';
-
-					var aTag = document.createElement('a');
-					var createAText = document.createTextNode('addCard');
-					aTag.setAttribute('href', '#');
-					aTag.setAttribute('className', 'aaaa');
-					aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
-							+ ',\'' + id + '\')');
-
-					aTag.appendChild(createAText);
-
-					addCardDiv.appendChild(aTag);
-
-					list_foot.appendChild(addCardDiv);
-
-					viewList.appendChild(div);
-					viewList.appendChild(list_foot);
-
-					document.getElementById('mainList').appendChild(viewList);
-
-					numOfList = $('.viewList').length;
-					console.log('length_addList: ' + numOfList);
-					setWidthAddList(numOfList);
-
-					$('#list' + id).sortable({
-						connectWith : '.list',
-						update : function(ev, ui) {
-							send(ev.target.innerHTML, 'move');
-							var result1 = $('#list' + id).sortable('toArray');
-							var targetId = ev.target.id;
-							var parentId = ev.toElement.parentElement.id;
-							var cardArr = '';
-
-							if (targetId == parentId) {
-								console.log(parentId);
-								console.log(targetId);
-
-								for (var i = 0; i < result1.length; i++) {
-									if (i < (result1.length - 1)) {
-										cardArr += result1[i] + ',';
-									} else {
-										cardArr += result1[i];
-									}
-
-								}
-
-								$.ajax({
-									url : '/main/moveCard',
-									method : 'post',
-									data : {
-
-										bnum : b_num,
-										lnum : id,
-										cnum : ev.toElement.id,
-										msg : cardArr,
-										length : result1.length
-									}
-
-								}).done();
-							}
-						}
-					});
-
-				});
+	          addCardDiv.appendChild(aTag);
+	          
+	          list_foot.appendChild(addCardDiv); 
+	          
+	          viewList.appendChild(div); 
+	          viewList.appendChild(list_foot); 
+	          
+	          document.getElementById('mainList').appendChild(viewList);
+	          
+	          numOfList = $('.viewList').length;
+	          setWidthAddList(numOfList);
+	       
+	          $('#list'+id).sortable({
+	             connectWith : '.list',
+	             update : function(ev,ui) {  
+	             	
+	                var result1 = $('#list'+id).sortable('toArray');
+	                 var targetId= ev.target.id;
+	                 var parentId = ev.toElement.parentElement.id;
+	                 var cardArr= '';
+	                 
+	                 if(targetId == parentId){
+	                 send(ev.target.innerHTML,'cardMove','list'+id);
+	                    for(var i = 0 ; i < result1.length; i++){
+	                       if(i < (result1.length-1)){ 
+	                          cardArr += result1[i]+',';
+	                      }else{
+	                         cardArr += result1[i];
+	                      }
+	                    
+	                    }
+	                 
+	                    $.ajax({
+	                       url:'/main/moveCard',
+	                       method:'post',
+	                       data:{
+	                          
+	                          bnum:b_num,
+	                          lnum:id,
+	                          cnum:ev.toElement.id,
+	                          msg : cardArr,
+	                          length : result1.length
+	                       }
+	                    
+	                    }).done();
+	                 }
+	             }  
+	          });
+	          
+	       });
 	}
 
 	function addCard(l_num, id) {
-		$.ajax({
-			method : 'post',
-			url : '/main/createCard',
-			data : {
-				id : '${sessionScope.id}',
-				title : 'TestTitle',
-				bnum : b_num,
-				lnum : l_num
+		   $.ajax({
+		         method : 'post',
+		         url : '/main/createCard',
+		         data : {
+		            id : '${sessionScope.id}',
+		            title : 'TestTitle',
+		            bnum : b_num,
+		            lnum : l_num
 
-			}
+		         }
 
-		}).done(function(msg) {
-			var cardArr = JSON.parse(msg);
+		      }).done(function(msg) {
+		         var cardArr = JSON.parse(msg);
 
-			var newCard = document.createElement('div');
-			var c_num = cardArr.c_num;
+		         var newCard = document.createElement('div');
+		         var c_num = cardArr.c_num;
 
-			newCard.id = c_num;
-			newCard.className = 'list-card';
-			newCard.onclick = function() {
-				cardView(b_num, l_num, c_num)
-			};
-			var createCardText = document.createTextNode('card' + c_num);
+		         newCard.id = c_num; 
+		         newCard.className = 'list-card';
+		         newCard.onclick = function() {
+		            cardView(b_num,l_num,c_num)
+		         };
+		         var createCardText = document.createTextNode('card' + c_num);
 
-			newCard.appendChild(createCardText);
-			console.log(id);
-			document.getElementById('list' + id).appendChild(newCard);
-		});
+
+		         newCard.appendChild(createCardText);
+		         document.getElementById('list'+id).appendChild(newCard);
+		      });
 
 	}
 
 	function cardView(b_num, l_num, c_num) {
-		$.ajax({
-			method : 'post',
-			url : '/main/selectCardDetail',
-			data : {
-				bnum : b_num,
-				lnum : l_num,
-				cnum : c_num
-			}
-		}).done(function(msg) {
+		  $.ajax({
+		         method : 'post',
+		         url : '/main/selectCardDetail',
+		         data : {
+		            bnum : b_num,
+		            lnum : l_num,
+		            cnum : c_num
+		         }
+		      }).done(function(msg) {
 
-			console.log(msg);
-			cardModal.style.display = "block";
-		});
+		         cardModal.style.display = "block";
+		      });
 
 	}
 </script>
