@@ -9,6 +9,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="/resources/css/style.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <style>
 #addBoard, .createBoard, .board {
 	width: 150px;
@@ -20,6 +21,7 @@
 
 #content {
 	height: 100%;
+	padding-top: 100px;
 }
 </style>
 <script>
@@ -81,12 +83,17 @@
 </script>
 </head>
 <body>
-	<nav>
-		<div align="center" class="nav">
-			<img src="/resources/images/logo.JPG" alt="Main" class="main_img">
-		</div>
-	</nav>
-	<div class="content">
+	<header id="header" class="clearfix">
+		<a href="/main/board"><h1>PROJECT 321</h1></a> <a href="#" class="btn_board"><span>Boards</span></a>
+		<form action="#" method="post" id="sch_main_wrap">
+			<fieldset>
+				<input type="text" name="sch_main" id="sch_main">
+			</fieldset>
+			<a href="#"><span class="btn_ico_sch"></span></a>
+		</form>
+	</header>
+	<div style="position: fixed; height: 50px; margin-top: 50px;">dd</div>
+	<div id="content">
 		<div id="viewBoard"></div>
 		<div id="createBoard"></div>
 		<div id="addBoard" onclick="addBoard();">Create</div>

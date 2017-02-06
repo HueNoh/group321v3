@@ -36,7 +36,6 @@ html, body {
 	height: 100%;
 	overflow-y: auto;
 	position: relative;
-	background-color: lightgreen;
 	/* Basic background color, overwrite this in your own css. */
 	-webkit-overflow-scrolling: touch;
 	/* Enables momentum scrolling on iOS devices, may be removed by setting to 'auto' in your own CSS. */
@@ -125,13 +124,12 @@ html, body {
 }
 
 .js-toggle-right-slidebar {
-	margin-top: -100px;
-	align-items: right;
+	right: 5px;
 	font-size: 40px;
 	text-decoration: none;
-	color: black;
-	position: relative;
-	top: -33px;
+	color: white;
+	position: absolute;
+	top: 0px;
 }
 
 .nav {
@@ -191,6 +189,7 @@ html, body {
 	color: white; /* Basic colors, overwrite this in your own css. */
 	-webkit-overflow-scrolling: touch;
 	/* Enables momentum scrolling on iOS devices, may be removed by setting to 'auto' in your own CSS. */
+	
 }
 
 [off-canvas*=right] {
@@ -201,6 +200,7 @@ html, body {
 	margin-top: 50px;
 	background-color: black;
 	text-align: left;
+	
 }
 
 [off-canvas*=reveal] {
