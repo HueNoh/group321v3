@@ -602,6 +602,7 @@
 					</form>
 					<div>Comments Area(for Append)</div>
 				</div>
+				
 				<div class="card-detail-sidebar">
 					<button>
 <!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
