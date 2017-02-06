@@ -85,6 +85,8 @@
    var b_num = '${b_num}';
    var numOfList = 0; // 전체 리스트 갯수
    
+   
+   
    window.onload = function() {
 
       $('#mainList').sortable({
