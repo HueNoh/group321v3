@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/common.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
 .viewList, #addList {
@@ -45,6 +46,7 @@
 
 #content, #mainList {
 	height: 100%;
+	background-color: yellowgreen;
 }
 
 .g3-container {
@@ -54,6 +56,63 @@
 #content {
 	height: 100%;
 	padding-top: 100px;
+}
+.card-detail-main {
+	float: left;
+}
+
+.card-detail-main > h1 {
+	font-size: 50px;
+	font-weight: bold;
+}
+
+.card-detail-main > h3 {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+
+
+.card-detail-main > a:hover {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.card-detail-sidebar {
+	margin-top: 100px;
+	float: right;
+}
+
+.card-detail-sidebar>button {
+	text-align: left;
+	width: 200px;
+	height: 40px;
+	font-weight: bold;
+	font-size: 20px;
+	background-color: white;
+	border-radius: 10px 10px;
+}
+
+.card-detail-sidebar>button>span {
+	margin-left: 10px;
+	margin-bottom: 3px;
+	color: black;
+}
+
+.cardView {
+	overflow: hidden;
+}
+.img-label {
+	margin-right: 15px;
+	margin-bottom: 5px;
+}
+.img-attachment {
+	margin-right: 15px;
+	margin-bottom: 4px;
+}
+.img-delete {
+	margin-right: 15px;
+	margin-bottom: 4px;
 }
 </style>
 <script>
@@ -254,7 +313,6 @@
 	         setWidthOnload(numOfList); // Onload 시 전체 width 설정
 
 
-						
 	      });
 	};
 
@@ -516,23 +574,53 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
 			<jsp:include page="websocket.jsp" flush="false"></jsp:include>
 		</div>
-		<div id="cardModal" class="modal">
-			<div class="modal-content">
-				<p>
-					<span id="cardClose" class="close">&times;</span>
-				</p>
-
-				<div id="cardView">
-					<div id="card-header"></div>
-					<p>add Comment</p>
-					<div id="card-comment">
-						<textarea cols="25" rows="5"></textarea>
-
+		<div id="cardModal" class="card-modal">
+		<div class="modal-content">
+			<p><span id="cardClose" class="close">&times;</span></p>
+			<div id="cardView" class="cardView">
+				<div class="card-detail-main" >
+					<h1>card title</h1>
+					<div id="descId">
+<!-- 					<div class="card-desc"> -->
+						<a href="#" class="glyphicon glyphicon-pencil desc-tag" onclick="descPop();">&nbsp;description...</a>
 					</div>
-					<p>댓글</p>
-					<div id="card-repl"></div>
+					
+					<h3>Add Comment</h3>
+					<form action="">
+						<textarea rows="10" cols="80"></textarea>
+						<input type="submit" value="SAVE">
+					</form>
+					<div>Comments Area(for Append)</div>
+				</div>
+				<div class="card-detail-sidebar">
+					<button>
+<!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
+						<span><img alt="label" src="/resources/images/img-label.png" width="20px" height="20px" class="img-label">&nbsp;Label</span>
+					</button>
+					<br><br>
+					<button >
+<!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
+						<span><img alt="label" src="/resources/images/img-attachment.png" width="20px" height="20px" class="img-attachment">&nbsp;Attachment</span>
+					</button>
+					<br><br>
+					<button >
+<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+						<span><img alt="label" src="/resources/images/img-delete.png" width="20px" height="20px" class="img-delete">&nbsp;Delete</span>
+					</button>
+					<br><br>
+					<button >
+<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+						<span><img alt="label" src="/resources/images/img-delete.png" width="20px" height="20px" class="img-delete">&nbsp;empty1</span>
+					</button>
+					<br><br>
+					<button >
+<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+						<span><img alt="label" src="/resources/images/img-delete.png" width="20px" height="20px" class="img-delete">&nbsp;empty2</span>
+					</button>
+					<br><br>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 
