@@ -44,7 +44,7 @@
 	};
 	function onMessage(event) {
 		var spMsg = event.data;
-		var arrMsg = spMsg.split(":");
+		var arrMsg = spMsg.split("::");
 		var id = arrMsg[0];
 		var msg = arrMsg[1];
 		var access = arrMsg[2];

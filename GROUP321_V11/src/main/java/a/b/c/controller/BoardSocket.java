@@ -48,7 +48,7 @@ public class BoardSocket {
 						System.out.println(msg);
 						for (int i = 0; i < clients.size(); i++) {
 							Session client = clients.get(i);
-							client.getBasicRemote().sendText(id + ":" + msg + ":" + access);
+							client.getBasicRemote().sendText(id + "::" + msg + "::" + access);
 						}
 					}
 
@@ -69,26 +69,6 @@ public class BoardSocket {
 	@OnClose
 	public void onClose(Session session) {
 		// Remove session from the connected sessions set
-
 		clients.remove(session);
-
-		// if (null != session.getUserProperties().get("userId") || null !=
-		// session.getUserProperties().get("b_num")) {
-		//
-		// for (int i = 0; i < clients.size(); i++) {
-		// Gson gson = new Gson();
-		// JsonObject jObj = new JsonObject();
-		// jObj.addProperty("userId", (String)
-		// clients.get(i).getUserProperties().get("userId"));
-		// jObj.addProperty("msg", "close");
-		// jObj.addProperty("access", "close");
-		// jObj.addProperty("b_num", (int)
-		// clients.get(i).getUserProperties().get("b_num"));
-		// onMessage(gson.toJson(jObj), session);
-		// }
-		// } else {
-		// System.out.println("null");
-		// }
-
 	}
 }

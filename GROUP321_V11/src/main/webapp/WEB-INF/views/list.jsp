@@ -126,7 +126,6 @@
 	 } 
 	 */
 	var webSocket = new WebSocket('ws://211.183.8.14/socket');
-	 
 	webSocket.onopen = function(event) {
 		onOpen(event)
 
@@ -150,7 +149,7 @@
 	         update : function(ev,ui) {
 	        	 
 	            var result = $('#mainList').sortable('toArray');
-	            send(ev.target.innerHTML,'listMove','mainList');
+	            send(ev.target.innerHTML,'listMove','${sessionScope.id}','mainList');
 	            var moveData=new Object();
 	            var msg= '';
 	            for(var i = 0 ; i < result.length; i++){
@@ -252,7 +251,7 @@
 	                      var parentId = ev.toElement.parentElement.id;
 	                      var cardArr= '';
 	                      
-	 		              send(ev.target.innerHTML,'cardMove','list'+id);
+	 		              send(ev.target.innerHTML,'cardMove','${sessionScope.id}','list'+id);
 	                      if(targetId == parentId){
 	                         
 	                         for(var i = 0 ; i < result1.length; i++){
@@ -405,7 +404,7 @@
 	                 var cardArr= '';
 	                 
 	                 if(targetId == parentId){
-	                 send(ev.target.innerHTML,'cardMove','list'+id);
+	                 send(ev.target.innerHTML,'cardMove','${sessionScope.id}','list'+id);
 	                    for(var i = 0 ; i < result1.length; i++){
 	                       if(i < (result1.length-1)){ 
 	                          cardArr += result1[i]+',';
@@ -433,7 +432,7 @@
 	          });
 	          
 	          var listHtml = $('#mainList')[0].innerHTML;
-	          send(listHtml,'listCreate', 'mainList');
+	          send(listHtml,'listCreate','${sessionScope.id}', 'mainList');
 	       
 	       });
 	      
@@ -461,7 +460,9 @@
 		         newCard.id = c_num; 
 		         newCard.className = 'list-card';
 		         newCard.onclick = function() {
+		        	 
 		            cardView(b_num,l_num,c_num)
+		            
 		         };
 		         var createCardText = document.createTextNode('card' + c_num);
 
@@ -470,13 +471,13 @@
 		         document.getElementById('list'+id).appendChild(newCard);
 		         
 		         var cardHtml = $('#list'+id)[0].innerHTML;
-		          send(cardHtml,'cardCreate', 'list'+id);
+		          send(cardHtml,'cardCreate', '${sessionScope.id}','list'+id);
 		      });
 
 	}
 
 	function cardView(b_num, l_num, c_num) {
-		
+		alert('dd');
 		  $.ajax({
 		         method : 'post',
 		         url : '/main/selectCardDetail',
@@ -486,9 +487,6 @@
 		            cnum : c_num
 		         }
 		      }).done(function(msg) {
-				 var cardView=JSON.parse(msg);
-				/* $('#card-header').innerHTML=cardView[0].title; */
-				document.getElementById('card-header').innerHTML=cardView[0].title;
 		        cardModal.style.display = "block";
 		      });
 
