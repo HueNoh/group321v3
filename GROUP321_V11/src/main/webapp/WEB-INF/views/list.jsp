@@ -79,11 +79,12 @@
 }
 
 .card-detail-sidebar {
+	height: 600px;
 	margin-top: 100px;
 	float: right;
 }
 
-.card-detail-sidebar>button {
+.card-detail-sidebar > button {
 	text-align: left;
 	width: 200px;
 	height: 40px;
@@ -91,6 +92,7 @@
 	font-size: 20px;
 	background-color: white;
 	border-radius: 10px 10px;
+	outline: 0;
 }
 
 .card-detail-sidebar>button>span {
@@ -115,6 +117,81 @@
 	margin-bottom: 4px;
 }
 
+.submenu_hidden {
+	display: none;
+}
+
+.submenu {
+/* 
+	top: 251px;
+    left: 1285px;
+    position: fixed;
+    margin-top: 20px;
+    background-color: white;
+    width: 300px;
+    border: 1px solid gray;
+    border-radius: 5px;
+     */
+    position: relative;
+    float: right;
+    margin-top: 20px;
+    border: 4px solid lightgray;
+    border-radius: 5px;
+    background-color: white;
+}
+.submenu:first-child {
+	text-align: center;
+}
+
+.submenu > li:nth-child(2) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: red;
+	width: 250px;
+}
+
+.submenu > li:nth-child(3) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: orange;
+	width: 250px;
+}
+
+.submenu > li:nth-child(4) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: yellow;
+	width: 250px;
+}
+
+.submenu > li:nth-child(5) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: green;
+	width: 250px;
+}
+
+.submenu > li:nth-child(6) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: blue;
+	width: 250px;
+}
+
+.submenu > li:nth-child(7) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: navy;
+	width: 250px;
+}
+
+.submenu > li:nth-child(8) {
+	margin-bottom: 5px;
+	border-radius: 5px;
+	background-color: violet;
+	width: 250px;
+}
+
 </style>
 <script>
 	/*    document.onkeydown = refl;
@@ -126,6 +203,7 @@
 	 }
 	 } 
 	 */
+	 
 	var webSocket = new WebSocket('ws://211.183.8.14/socket');
 	webSocket.onopen = function(event) {
 		onOpen(event)
@@ -145,7 +223,8 @@
 	var b_num = '${b_num}';
 	var numOfList = 0; // 전체 리스트 갯수
 	window.onload = function() {
-
+		
+		
 	      $('#mainList').sortable({
 	         update : function(ev,ui) {
 	        	 
@@ -315,13 +394,15 @@
 
 
 	      });
+	     
 	};
 
 	function setWidthOnload(num) {
 
 		var currentWidth = $('.g3-container').width();
 		var margin = $(".viewList").css("margin").replace('px', '');
-		var listWidth = $('.viewList').width() + margin * 2;
+		var borderWidth = $('.viewList').css("borderWidth").replace('px', '');
+		var listWidth = $('.viewList').width() + margin * 2 + borderWidth * 2;
 		var afterWidth = currentWidth + listWidth * (num - 10);
 
 		if (((num + 1) * listWidth) > currentWidth) {
@@ -333,7 +414,8 @@
 	function setWidthAddList(num) {
 		var currentWidth = $('.g3-container').width();
 		var margin = $(".viewList").css("margin").replace('px', '');
-		var listWidth = $('.viewList').width() + margin * 2;
+		var borderWidth = $('.viewList').css("borderWidth").replace('px', '');
+		var listWidth = $('.viewList').width() + margin * 2 + borderWidth * 2;
 		var afterWidth = currentWidth + listWidth;
 
 		if (((num + 1) * listWidth) > currentWidth) {
@@ -512,6 +594,11 @@
 	      });
 		
 	}
+
+	function labelView() {
+		$('.btn_label_toggle').next("div").toggleClass('submenu_hidden');
+	}
+	
 </script>
 </head>
 <body>
@@ -632,28 +719,59 @@
 				</div>
 				
 				<div class="card-detail-sidebar">
-					<button>
-<!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
-						<span><img alt="label" src="/resources/images/btn-label.png" width="20px" height="20px" class="btn-label">&nbsp;Label</span>
+					<button onclick="labelView();" class="btn-label-view dropdown">
+						<span class="btn_label_toggle"><img alt="label" src="/resources/images/btn-label.png" width="20px" height="20px" class="btn-label">&nbsp;Label</span>
+						<div class="submenu_hidden">
+							<div class="submenu_main">
+								<ul class="submenu">
+								<span>labels</span>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<li>&nbsp;
+									<span></span>
+								</li>
+								<a href="#">add color...</a>
+							</ul>
+							</div>
+							
+						</div>
+						
 					</button>
+					
+					
 					<br><br>
 					<button >
-<!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
 						<span><img alt="label" src="/resources/images/btn-attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
 					</button>
 					<br><br>
 					<button >
-<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
 						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;Delete</span>
 					</button>
 					<br><br>
 					<button >
-<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
 						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty1</span>
 					</button>
 					<br><br>
 					<button >
-<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
 						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty2</span>
 					</button>
 					<br><br>
