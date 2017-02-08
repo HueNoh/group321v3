@@ -45,9 +45,22 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List selectCardDetail(Map map) {
 		// TODO Auto-generated method stub
-		return memberDao.selectCardDetail(map);
+		Map map2 = new HashMap<>();
+		map.put("c_key", map.get("cnum"));
+
+		List list = memberDao.selectCardReply(map);
+		System.out.println("aewf:" + list);
+		for (int i = 0; i < list.size(); i++) {
+			map2.put(i, list.get(i));
+		}
+
+		List list2 = memberDao.selectCardDetail(map);
+		list2.add(map2);
+
+		return list2;
 	}
 
 	@Override
@@ -99,6 +112,7 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List moveList(Map map) {
 		return memberDao.moveList(map);
 	}
+
 	public List moveCard(Map map) {
 		return memberDao.moveCard(map);
 	}
@@ -115,7 +129,7 @@ public class MemberServiceImpl implements MemberServiceInterface {
 
 				map_maxSeq = (Map) list_maxCh.get(0);
 
-				int seq = ((int) map_maxSeq.get("seq"))+1;
+				int seq = ((int) map_maxSeq.get("seq")) + 1;
 				map.put("seq", seq);
 				result = memberDao.msgInsert(map);
 			}
@@ -132,5 +146,20 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List msgSelect(Map map) throws Exception {
 
 		return memberDao.msgSelect(map);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int addCardReply(Map map) {
+		List result = memberDao.maxCard_Reply(map);
+		if (null == result.get(0)) {
+			map.put("seq", 0);
+		} else {
+			Map map2 = (Map) result.get(0);
+			map2.get("seq");
+			int seq = ((int) map2.get("seq")) + 1;
+			map.put("seq", seq);
+		}
+		return memberDao.addCardReply(map);
 	}
 }

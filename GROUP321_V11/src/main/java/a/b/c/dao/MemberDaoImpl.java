@@ -144,6 +144,11 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.msgInsert(map);
 	}
+	@Override
+	public int addCardReply(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.addCardReply(map);
+	}
 
 	@Override
 	public List msgSelect(Map map) {
@@ -155,6 +160,16 @@ public class MemberDaoImpl implements MemberDaoInterface {
 	public List maxCh_num(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.maxCh_num(map);
+	}
+	@Override
+	public List maxCard_Reply(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.maxCard_Reply(map);
+	}
+	@Override
+	public List selectCardReply(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectCardReply(map);
 	}
 
 }

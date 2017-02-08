@@ -65,6 +65,7 @@ public class HomeController {
 		if (result == 0) {
 			session = request.getSession();
 			session.setAttribute("id", map.get("id"));
+			session.setAttribute("b_num", 0);
 			loginChk = "redirect:/main/board";
 
 		} else {

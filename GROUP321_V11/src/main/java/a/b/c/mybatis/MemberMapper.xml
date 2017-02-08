@@ -129,18 +129,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		selectCardDetail(#{bnum},#{lnum},#{cnum})
 		}
 	</select>
-	<select id="moveList" statementType="CALLABLE"
-		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	<select id="moveList" statementType="CALLABLE" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
 		{
 		call
 		moveList(#{listArr},#{length},#{bnum})
 		}
 	</select>
-	<select id="moveCard" statementType="CALLABLE"
-		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	<select id="moveCard" statementType="CALLABLE" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
 		{
 		call
-		moveCard(#{cardArr}, #{length}, #{bnum}, #{lnum}, #{cnum})
+		moveCard(#{cardArr}, #{length}, #{bnum}, #{lnum},
+		#{cnum})
 		}
 	</select>
 
@@ -180,7 +181,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 		b_num=#{b_num}
 	</select>
-	
+
 	<select id="maxCh_num" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		select MAX(seq) seq
@@ -189,4 +190,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE b_num=#{b_num}
 		</if>
 	</select>
+
+	<insert id="addCardReply" parameterType="java.util.HashMap">
+		insert into
+		tb_card_reply (
+		c_key
+		,seq
+		,m_id
+		, content
+		) VALUES (
+		#{c_key}
+		,#{seq}
+		,#{m_id}
+		,#{content}
+		)
+	</insert>
+
+	<select id="maxCard_Reply" resultType="java.util.HashMap">
+		select MAX(seq) seq
+		from
+		tb_card_reply
+	</select>
+
+	<select id="selectCardReply" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		select *
+		from tb_card_reply
+		where
+		c_key = #{c_key}
+
+	</select>
+
 </mapper>

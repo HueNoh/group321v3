@@ -25,6 +25,7 @@ btn.onclick = function() {
 
 // When the user clicks on <span> (x), close the modal
 hisClose.onclick = function() {
+	
 	modal.style.display = "none";
 }
 cardClose.onclick = function() {

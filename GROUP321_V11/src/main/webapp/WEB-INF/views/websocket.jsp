@@ -207,7 +207,13 @@
 				$('#' + id).html(msg);
 			}
 
+		} else if("reply" == access){
+			if (id != sessionId) {
+				$('#cardReply').empty();
+				$('#cardReply').html(msg);
+			}
 		}
+		
 
 	}
 	function profile(getId) {
@@ -303,13 +309,12 @@
 
 	}
 
-	function send(message, acc, id, divId) {
+	function send(message, acc, id) {
 		var msg = {
 			"userId" : id,
 			"msg" : message,
 			"access" : acc,
-			"b_num" : '${b_num}',
-			"divId" : divId
+			"b_num" : '${b_num}'
 		}
 
 		if ('message' == acc) {
@@ -347,10 +352,13 @@
 		} else if ("boardCreate" == acc) {
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
-		} else if ('listCreate==acc') {
+		} else if ('listCreate'==acc) {
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
-		} else if ('cardCreate==acc') {
+		} else if ('cardCreate'==acc) {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+		} else if('reply'==acc){
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 		}
