@@ -512,6 +512,28 @@
 	      });
 		
 	}
+	function getHistory(){
+		$.ajax({
+			method : 'post',
+			url : '/main/selectHistory',
+			data : {
+				bnum : b_num,
+				id :  '${sessionScope.id}'
+			}
+		}).done(function(msg){
+			var test11 = JSON.parse(msg);
+			console.log(test11.length);
+			console.log(test11);
+			console.log(test11[0].content + test11[0].regdate);
+
+			var msg = '';
+			for (i=0; i<test11.length; i++){
+				msg += test11[i].content + '<br>'
+				$('#selectHistory').html(msg);
+			}
+			
+		});
+	}
 </script>
 </head>
 <body>
@@ -549,7 +571,7 @@
 				<ul class="side-menu">
 					<h2 class="title">Menu</h2>
 					<li class="link"><a href="#" class="link_tag1">Board</a></li>
-					<li class="link"><a href="#" class="link_tag2" id="myBtn">History</a>
+					<li class="link" onclick="getHistory();"><a href="#" class="link_tag2" id="myBtn" >History</a>
 					</li>
 					<li class="link"><a href="#" onclick="openChat();"
 						class="link_tag3 js-close-right-slidebar">Chatting</a></li>
@@ -562,47 +584,7 @@
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span id="hisClose" class="close">&times;</span>
-				<p>
-					Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-					<br> MKMinsik Kim added menu view study to to do listJan 16 at
-					3:42 PM<br> <br> MKMinsik Kim added event hadling study
-					to to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim
-					added to do list to this boardJan 16 at 3:42 PM<br> <br>
-					MKMinsik Kim added ++ to listJan 16 at 3:23 PM<br> <br>
-					MKMinsik Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-					MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-					Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-					<br> MKMinsik Kim added menu view study to to do listJan 16 at
-					3:42 PM<br> <br> MKMinsik Kim added event hadling study
-					to to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim
-					added to do list to this boardJan 16 at 3:42 PM<br> <br>
-					MKMinsik Kim added ++ to listJan 16 at 3:23 PM<br> <br>
-					MKMinsik Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-					MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-					Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-					<br> MKMinsik Kim added menu view study to to do listJan 16 at
-					3:42 PM<br> <br> MKMinsik Kim added event hadling study
-					to to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim
-					added to do list to this boardJan 16 at 3:42 PM<br> <br>
-					MKMinsik Kim added ++ to listJan 16 at 3:23 PM<br> <br>
-					MKMinsik Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-					MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-					Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-					<br> MKMinsik Kim added menu view study to to do listJan 16 at
-					3:42 PM<br> <br> MKMinsik Kim added event hadling study
-					to to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim
-					added to do list to this boardJan 16 at 3:42 PM<br> <br>
-					MKMinsik Kim added ++ to listJan 16 at 3:23 PM<br> <br>
-					MKMinsik Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-					MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
-					Minsik Kim added slide menu study to to do listJan 16 at 3:59 PM<br>
-					<br> MKMinsik Kim added menu view study to to do listJan 16 at
-					3:42 PM<br> <br> MKMinsik Kim added event hadling study
-					to to do listJan 16 at 3:42 PM<br> <br> MKMinsik Kim
-					added to do list to this boardJan 16 at 3:42 PM<br> <br>
-					MKMinsik Kim added ++ to listJan 16 at 3:23 PM<br> <br>
-					MKMinsik Kim added list to this boardJan 16 at 10:38 AM<br> <br>
-					MKMinsik Kim created this boardJan 16 at 10:37 AM<br> <br>
+				<p id="selectHistory">
 				</p>
 			</div>
 		</div>

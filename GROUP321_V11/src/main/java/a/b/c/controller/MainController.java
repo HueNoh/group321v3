@@ -179,4 +179,13 @@ public class MainController {
 		}
 		return loginChk;
 	}
+	
+	@RequestMapping(value = "/selectHistory", method = { RequestMethod.POST, RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String selectHistory(Model model, @RequestParam Map map) {
+
+		List list = memberService.selectHistory(map);
+		System.out.println("히스토리가져오기:"+list);
+		return new Gson().toJson(list);
+	}
 }
