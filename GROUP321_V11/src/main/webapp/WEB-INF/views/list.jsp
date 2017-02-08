@@ -85,7 +85,7 @@
 	float: right;
 }
 
-.card-detail-sidebar > button {
+.card-detail-sidebar>button {
 	text-align: left;
 	width: 200px;
 	height: 40px;
@@ -120,14 +120,14 @@
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
-<<<<<<< HEAD
+
 
 .submenu_hidden {
 	display: none;
 }
 
 .submenu {
-/* 
+	/* 
 	top: 251px;
     left: 1285px;
     position: fixed;
@@ -137,66 +137,66 @@
     border: 1px solid gray;
     border-radius: 5px;
      */
-    position: relative;
-    float: right;
-    margin-top: 20px;
-    border: 4px solid lightgray;
-    border-radius: 5px;
-    background-color: white;
+	position: relative;
+	float: right;
+	margin-top: 20px;
+	border: 4px solid lightgray;
+	border-radius: 5px;
+	background-color: white;
 }
+
 .submenu:first-child {
 	text-align: center;
 }
 
-.submenu > li:nth-child(2) {
+.submenu>li:nth-child(2) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: red;
 	width: 250px;
 }
 
-.submenu > li:nth-child(3) {
+.submenu>li:nth-child(3) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: orange;
 	width: 250px;
 }
 
-.submenu > li:nth-child(4) {
+.submenu>li:nth-child(4) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: yellow;
 	width: 250px;
 }
 
-.submenu > li:nth-child(5) {
+.submenu>li:nth-child(5) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: green;
 	width: 250px;
 }
 
-.submenu > li:nth-child(6) {
+.submenu>li:nth-child(6) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: blue;
 	width: 250px;
 }
 
-.submenu > li:nth-child(7) {
+.submenu>li:nth-child(7) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: navy;
 	width: 250px;
 }
 
-.submenu > li:nth-child(8) {
+.submenu>li:nth-child(8) {
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: violet;
 	width: 250px;
 }
-
 </style>
 <script>
 	var webSocket = new WebSocket('ws://211.183.8.14/list');
@@ -217,143 +217,165 @@
 	var b_num = '${b_num}';
 	var numOfList = 0; // 전체 리스트 갯수
 	window.onload = function() {
-		
-		
-	      $('#mainList').sortable({
-	         update : function(ev,ui) {
-	        	 
-	            var result = $('#mainList').sortable('toArray');
-	            send(ev.target.innerHTML,'listMove','mainList', '${sessionScope.b_num}', '0', '0'); 
-	            var moveData=new Object();
-	            var msg= '';
-	            for(var i = 0 ; i < result.length; i++){
-	                if(i<(result.length-1)){ 
-	                  msg+= result[i]+',';
-	               }else{
-	                  msg+= result[i];
-	               }
-	                
-	             }
-	             
-	             moveData = result;
-	             
-	             var data = JSON.stringify(moveData);
-	             $.ajax({
-	                url : '/main/moveList',
-	                method : 'post',
-	                data : {
-	                   data : msg,
-	                   length : result.length,
-	                   bnum : b_num
-	                }
-	                
-	             }).done();
-	             
-	         }
 
-	      });
-	      
-	      $.ajax({
-	         url : '/main/searchList',
-	         method : 'post',
-	         data : {
-	            bnum : b_num
-	         }
-	      }).done(function(msg) {
-	         
-	         var listArr = JSON.parse(msg);
-	         
-	         $.each(listArr, function(i) {
+		$('#mainList').sortable(
+				{
+					update : function(ev, ui) {
 
-	            var l_num = listArr[i].l_num;
-	            var id = l_num;
-	            var div = document.createElement('div');
-	            div.id= 'list'+id;
-	            div.className = 'list';
-	            
-	            var viewList = document.createElement('div');
-	            viewList.id = id;
-	            viewList.className= 'viewList';
-	            
-	            
-	            var list_foot = document.createElement('div');
-	            list_foot.className= 'list_foot';
-	            
-	            var addCardDiv = document.createElement('div');
-	            addCardDiv.className = 'addCard';
-	          
-	            var aTag = document.createElement('a');
-	            var createAText = document.createTextNode('addCard');
-	            
-	            
-	            $.ajax({
-	               url : '/main/searchCard',
-	               method : 'post',
-	               data : {
-	                  bnum : b_num,
-	                  lnum : l_num
-	               }
-	            }).done(function(msg) {
-	               var cardArr = JSON.parse(msg);
-	               
-	               $.each(cardArr, function(i) {
-	                  var cardDiv = document.createElement('div');
-	                  var c_num= cardArr[i].c_num;
-	                  
-	                  cardDiv.id= c_num;
-	                  cardDiv.className = 'list-card';
-	                  cardDiv.onclick =function() {
-	                     cardView(b_num,l_num,c_num)
-	                  };
-	                  
-	                  var createCardText = document.createTextNode('card'+c_num );
-	                  
-	                  
-	                  cardDiv.appendChild(createCardText);
-	                  div.appendChild(cardDiv);
-	                  
-	                  
+						var result = $('#mainList').sortable('toArray');
+						send(ev.target.innerHTML, 'listMove', 'mainList',
+								'${sessionScope.b_num}', '0', '0');
+						var moveData = new Object();
+						var msg = '';
+						for (var i = 0; i < result.length; i++) {
+							if (i < (result.length - 1)) {
+								msg += result[i] + ',';
+							} else {
+								msg += result[i];
+							}
 
-	               });
-	               
-	               listSortable(id);
-	             
-	               
+						}
 
-	            });
-	            
-	            
-	            
-	            aTag.setAttribute('href', '#');
-	            aTag.setAttribute('className', 'aaaa');
-	            aTag.setAttribute('onClick', 'addCard(' + l_num
-	                  + ',\'' + id + '\')');
-	            aTag.appendChild(createAText);
-	            
-	            addCardDiv.appendChild(aTag); 
-	            list_foot.appendChild(addCardDiv); 
-	            
-	            viewList.appendChild(div); 
-	            viewList.appendChild(list_foot); 
-	            
-	            
-	            
-	            
-	             document.getElementById('mainList').appendChild(viewList); 
-	            
+						moveData = result;
 
-	         });
-							
-	         numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
-							
-	         console.log('length_onload: ' + numOfList);
-						
-	         setWidthOnload(numOfList); // Onload 시 전체 width 설정
+						var data = JSON.stringify(moveData);
+						$.ajax({
+							url : '/main/moveList',
+							method : 'post',
+							data : {
+								data : msg,
+								length : result.length,
+								bnum : b_num
+							}
 
+						}).done();
 
-	      });
-	      
-	      viewMsg();
+					}
+
+				});
+
+		$
+				.ajax({
+					url : '/main/searchList',
+					method : 'post',
+					data : {
+						bnum : b_num
+					}
+				})
+				.done(
+						function(msg) {
+
+							var listArr = JSON.parse(msg);
+
+							$
+									.each(
+											listArr,
+											function(i) {
+
+												var l_num = listArr[i].l_num;
+												var id = l_num;
+												var div = document
+														.createElement('div');
+												div.id = 'list' + id;
+												div.className = 'list';
+
+												var viewList = document
+														.createElement('div');
+												viewList.id = id;
+												viewList.className = 'viewList';
+
+												var list_foot = document
+														.createElement('div');
+												list_foot.className = 'list_foot';
+
+												var addCardDiv = document
+														.createElement('div');
+												addCardDiv.className = 'addCard';
+
+												var aTag = document
+														.createElement('a');
+												var createAText = document
+														.createTextNode('addCard');
+
+												$
+														.ajax(
+																{
+																	url : '/main/searchCard',
+																	method : 'post',
+																	data : {
+																		bnum : b_num,
+																		lnum : l_num
+																	}
+																})
+														.done(
+																function(msg) {
+																	var cardArr = JSON
+																			.parse(msg);
+
+																	$
+																			.each(
+																					cardArr,
+																					function(
+																							i) {
+																						var cardDiv = document
+																								.createElement('div');
+																						var c_num = cardArr[i].c_num;
+
+																						cardDiv.id = c_num;
+																						cardDiv.className = 'list-card';
+																						cardDiv.onclick = function() {
+																							cardView(
+																									b_num,
+																									l_num,
+																									c_num)
+																						};
+
+																						var createCardText = document
+																								.createTextNode('card'
+																										+ c_num);
+
+																						cardDiv
+																								.appendChild(createCardText);
+																						div
+																								.appendChild(cardDiv);
+
+																					});
+
+																	listSortable(id);
+
+																});
+
+												aTag.setAttribute('href', '#');
+												aTag.setAttribute('className',
+														'aaaa');
+												aTag.setAttribute('onClick',
+														'addCard(' + l_num
+																+ ',\'' + id
+																+ '\')');
+												aTag.appendChild(createAText);
+
+												addCardDiv.appendChild(aTag);
+												list_foot
+														.appendChild(addCardDiv);
+
+												viewList.appendChild(div);
+												viewList.appendChild(list_foot);
+
+												document.getElementById(
+														'mainList')
+														.appendChild(viewList);
+
+											});
+
+							numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
+
+							console.log('length_onload: ' + numOfList);
+
+							setWidthOnload(numOfList); // Onload 시 전체 width 설정
+
+						});
+
+		viewMsg();
 	};
 
 	function setWidthOnload(num) {
@@ -385,108 +407,109 @@
 	}
 
 	function addList() {
-	      $.ajax({
-	          method : 'post',
-	          url : '/main/createList',
-	          data : {
-	             id : '${sessionScope.id}',
-	             title : 'TestTitle',
-	             bnum : b_num
+		$.ajax({
+			method : 'post',
+			url : '/main/createList',
+			data : {
+				id : '${sessionScope.id}',
+				title : 'TestTitle',
+				bnum : b_num
 
-	          }
+			}
 
-	       }).done(function(msg) {
-	            
-	          var arrList = JSON.parse(msg);
-	          var id = arrList.l_num;
-	          var div = document.createElement('div');
-	          div.id = 'list'+id;
-	          div.className = 'list';
+		}).done(
+				function(msg) {
 
-	                   
-	          var viewList = document.createElement('div');
-	          viewList.id = id;
-	          viewList.className= 'viewList';
-	          
-	          
-	          var list_foot = document.createElement('div');
-	          list_foot.className= 'list_foot';
+					var arrList = JSON.parse(msg);
+					var id = arrList.l_num;
+					var div = document.createElement('div');
+					div.id = 'list' + id;
+					div.className = 'list';
 
-	          var addCardDiv = document.createElement('div');
-	          addCardDiv.className = 'addCard';
-	          
-	          var aTag = document.createElement('a');
-	          var createAText = document.createTextNode('addCard');
-	          aTag.setAttribute('href', '#');
-	          aTag.setAttribute('className', 'aaaa');
-	          aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
-	                + ',\'' + id + '\')');
+					var viewList = document.createElement('div');
+					viewList.id = id;
+					viewList.className = 'viewList';
 
-	          aTag.appendChild(createAText);
+					var list_foot = document.createElement('div');
+					list_foot.className = 'list_foot';
 
-	          addCardDiv.appendChild(aTag);
-	          
-	          list_foot.appendChild(addCardDiv); 
-	          
-	          viewList.appendChild(div); 
-	          viewList.appendChild(list_foot); 
-	          
-	          document.getElementById('mainList').appendChild(viewList);
-	          
-	          numOfList = $('.viewList').length;
-	          setWidthAddList(numOfList);
-	       
-	          listSortable(id);
-	          
-	          var listHtml = $('#mainList')[0].innerHTML;
-	          send(listHtml,'listCreate', 'mainList', '${sessionScope.b_num}', '0', '0');
-	       
-	       });
-	      
-	      
+					var addCardDiv = document.createElement('div');
+					addCardDiv.className = 'addCard';
+
+					var aTag = document.createElement('a');
+					var createAText = document.createTextNode('addCard');
+					aTag.setAttribute('href', '#');
+					aTag.setAttribute('className', 'aaaa');
+					aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
+							+ ',\'' + id + '\')');
+
+					aTag.appendChild(createAText);
+
+					addCardDiv.appendChild(aTag);
+
+					list_foot.appendChild(addCardDiv);
+
+					viewList.appendChild(div);
+					viewList.appendChild(list_foot);
+
+					document.getElementById('mainList').appendChild(viewList);
+
+					numOfList = $('.viewList').length;
+					setWidthAddList(numOfList);
+
+					listSortable(id);
+
+					var listHtml = $('#mainList')[0].innerHTML;
+					send(listHtml, 'listCreate', 'mainList',
+							'${sessionScope.b_num}', '0', '0');
+
+				});
+
 	}
 
 	function addCard(l_num, id) {
-		   $.ajax({
-		         method : 'post',
-		         url : '/main/createCard',
-		         data : {
-		            id : '${sessionScope.id}',
-		            title : 'TestTitle',
-		            bnum : b_num,
-		            lnum : l_num
+		$.ajax({
+			method : 'post',
+			url : '/main/createCard',
+			data : {
+				id : '${sessionScope.id}',
+				title : 'TestTitle',
+				bnum : b_num,
+				lnum : l_num
 
-		         }
+			}
 
-		      }).done(function(msg) {
-		         var cardArr = JSON.parse(msg);
+		}).done(
+				function(msg) {
+					var cardArr = JSON.parse(msg);
 
-		         var newCard = document.createElement('div');
-		         var c_num = cardArr.c_num;
+					var newCard = document.createElement('div');
+					var c_num = cardArr.c_num;
 
-		         newCard.id = c_num; 
-		         newCard.className = 'list-card';
-		         newCard.onclick = function() {
-		        	 
-		            cardView(b_num,l_num,c_num)
-		            
-		         };
-		         var createCardText = document.createTextNode('card' + c_num);
+					newCard.id = c_num;
+					newCard.className = 'list-card';
+					newCard.onclick = function() {
 
+						cardView(b_num, l_num, c_num)
 
-		         newCard.appendChild(createCardText);
-		         document.getElementById('list'+id).appendChild(newCard);
-		         
-		         var cardHtml = $('#list'+id)[0].innerHTML;
-				send(cardHtml,'cardCreate','list'+id, '${sessionScope.b_num}', '0', '0'); 
-		      });
+					};
+					var createCardText = document
+							.createTextNode('card' + c_num);
+
+					newCard.appendChild(createCardText);
+					document.getElementById('list' + id).appendChild(newCard);
+
+					var cardHtml = $('#list' + id)[0].innerHTML;
+					send(cardHtml, 'cardCreate', 'list' + id,
+							'${sessionScope.b_num}', '0', '0');
+				});
 
 	}
 
 	function cardView(b_num, l_num, c_num) {
-		
+
 		$('#cardReply').empty();
-		
+
 		$.ajax({
 			method : 'post',
 			url : '/main/selectCardDetail',
@@ -495,24 +518,24 @@
 				lnum : l_num,
 				cnum : c_num
 			}
-		}).done(function(msg) {
-			
-			var detail = JSON.parse(msg);
-			var cardInfo = detail[0];
-			var cardReply = detail[1];
-			
-			$.each(cardReply, function(i){
-				
-				createReplyDiv(cardReply[i].seq, cardReply[i].content, cardReply[i].m_id);
-				
-			});
-			
-			
-			document.getElementById('cardNum').value = c_num;
-				
-			
-			cardModal.style.display = "block";
-		});
+		}).done(
+				function(msg) {
+
+					var detail = JSON.parse(msg);
+					var cardInfo = detail[0];
+					var cardReply = detail[1];
+
+					$.each(cardReply, function(i) {
+
+						createReplyDiv(cardReply[i].seq, cardReply[i].content,
+								cardReply[i].m_id);
+
+					});
+
+					document.getElementById('cardNum').value = c_num;
+
+					cardModal.style.display = "block";
+				});
 
 	}
 	function comment() {
@@ -527,113 +550,111 @@
 
 			}
 		}).done(function(msg) {
-			
+
 			var replyInfo = JSON.parse(msg);
 			console.log(msg);
-			
-			createReplyDiv(replyInfo.seq,replyInfo.content, replyInfo.m_id);
-			
+
+			createReplyDiv(replyInfo.seq, replyInfo.content, replyInfo.m_id);
+
 			$('#commentArea').val('');
-			
+
 			/* send($('#cardReply')[0].innerHTML ,'reply', replyInfo.m_id); */
 		});
 
 	}
-	
-	function createReplyDiv(seq, cnt, m_id){
+
+	function createReplyDiv(seq, cnt, m_id) {
 
 		var reply = document.createElement('div');
 
-		reply.id = 'reply_' + seq;	
+		reply.id = 'reply_' + seq;
 		reply.className = 'card_reply';
-		
-		
+
 		var content = document.createElement('div');
 		var writer = document.createElement('div');
-		
+
 		var contentText = document.createTextNode(cnt);
 		var writerText = document.createTextNode(m_id);
-		
+
 		content.appendChild(contentText);
 		writer.appendChild(writerText);
-		
+
 		reply.appendChild(content);
 		reply.appendChild(writer);
-		
-		
+
 		$('#cardReply').prepend(reply);
-		
-		
+
 	}
 
 	function labelView() {
 		$('.btn_label_toggle').next("div").toggleClass('submenu_hidden');
 	}
-	
-	function getHistory(){
+
+	function getHistory() {
 		$.ajax({
 			method : 'post',
 			url : '/main/selectHistory',
 			data : {
 				bnum : b_num,
-				id :  '${sessionScope.id}'
+				id : '${sessionScope.id}'
 			}
-		}).done(function(msg){
+		}).done(function(msg) {
 			var history = JSON.parse(msg);
 			/* 
 			console.log(test11.length);
 			console.log(test11);
 			console.log(test11[0].content + test11[0].regdate);
- */
+			 */
 			var msg = '';
-			for (i=0; i<history.length; i++){
+			for (i = 0; i < history.length; i++) {
 				msg += history[i].content + ' ' + history[i].regdate + '<br>'
 				$('#selectHistory').html(msg);
 			}
-			
+
 		});
 	}
 	function listSortable(id) {
-	
-		$('#list'+id).sortable({
-            connectWith : '.list',
-            update : function(ev,ui) {
-               var result1 = $('#list'+id).sortable('toArray');
-                var targetId= ev.target.id;
-                var parentId = ev.toElement.parentElement.id;
-                var cardArr= '';
-                
-	            send(ev.target.innerHTML,'cardMove','list'+id,'${sessionScope.b_num}', '0', '0');
-                if(targetId == parentId){
-                   
-                   for(var i = 0 ; i < result1.length; i++){
-                      if(i < (result1.length-1)){ 
-                         cardArr += result1[i]+',';
-                     }else{
-                        cardArr += result1[i];
-                     }
-                   
-                   }
-                
-                   $.ajax({
-                      url:'/main/moveCard',
-                      method:'post',
-                      data:{
-                         
-                         bnum:b_num,
-                         lnum:id,
-                         cnum:ev.toElement.id,
-                         msg : cardArr,
-                         length : result1.length
-                      }
-                   
-                   }).done();
-                }else{
-                }
-            }  
-         });
+
+		$('#list' + id).sortable(
+				{
+					connectWith : '.list',
+					update : function(ev, ui) {
+						var result1 = $('#list' + id).sortable('toArray');
+						var targetId = ev.target.id;
+						var parentId = ev.toElement.parentElement.id;
+						var cardArr = '';
+
+						send(ev.target.innerHTML, 'cardMove', 'list' + id,
+								'${sessionScope.b_num}', '0', '0');
+						if (targetId == parentId) {
+
+							for (var i = 0; i < result1.length; i++) {
+								if (i < (result1.length - 1)) {
+									cardArr += result1[i] + ',';
+								} else {
+									cardArr += result1[i];
+								}
+
+							}
+
+							$.ajax({
+								url : '/main/moveCard',
+								method : 'post',
+								data : {
+
+									bnum : b_num,
+									lnum : id,
+									cnum : ev.toElement.id,
+									msg : cardArr,
+									length : result1.length
+								}
+
+							}).done();
+						} else {
+						}
+					}
+				});
 	}
-	
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
@@ -670,8 +691,8 @@
 				<ul class="side-menu">
 					<h2 class="title">Menu</h2>
 					<li class="link"><a href="#" class="link_tag1">Board</a></li>
-					<li class="link" onclick="getHistory();"><a href="#" class="link_tag2" id="myBtn" >History</a>
-					</li>
+					<li class="link" onclick="getHistory();"><a href="#"
+						class="link_tag2" id="myBtn">History</a></li>
 					<li class="link"><a href="#" onclick="openChat();"
 						class="link_tag3 js-close-right-slidebar">Chatting</a></li>
 					<li class="link"><a href="#" class="link_tag4">File</a></li>
@@ -684,8 +705,7 @@
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span id="hisClose" class="close">&times;</span>
-				<p id="selectHistory">
-				</p>
+				<p id="selectHistory"></p>
 			</div>
 		</div>
 		<div id="mySidenavChat" class="sidenav-chat" style="margin-top: 50px;">
@@ -711,108 +731,63 @@
 						<h3>Add Comment</h3>
 						<textarea rows="10" cols="80" id="commentArea"></textarea>
 						<input type="button" value="SAVE" onclick="comment();">
-<<<<<<< HEAD
-					<div>Comments Area(for Append)</div>
-				</div>
-				
-				<div class="card-detail-sidebar">
-					<button onclick="labelView();" class="btn-label-view dropdown">
-						<span class="btn_label_toggle"><img alt="label" src="/resources/images/btn-label.png" width="20px" height="20px" class="btn-label">&nbsp;Label</span>
-						<div class="submenu_hidden">
-							<div class="submenu_main">
-								<ul class="submenu">
-								<span>labels</span>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<li>&nbsp;
-									<span></span>
-								</li>
-								<a href="#">add color...</a>
-							</ul>
-							</div>
-							
-						</div>
-						
-					</button>
-					
-					
-					<br><br>
-					<button >
-						<span><img alt="label" src="/resources/images/btn-attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
-					</button>
-					<br><br>
-					<button >
-						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;Delete</span>
-					</button>
-					<br><br>
-					<button >
-						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty1</span>
-					</button>
-					<br><br>
-					<button >
-						<span><img alt="label" src="/resources/images/btn-delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty2</span>
-					</button>
-					<br><br>
-				</div>
-			</div>
-			
-		</div>
-	</div>
-=======
 						<div id="cardReply"></div>
 					</div>
->>>>>>> refs/heads/atj2
 
 					<div class="card-detail-sidebar">
-						<button>
-							<!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
-							<span><img alt="label"
+						<button onclick="labelView();" class="btn-label-view dropdown">
+							<span class="btn_label_toggle"><img alt="label"
 								src="/resources/images/btn-label.png" width="20px" height="20px"
 								class="btn-label">&nbsp;Label</span>
+							<div class="submenu_hidden">
+								<div class="submenu_main">
+									<ul class="submenu">
+										<span>labels</span>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<li>&nbsp; <span></span>
+										</li>
+										<a href="#">add color...</a>
+									</ul>
+								</div>
+
+							</div>
+
 						</button>
+
+
 						<br> <br>
 						<button>
-							<!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
 							<span><img alt="label"
 								src="/resources/images/btn-attachment.png" width="20px"
 								height="20px" class="btn-attachment">&nbsp;Attachment</span>
 						</button>
 						<br> <br>
 						<button>
-							<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
 							<span><img alt="label"
 								src="/resources/images/btn-delete.png" width="20px"
 								height="20px" class="btn-delete">&nbsp;Delete</span>
 						</button>
 						<br> <br>
 						<button>
-							<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
 							<span><img alt="label"
 								src="/resources/images/btn-delete.png" width="20px"
 								height="20px" class="btn-delete">&nbsp;empty1</span>
 						</button>
 						<br> <br>
 						<button>
-							<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
 							<span><img alt="label"
 								src="/resources/images/btn-delete.png" width="20px"
 								height="20px" class="btn-delete">&nbsp;empty2</span>
@@ -823,6 +798,44 @@
 
 			</div>
 		</div>
+
+		<div class="card-detail-sidebar">
+			<button>
+				<!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
+				<span><img alt="label" src="/resources/images/btn-label.png"
+					width="20px" height="20px" class="btn-label">&nbsp;Label</span>
+			</button>
+			<br> <br>
+			<button>
+				<!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
+				<span><img alt="label"
+					src="/resources/images/btn-attachment.png" width="20px"
+					height="20px" class="btn-attachment">&nbsp;Attachment</span>
+			</button>
+			<br> <br>
+			<button>
+				<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+				<span><img alt="label" src="/resources/images/btn-delete.png"
+					width="20px" height="20px" class="btn-delete">&nbsp;Delete</span>
+			</button>
+			<br> <br>
+			<button>
+				<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+				<span><img alt="label" src="/resources/images/btn-delete.png"
+					width="20px" height="20px" class="btn-delete">&nbsp;empty1</span>
+			</button>
+			<br> <br>
+			<button>
+				<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+				<span><img alt="label" src="/resources/images/btn-delete.png"
+					width="20px" height="20px" class="btn-delete">&nbsp;empty2</span>
+			</button>
+			<br> <br>
+		</div>
+	</div>
+
+	</div>
+	</div>
 </body>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
