@@ -143,6 +143,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		moveCard(#{cardArr}, #{length}, #{bnum}, #{lnum}, #{cnum})
 		}
 	</select>
+	<!-- 히스토리 -->
+	<select id="insertHistory" statementType="CALLABLE"
+		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		{
+		call
+		insertHistory(#{bnum}, #{msg})
+		}
+	</select>
+	
+	<select id="selectHistory" statementType="CALLABLE"
+		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		{
+		call
+		selectHistory(#{bnum})
+		}
+	</select>
 
 	<select id="selectBoardMember" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">

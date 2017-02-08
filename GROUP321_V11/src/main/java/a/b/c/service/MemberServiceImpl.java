@@ -1,6 +1,7 @@
 package a.b.c.service;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List searchBoard(Map map) {
 		// TODO Auto-generated method stub
 
-		// 보더 전체검색
+		// 蹂대뜑 �쟾泥닿��깋
 		return memberDao.selectBoard();
 	}
 
@@ -132,5 +133,16 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List msgSelect(Map map) throws Exception {
 
 		return memberDao.msgSelect(map);
+	}
+
+	@Override
+	public void insertHistory(Map map) {
+		memberDao.insertHistory(map);
+		
+	}
+
+	@Override
+	public List selectHistory(Map map) {
+		return memberDao.selectHistory(map);
 	}
 }

@@ -157,4 +157,16 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.maxCh_num(map);
 	}
 
+	@Override
+	public void insertHistory(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		mapper.insertHistory(map);
+	}
+
+	@Override
+	public List selectHistory(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectHistory(map);
+	}
+
 }

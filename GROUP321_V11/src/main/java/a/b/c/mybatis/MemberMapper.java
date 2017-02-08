@@ -50,4 +50,8 @@ public interface MemberMapper {
 	public List msgSelect(Map map);
 
 	public List maxCh_num(Map map);
+	
+	public void insertHistory(Map map);
+	
+	public List selectHistory(Map map);
 }
