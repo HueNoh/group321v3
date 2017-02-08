@@ -16,7 +16,7 @@
 <script>
 	var sessionId = '${sessionScope.id}';
 	var createDiv = '';
-	var webSocket = new WebSocket('ws://211.183.8.14/socket');
+	var webSocket = new WebSocket('ws://211.183.8.14/board');
 	webSocket.onopen = function(event) {
 		onOpen(event)
 

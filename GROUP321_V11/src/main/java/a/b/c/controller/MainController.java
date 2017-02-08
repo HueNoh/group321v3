@@ -45,6 +45,7 @@ public class MainController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
+		session.setAttribute("b_num", request.getParameter("b_num"));
 		model.addAttribute("b_num", request.getParameter("b_num"));
 
 		session = request.getSession(false);
@@ -133,9 +134,11 @@ public class MainController {
 	public String selectCardDetail(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		List list = memberService.selectCardDetail(map);
+		System.out.println("cardDetail : " + list);
 		return new Gson().toJson(list);
 	}
 
+	
 	@RequestMapping(value = "/moveList", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -145,26 +148,34 @@ public class MainController {
 		List list = memberService.moveList(map);
 		return new Gson().toJson(map);
 	}
+
+	
 	
 	@RequestMapping(value = "/moveCard", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String moveCard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-		System.out.println("move: " +map);
+		System.out.println("move: " + map);
 		map.put("cardArr", map.get("msg"));
 		System.out.println(map);
 		List list = memberService.moveCard(map);
 		return new Gson().toJson("aa");
 	}
-	
-	@RequestMapping(value = "/addComment", method = { RequestMethod.POST,
+
+	@RequestMapping(value = "/addCardReply", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String addComment(Locale locale, Model model, HttpSession session, HttpServletRequest request,
+	public String addCardReply(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-		System.out.println(map);
-		return new Gson().toJson("aa");
+		int result = memberService.addCardReply(map);
+		JsonObject obj = new JsonObject();
+		
+		obj.addProperty("m_id", (String) map.get("m_id"));
+		obj.addProperty("content", (String) map.get("content"));
+		obj.addProperty("seq", (int) map.get("seq"));
+		
+		return new Gson().toJson(obj);
 	}
 
 	public String loginChk(@RequestParam Map map, HttpServletRequest request, HttpSession session, String route) {

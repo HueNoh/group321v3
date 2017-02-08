@@ -41,17 +41,24 @@ public interface MemberMapper {
 	public List selectCardDetail(Map map);
 
 	public List moveList(Map map);
+
 	public List moveCard(Map map);
 
 	public List selectBoardMember(Map map);
 
 	public int msgInsert(Map map);
 
+	public int addCardReply(Map map);
+
 	public List msgSelect(Map map);
 
 	public List maxCh_num(Map map);
-	
+
 	public void insertHistory(Map map);
-	
+
 	public List selectHistory(Map map);
+
+	public List maxCard_Reply(Map map);
+
+	public List selectCardReply(Map map);
 }

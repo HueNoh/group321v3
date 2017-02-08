@@ -13,14 +13,16 @@
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/common.css">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/websocket.atj.css">
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
 .viewList, #addList {
 	width: 150px;
 	height: 100%;
 	margin: 5px;
-	border: 1px solid grey;
+	border: 1px solid black;
 	float: left;
 }
 
@@ -44,7 +46,6 @@
 	border: 1px solid black;
 	float: left;
 } */
-
 #content, #mainList {
 	height: 100%;
 	background-color: yellowgreen;
@@ -58,23 +59,22 @@
 	height: 100%;
 	padding-top: 100px;
 }
+
 .card-detail-main {
 	float: left;
 }
 
-.card-detail-main > h1 {
+.card-detail-main>h1 {
 	font-size: 50px;
 	font-weight: bold;
 }
 
-.card-detail-main > h3 {
+.card-detail-main>h3 {
 	font-size: 20px;
 	font-weight: bold;
 }
 
-
-
-.card-detail-main > a:hover {
+.card-detail-main>a:hover {
 	text-decoration: underline;
 	font-weight: bold;
 }
@@ -105,18 +105,22 @@
 .cardView {
 	overflow: hidden;
 }
+
 .btn-label {
 	margin-right: 15px;
 	margin-bottom: 5px;
 }
+
 .btn-attachment {
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
+
 .btn-delete {
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
+<<<<<<< HEAD
 
 .submenu_hidden {
 	display: none;
@@ -195,17 +199,7 @@
 
 </style>
 <script>
-	/*    document.onkeydown = refl;
-	
-	 function refl() {
-	 if(event.keyCode == 116){
-	 location.href='/main/board';
-	 return false;
-	 }
-	 } 
-	 */
-	 
-	var webSocket = new WebSocket('ws://211.183.8.14/socket');
+	var webSocket = new WebSocket('ws://211.183.8.14/list');
 	webSocket.onopen = function(event) {
 		onOpen(event)
 
@@ -218,7 +212,6 @@
 	};
 	webSocket.onmessage = function(event) {
 		onMessage(event)
-
 	};
 
 	var b_num = '${b_num}';
@@ -230,7 +223,7 @@
 	         update : function(ev,ui) {
 	        	 
 	            var result = $('#mainList').sortable('toArray');
-	            send(ev.target.innerHTML,'listMove','mainList');
+	            send(ev.target.innerHTML,'listMove','mainList', '${sessionScope.b_num}', '0', '0'); 
 	            var moveData=new Object();
 	            var msg= '';
 	            for(var i = 0 ; i < result.length; i++){
@@ -323,44 +316,8 @@
 
 	               });
 	               
-	                
-	               $('#list'+id).sortable({
-	                  connectWith : '.list',
-	                  update : function(ev,ui) {
-	                     var result1 = $('#list'+id).sortable('toArray');
-	                      var targetId= ev.target.id;
-	                      var parentId = ev.toElement.parentElement.id;
-	                      var cardArr= '';
-	                      
-	 		              send(ev.target.innerHTML,'cardMove','list'+id);
-	                      if(targetId == parentId){
-	                         
-	                         for(var i = 0 ; i < result1.length; i++){
-	                            if(i < (result1.length-1)){ 
-	                               cardArr += result1[i]+',';
-	                           }else{
-	                              cardArr += result1[i];
-	                           }
-	                         
-	                         }
-	                      
-	                         $.ajax({
-	                            url:'/main/moveCard',
-	                            method:'post',
-	                            data:{
-	                               
-	                               bnum:b_num,
-	                               lnum:id,
-	                               cnum:ev.toElement.id,
-	                               msg : cardArr,
-	                               length : result1.length
-	                            }
-	                         
-	                         }).done();
-	                      }else{
-	                      }
-	                  }  
-	               });
+	               listSortable(id);
+	             
 	               
 
 	            });
@@ -395,7 +352,8 @@
 
 
 	      });
-	     
+	      
+	      viewMsg();
 	};
 
 	function setWidthOnload(num) {
@@ -478,45 +436,10 @@
 	          numOfList = $('.viewList').length;
 	          setWidthAddList(numOfList);
 	       
-	          $('#list'+id).sortable({
-	             connectWith : '.list',
-	             update : function(ev,ui) {  
-	             	
-	                var result1 = $('#list'+id).sortable('toArray');
-	                 var targetId= ev.target.id;
-	                 var parentId = ev.toElement.parentElement.id;
-	                 var cardArr= '';
-	                 
-	                 if(targetId == parentId){
-	                 send(ev.target.innerHTML,'cardMove','list'+id);
-	                    for(var i = 0 ; i < result1.length; i++){
-	                       if(i < (result1.length-1)){ 
-	                          cardArr += result1[i]+',';
-	                      }else{
-	                         cardArr += result1[i];
-	                      }
-	                    
-	                    }
-	                 
-	                    $.ajax({
-	                       url:'/main/moveCard',
-	                       method:'post',
-	                       data:{
-	                          
-	                          bnum:b_num,
-	                          lnum:id,
-	                          cnum:ev.toElement.id,
-	                          msg : cardArr,
-	                          length : result1.length
-	                       }
-	                    
-	                    }).done();
-	                 }
-	             }  
-	          });
+	          listSortable(id);
 	          
 	          var listHtml = $('#mainList')[0].innerHTML;
-	          send(listHtml,'listCreate', 'mainList');
+	          send(listHtml,'listCreate', 'mainList', '${sessionScope.b_num}', '0', '0');
 	       
 	       });
 	      
@@ -555,44 +478,91 @@
 		         document.getElementById('list'+id).appendChild(newCard);
 		         
 		         var cardHtml = $('#list'+id)[0].innerHTML;
-		          send(cardHtml,'cardCreate','list'+id);
+				send(cardHtml,'cardCreate','list'+id, '${sessionScope.b_num}', '0', '0'); 
 		      });
 
 	}
 
 	function cardView(b_num, l_num, c_num) {
-		  $.ajax({
-		         method : 'post',
-		         url : '/main/selectCardDetail',
-		         data : {
-		            bnum : b_num,
-		            lnum : l_num,
-		            cnum : c_num
-		         }
-		      }).done(function(msg) {
-		    	  
-				document.getElementById('boardNum').value = b_num;
-				document.getElementById('listNum').value = l_num;
-				document.getElementById('cardNum').value = c_num;
-		        cardModal.style.display = "block";
-		      });
+		
+		$('#cardReply').empty();
+		
+		$.ajax({
+			method : 'post',
+			url : '/main/selectCardDetail',
+			data : {
+				bnum : b_num,
+				lnum : l_num,
+				cnum : c_num
+			}
+		}).done(function(msg) {
+			
+			var detail = JSON.parse(msg);
+			var cardInfo = detail[0];
+			var cardReply = detail[1];
+			
+			$.each(cardReply, function(i){
+				
+				createReplyDiv(cardReply[i].seq, cardReply[i].content, cardReply[i].m_id);
+				
+			});
+			
+			
+			document.getElementById('cardNum').value = c_num;
+				
+			
+			cardModal.style.display = "block";
+		});
 
 	}
 	function comment() {
-		
 		$.ajax({
-	         method : 'post',
-	         url : '/main/addComment',
-	         data : {
-	            bnum : $('#boardNum')[0].value,
-	            lnum : $('#listNum')[0].value,
-	            cnum : $('#cardNum')[0].value,
-	            comment : $('#commentArea')[0].value
-	            
-	         }
-	      }).done(function(msg) {
-	    	  
-	      });
+			method : 'post',
+			url : '/main/addCardReply',
+			data : {
+
+				c_key : $('#cardNum')[0].value,
+				m_id : '${sessionScope.id}',
+				content : $('#commentArea')[0].value
+
+			}
+		}).done(function(msg) {
+			
+			var replyInfo = JSON.parse(msg);
+			console.log(msg);
+			
+			createReplyDiv(replyInfo.seq,replyInfo.content, replyInfo.m_id);
+			
+			$('#commentArea').val('');
+			
+			/* send($('#cardReply')[0].innerHTML ,'reply', replyInfo.m_id); */
+		});
+
+	}
+	
+	function createReplyDiv(seq, cnt, m_id){
+
+		var reply = document.createElement('div');
+
+		reply.id = 'reply_' + seq;	
+		reply.className = 'card_reply';
+		
+		
+		var content = document.createElement('div');
+		var writer = document.createElement('div');
+		
+		var contentText = document.createTextNode(cnt);
+		var writerText = document.createTextNode(m_id);
+		
+		content.appendChild(contentText);
+		writer.appendChild(writerText);
+		
+		reply.appendChild(content);
+		reply.appendChild(writer);
+		
+		
+		$('#cardReply').prepend(reply);
+		
 		
 	}
 
@@ -623,14 +593,55 @@
 			
 		});
 	}
+	function listSortable(id) {
+	
+		$('#list'+id).sortable({
+            connectWith : '.list',
+            update : function(ev,ui) {
+               var result1 = $('#list'+id).sortable('toArray');
+                var targetId= ev.target.id;
+                var parentId = ev.toElement.parentElement.id;
+                var cardArr= '';
+                
+	            send(ev.target.innerHTML,'cardMove','list'+id,'${sessionScope.b_num}', '0', '0');
+                if(targetId == parentId){
+                   
+                   for(var i = 0 ; i < result1.length; i++){
+                      if(i < (result1.length-1)){ 
+                         cardArr += result1[i]+',';
+                     }else{
+                        cardArr += result1[i];
+                     }
+                   
+                   }
+                
+                   $.ajax({
+                      url:'/main/moveCard',
+                      method:'post',
+                      data:{
+                         
+                         bnum:b_num,
+                         lnum:id,
+                         cnum:ev.toElement.id,
+                         msg : cardArr,
+                         length : result1.length
+                      }
+                   
+                   }).done();
+                }else{
+                }
+            }  
+         });
+	}
+	
 </script>
+<jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
 <body>
-	
-	<!-- 상단바 -->
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1 style="top: -10px;">PROJECT 321</h1></a>
-		<a href="#"class="btn_board"><span>Boards</span>
+		<a href="/main/board"><h1 style="top: -10px;">PROJECT 321</h1></a> <a
+			href="#" class="btn_board"> <img alt="board"
+			src="/resources/images/btn_board.png" class="btn-board"> <span>&nbsp;&nbsp;Boards</span>
 		</a>
 		<form action="#" method="post" id="sch_main_wrap">
 			<fieldset>
@@ -640,11 +651,10 @@
 		</form>
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<!-- 타이틀바 -->
-	<div class="title-bar"><span class="title-main">List</span></div>
-	
+	<div
+		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
+		Title</div>
 	<div id="content">
-		<!-- 리스트 -->
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
 			<div class="content">
@@ -653,7 +663,7 @@
 			</div>
 
 		</div>
-		<!-- 사이드메뉴 -->
+
 		<div off-canvas="slidebar-2 right shift" style="z-index: 9999;">
 			<ul class="menu">
 				<a class="menu-icon" href="#"><i class="icon-reorder"></i></a>
@@ -669,7 +679,8 @@
 				</ul>
 			</ul>
 		</div>
-		<!-- 히스토리 -->
+
+
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span id="hisClose" class="close">&times;</span>
@@ -679,26 +690,28 @@
 		</div>
 		<div id="mySidenavChat" class="sidenav-chat" style="margin-top: 50px;">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
-			<jsp:include page="websocket.jsp" flush="false"></jsp:include>
+			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
 		<div id="cardModal" class="card-modal">
-		<div class="modal-content">
-			<p><span id="cardClose" class="close">&times;</span></p>
-			<div id="cardView" class="cardView">
-				<div class="card-detail-main" >
-				
-					<input type="hidden" id="boardNum">
-					<input type="hidden" id="listNum">
-					<input type="hidden" id="cardNum">
-					
-					<h1>card title</h1>
-					<div id="descId">
-<!-- 					<div class="card-desc"> -->
-						<a href="#" class="	 glyphicon-pencil desc-tag" onclick="descPop();">&nbsp;description...</a>
-					</div>
-					<h3>Add Comment</h3>
+			<div class="modal-content">
+				<p>
+					<span id="cardClose" class="close">&times;</span>
+				</p>
+				<div id="cardView" class="cardView">
+					<div class="card-detail-main">
+
+						<input type="hidden" id="cardNum">
+
+						<h1>card title</h1>
+						<div id="descId">
+							<!-- 					<div class="card-desc"> -->
+							<a href="#" class="	 glyphicon-pencil desc-tag"
+								onclick="descPop();">&nbsp;description...</a>
+						</div>
+						<h3>Add Comment</h3>
 						<textarea rows="10" cols="80" id="commentArea"></textarea>
 						<input type="button" value="SAVE" onclick="comment();">
+<<<<<<< HEAD
 					<div>Comments Area(for Append)</div>
 				</div>
 				
@@ -764,7 +777,52 @@
 			
 		</div>
 	</div>
+=======
+						<div id="cardReply"></div>
+					</div>
+>>>>>>> refs/heads/atj2
 
+					<div class="card-detail-sidebar">
+						<button>
+							<!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
+							<span><img alt="label"
+								src="/resources/images/btn-label.png" width="20px" height="20px"
+								class="btn-label">&nbsp;Label</span>
+						</button>
+						<br> <br>
+						<button>
+							<!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
+							<span><img alt="label"
+								src="/resources/images/btn-attachment.png" width="20px"
+								height="20px" class="btn-attachment">&nbsp;Attachment</span>
+						</button>
+						<br> <br>
+						<button>
+							<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+							<span><img alt="label"
+								src="/resources/images/btn-delete.png" width="20px"
+								height="20px" class="btn-delete">&nbsp;Delete</span>
+						</button>
+						<br> <br>
+						<button>
+							<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+							<span><img alt="label"
+								src="/resources/images/btn-delete.png" width="20px"
+								height="20px" class="btn-delete">&nbsp;empty1</span>
+						</button>
+						<br> <br>
+						<button>
+							<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
+							<span><img alt="label"
+								src="/resources/images/btn-delete.png" width="20px"
+								height="20px" class="btn-delete">&nbsp;empty2</span>
+						</button>
+						<br> <br>
+					</div>
+				</div>
+
+			</div>
+		</div>
 </body>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>

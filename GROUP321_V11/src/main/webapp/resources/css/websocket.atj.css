@@ -39,13 +39,16 @@
 }
 
 .memberMsg {
+	width: 100%;
 	margin-left: 150px auto;
 	float: left;
 	background-color: #FAED7D;
 	margin-top: 10px auto;
+	margin-left: 150px auto;
 }
 
 .myMsg {
+	width: 100%;
 	text-align: right;
 	float: right;
 	margin-left: 150px auto;
