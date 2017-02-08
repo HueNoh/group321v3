@@ -609,14 +609,15 @@
 				id :  '${sessionScope.id}'
 			}
 		}).done(function(msg){
-			var test11 = JSON.parse(msg);
+			var history = JSON.parse(msg);
+			/* 
 			console.log(test11.length);
 			console.log(test11);
 			console.log(test11[0].content + test11[0].regdate);
-
+ */
 			var msg = '';
-			for (i=0; i<test11.length; i++){
-				msg += test11[i].content + '<br>'
+			for (i=0; i<history.length; i++){
+				msg += history[i].content + ' ' + history[i].regdate + '<br>'
 				$('#selectHistory').html(msg);
 			}
 			
