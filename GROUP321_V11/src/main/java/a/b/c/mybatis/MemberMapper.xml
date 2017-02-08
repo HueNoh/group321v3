@@ -176,7 +176,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	<select id="msgSelect" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
-		SELECT m_id, content
+		SELECT *
 		FROM tb_chat
 		WHERE
 		b_num=#{b_num}

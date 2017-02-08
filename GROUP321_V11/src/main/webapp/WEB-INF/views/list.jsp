@@ -13,7 +13,9 @@
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/common.css">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/websocket.atj.css">
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
 .viewList, #addList {
@@ -27,6 +29,7 @@
 .list {
 	width: 150px;
 	height: 100%;
+	min-height: 10px;
 	float: left;
 }
 
@@ -43,7 +46,6 @@
 	border: 1px solid black;
 	float: left;
 } */
-
 #content, #mainList {
 	height: 100%;
 	background-color: yellowgreen;
@@ -57,23 +59,22 @@
 	height: 100%;
 	padding-top: 100px;
 }
+
 .card-detail-main {
 	float: left;
 }
 
-.card-detail-main > h1 {
+.card-detail-main>h1 {
 	font-size: 50px;
 	font-weight: bold;
 }
 
-.card-detail-main > h3 {
+.card-detail-main>h3 {
 	font-size: 20px;
 	font-weight: bold;
 }
 
-
-
-.card-detail-main > a:hover {
+.card-detail-main>a:hover {
 	text-decoration: underline;
 	font-weight: bold;
 }
@@ -102,31 +103,24 @@
 .cardView {
 	overflow: hidden;
 }
+
 .btn-label {
 	margin-right: 15px;
 	margin-bottom: 5px;
 }
+
 .btn-attachment {
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
+
 .btn-delete {
 	margin-right: 15px;
 	margin-bottom: 4px;
 }
-
 </style>
 <script>
-	/*    document.onkeydown = refl;
-	
-	 function refl() {
-	 if(event.keyCode == 116){
-	 location.href='/main/board';
-	 return false;
-	 }
-	 } 
-	 */
-	var webSocket = new WebSocket('ws://211.183.8.14/socket');
+	var webSocket = new WebSocket('ws://211.183.8.14/list');
 	webSocket.onopen = function(event) {
 		onOpen(event)
 
@@ -139,7 +133,6 @@
 	};
 	webSocket.onmessage = function(event) {
 		onMessage(event)
-
 	};
 
 	var b_num = '${b_num}';
@@ -150,7 +143,7 @@
 	         update : function(ev,ui) {
 	        	 
 	            var result = $('#mainList').sortable('toArray');
-	            send(ev.target.innerHTML,'listMove','mainList');
+	            send(ev.target.innerHTML,'listMove','mainList', '${sessionScope.b_num}', '0', '0'); 
 	            var moveData=new Object();
 	            var msg= '';
 	            for(var i = 0 ; i < result.length; i++){
@@ -279,6 +272,8 @@
 
 
 	      });
+	      
+	      viewMsg();
 	};
 
 	function setWidthOnload(num) {
@@ -362,7 +357,7 @@
 	          listSortable(id);
 	          
 	          var listHtml = $('#mainList')[0].innerHTML;
-	          send(listHtml,'listCreate', 'mainList');
+	          send(listHtml,'listCreate', 'mainList', '${sessionScope.b_num}', '0', '0');
 	       
 	       });
 	      
@@ -401,7 +396,7 @@
 		         document.getElementById('list'+id).appendChild(newCard);
 		         
 		         var cardHtml = $('#list'+id)[0].innerHTML;
-		         send(cardHtml,'cardCreate','list'+id);
+				send(cardHtml,'cardCreate','list'+id, '${sessionScope.b_num}', '0', '0'); 
 		      });
 
 	}
@@ -452,12 +447,13 @@
 		}).done(function(msg) {
 			
 			var replyInfo = JSON.parse(msg);
+			console.log(msg);
 			
 			createReplyDiv(replyInfo.seq,replyInfo.content, replyInfo.m_id);
 			
 			$('#commentArea').val('');
 			
-			send($('#cardReply')[0].innerHTML ,'reply', replyInfo.m_id);			
+			/* send($('#cardReply')[0].innerHTML ,'reply', replyInfo.m_id); */
 		});
 
 	}
@@ -497,7 +493,7 @@
                 var parentId = ev.toElement.parentElement.id;
                 var cardArr= '';
                 
-	              send(ev.target.innerHTML,'cardMove','list'+id);
+	            send(ev.target.innerHTML,'cardMove','list'+id,'${sessionScope.b_num}', '0', '0');
                 if(targetId == parentId){
                    
                    for(var i = 0 ; i < result1.length; i++){
@@ -529,6 +525,7 @@
 	}
 	
 </script>
+<jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
 <body>
 	<header id="header" class="clearfix">
@@ -623,7 +620,7 @@
 		</div>
 		<div id="mySidenavChat" class="sidenav-chat" style="margin-top: 50px;">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
-			<jsp:include page="websocket.jsp" flush="false"></jsp:include>
+			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
 		<div id="cardModal" class="card-modal">
 			<div class="modal-content">

@@ -2,6 +2,7 @@ package a.b.c.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -41,34 +42,26 @@ public class ChatController {
 	@ResponseBody
 	public String chatMsg(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-		String error = null;
-
-		Gson gson = new Gson();
-		JsonObject jObj = gson.fromJson((String) map.get("JSON"), JsonObject.class);
-		JsonElement jeMsg = jObj.get("msg");
-		JsonElement jeId = jObj.get("userId");
-		JsonElement jeB_num = jObj.get("b_num");
+		System.out.println(map);
+		String error=null;
 
 		try {
-			map.put("content", jeMsg.getAsString());
-			map.put("m_id", jeId.getAsString());
-			map.put("b_num", jeB_num.getAsInt());
+			
 			int result = memberService.msgInsert(map);
 			if (0 != result) {
 				error = "001";
 			} else {
 				error = "002";
 			}
+			System.out.println(error);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		JsonObject erObj = new JsonObject();
 
-		erObj.addProperty("error", error);
 
-		return gson.toJson(erObj);
+		return error;
 	}
 
 	@RequestMapping(value = "/viewMsg", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
@@ -76,62 +69,22 @@ public class ChatController {
 	public String viewMsg(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 
-		boolean check = false;
-
-		Gson gson = new Gson();
-
-		int b_num = Integer.valueOf((String) map.get("b_num"));
-		String userId = (String) map.get("userId");
-		JsonArray jArr = new JsonArray();
-		JsonObject jObj = new JsonObject();
-		JsonArray juArr = new JsonArray();
-		if (0 < WebSocket.clients.size()) {
-			WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("userId", userId);
-			WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().put("b_num", b_num);
-			System.out.println(WebSocket.clients.get(WebSocket.clients.size() - 1).getUserProperties().get("b_num"));
-			try {
-				for (int i = 0; i < WebSocket.clients.size(); i++) {
-
-					JsonObject obj = new JsonObject();
-					if (null != WebSocket.clients.get(i).getUserProperties().get("userId")) {
-						obj.addProperty("userId", (String) WebSocket.clients.get(i).getUserProperties().get("userId"));
-					}
-					if (null != WebSocket.clients.get(i).getUserProperties().get("b_num")) {
-						obj.addProperty("b_num", (int) WebSocket.clients.get(i).getUserProperties().get("b_num"));
-					}
-					juArr.add(obj);
-				}
-
-				JsonObject jSize = new JsonObject();
-
-				jSize.addProperty("size", WebSocket.clients.size());
-
-				jObj.add("size", jSize);
-				jObj.add("userId", juArr);
-				map.put("b_num", b_num);
-				List list = memberService.msgSelect(map);
-				for (int i = 0; i < list.size(); i++) {
-					map = (Map) list.get(i);
-					JsonObject obj = new JsonObject();
-					obj.addProperty("id", (String) map.get("m_id"));
-					obj.addProperty("msg", (String) map.get("content"));
-					jArr.add(obj);
-				}
-
-				jObj.add("msg", jArr);
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		Map map2 = new HashMap<>();
+		JsonArray jarr= new JsonArray();
+		try {
+			List list = memberService.msgSelect(map);
+			for (int i = 0; i < list.size(); i++) {
+				map2 = (Map) list.get(i);
+				JsonObject obj= new JsonObject();
+				obj.addProperty("m_id", (String) map2.get("m_id"));
+				obj.addProperty("content", (String) map2.get("content"));
+				jarr.add(obj);
 			}
-		} else {
-
-			jObj.addProperty("size", 0);
-			jObj.addProperty("userId", userId);
-			jObj.addProperty("msg", "error");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		return gson.toJson(jObj);
+		return new Gson().toJson(jarr);
 	}
 
 }
