@@ -66,7 +66,7 @@ public class MainController {
 			for (int i = 0; i < inBoardMemberList.size(); i++) {
 				Map map2 = (Map) inBoardMemberList.get(i);
 				if (userId.equals((String) map2.get("userId"))) {
-					Map map3= new HashMap<>();
+					Map map3 = new HashMap<>();
 					map3.put("userId", userId);
 					map3.put("b_num", b_num);
 					inBoardMemberList.set(i, map3);
@@ -74,7 +74,7 @@ public class MainController {
 				}
 			}
 			if (!isOk) {
-				Map map4= new HashMap<>();
+				Map map4 = new HashMap<>();
 				map4.put("userId", userId);
 				map4.put("b_num", b_num);
 				inBoardMemberList.add(map4);

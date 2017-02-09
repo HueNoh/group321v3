@@ -104,7 +104,6 @@ public class ListWebSocket {
 	@OnClose
 	public void onClose(Session session) {
 		// Remove session from the connected sessions set
-System.out.println("종종");
 		clients.remove(session);
 
 	}
