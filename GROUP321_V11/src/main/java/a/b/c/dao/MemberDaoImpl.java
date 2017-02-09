@@ -184,4 +184,10 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.selectHistory(map);
 	}
 
+	@Override
+	public List updateContent(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.updateContent(map);
+	}
+
 }

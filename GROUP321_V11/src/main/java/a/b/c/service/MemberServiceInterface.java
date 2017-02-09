@@ -36,4 +36,6 @@ public interface MemberServiceInterface {
 	public void insertHistory(Map map);
 
 	public List selectHistory(Map map);
+
+	public List updateContent(Map map);
 }

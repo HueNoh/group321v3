@@ -61,4 +61,6 @@ public interface MemberMapper {
 	public List maxCard_Reply(Map map);
 
 	public List selectCardReply(Map map);
+
+	public List updateContent(Map map);
 }

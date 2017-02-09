@@ -196,6 +196,10 @@
 	background-color: violet;
 	width: 250px;
 }
+
+/* .content_area {
+	display: none;
+} */
 </style>
 <script>
 	document.onkeydown = refl;
@@ -424,6 +428,18 @@
 					var detail = JSON.parse(msg);
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
+					
+					console.log(detail);
+					
+					handelDesc(0); // description textarea 숨기기
+					
+					var content = cardInfo.content;
+					
+					if(null != content) {
+						$('.content_div').text(content);
+					} else {
+						$('.content_div').text('');
+					}
 
 					$.each(cardReply, function(i) {
 
@@ -460,6 +476,46 @@
 
 		});
 
+	}
+	
+	function handelDesc(num) {
+		
+		$('.content_textarea').val('');
+		
+		if(num == 1) {
+			$('.content_tag').hide();
+			$('.content_area').show();
+			$('.content_div').hide();
+		} else {
+			$('.content_tag').show();
+			$('.content_area').hide();
+		}
+	}
+	
+	function sendDesc() {
+		$('.content_tag').show();
+		$('.content_div').show();
+		$('.content_area').hide();
+		
+		var content = $('.content_textarea').val();
+		
+		$.ajax({
+			method: 'post'
+			, url: '/main/updateContent'
+			, data: {
+				c_key: $('#cardNum')[0].value
+				, content: $('.content_textarea')[0].value
+			}
+		}).done(function(msg){
+			
+// 			if(msg == 0) {
+				$('.content_div').text(content);
+// 			} else {
+// 				$('.content_div').text('');
+// 			}
+			
+		});
+		
 	}
 
 	function createReplyDiv(seq, cnt, m_id) {
@@ -698,8 +754,7 @@
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
 	<div
-		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
-		Title</div>
+		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
@@ -707,7 +762,6 @@
 				<div id="mainList" class="mainList"></div>
 				<div id="addList" onclick="addList();">Create</div>
 			</div>
-
 		</div>
 
 		<div off-canvas="slidebar-2 right shift" style="z-index: 9999;">
@@ -748,13 +802,27 @@
 						<input type="hidden" id="cardNum">
 
 						<h1>card title</h1>
-						<div id="descId">
+						<div id="contentId">
 							<!-- 					<div class="card-desc"> -->
-							<a href="#" class="	 glyphicon-pencil desc-tag"
-								onclick="descPop();">&nbsp;description...</a>
+<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
+							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="handelDesc(1);">&nbsp;content...</a>
+							<div class="content_div"></div>
+							<div class="content_area" id="content_area">
+								<div class="content_text">
+									<textarea rows="10" cols="80" class="content_textarea"></textarea>
+								</div>
+								<div>
+									<button value="SAVE" style="width: 40px; height: 30px;" onclick="sendDesc();">
+										<img alt="send" src="/resources/images/btn_send.png">
+									</button>
+									<button value="X" style="width: 40px; height: 30px;" onclick="handelDesc(0);">
+										<img alt="send" src="/resources/images/btn_cancel.png">
+									</button>
+								</div>
+							</div>
 						</div>
 						<h3>Add Comment</h3>
-						<textarea rows="10" cols="80" id="commentArea"></textarea>
+						<textarea rows="10" cols="80" id="commentArea" required="required"></textarea>
 						<input type="button" value="SAVE" onclick="comment();">
 						<div id="cardReply"></div>
 					</div>
