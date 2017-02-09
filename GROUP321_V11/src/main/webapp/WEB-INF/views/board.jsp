@@ -132,6 +132,7 @@
 		});
 	};
 	
+	//hs
 	$(function(){
 		$('#CBContainer').css('display','none');
 		
