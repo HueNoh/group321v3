@@ -13,35 +13,56 @@
 		var l_num = data[4];
 		var c_num = data[5];
 
-		if (b_num == '${sessionScope.b_num}') {
+		if (b_num == '${sessionScope.b_num}' && id != '${sessionScope.id}') {
+
 			if ("message" == access) {
 				chat(msg, id);
 
 				$('.display').scrollTop($('.display')[0].scrollHeight);
 
 			} else if ("open" == access) {
+				
 			} else if ("close" == access) {
+				
 			} else if ('listMove' == access) {
-
-				$('#' + id).html(msg);
-
-				$.each($('#' + id)[0].childNodes, function(i) {
-					var lnum = this.id;
-					listSortable(lnum);
-				});
+				
+				$('#' + msg).html('');
+				listSearch(b_num);
+				
 			} else if ("cardMove" == access) {
-				$('#' + id).html(msg);
+				$('#mainList').html('');
+				listSearch(b_num);
+				
 			} else if ('listCreate' == access) {
-				$('#' + id).html(msg);
-				$.each($('#' + id)[0].childNodes, function(i) {
+				$('#mainList').html('');
+				listSearch(b_num);
+				$.each($('#' + msg)[0].childNodes, function(i) {
 					var lnum = this.id;
 					listSortable(lnum);
 				});
 			} else if ("cardCreate" == access) {
-				$('#' + id).html(msg);
+				$('#mainList').html('');
+				listSearch(b_num);
+
 			} else if ("reply" == access) {
 				$('#cardReply').empty();
 				$('#cardReply').html(msg);
+			} else if ("connec" == access) {
+				var div = document.createElement('div');
+				div.id = id;
+				div.className = 'user';
+
+				var content = document.createElement('div');
+
+				var contentText = document.createTextNode(msg);
+
+				content.appendChild(contentText);
+
+				div.append(content);
+				$('#user').append(div);
+
+			} else if ("unConnec" == access) {
+				$('#' + id).remove();
 			}
 		}
 	}
@@ -55,7 +76,6 @@
 	}
 
 	function onClose() {
-
 	}
 
 	function send(message, acc, id, b_num, l_num, c_num) {
@@ -91,6 +111,12 @@
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 		} else if ('reply' == acc) {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+		} else if ('connec' == acc) {
+			var jsonStr = JSON.stringify(msg);
+			webSocket.send(jsonStr);
+		} else if ('unConnec' == acc) {
 			var jsonStr = JSON.stringify(msg);
 			webSocket.send(jsonStr);
 		}
@@ -152,6 +178,8 @@
 				userId : '${sessionScope.id}'
 			}
 		}).done(function(msg) {
+
+			console.log('${member}');
 			var data = JSON.parse(msg);
 
 			$.each(data, function(i) {
@@ -173,5 +201,23 @@
 				m_id : '${sessionScope.id}'
 			}
 		});
+	}
+
+	function userView(msg) {
+		var div = document.createElement('div');
+		div.className = 'myMsg';
+
+		var content = document.createElement('div');
+		var writer = document.createElement('div');
+
+		var contentText = document.createTextNode(msg);
+		var writerText = document.createTextNode(id);
+
+		content.appendChild(contentText);
+		writer.appendChild(writerText);
+
+		div.append(content);
+		div.append(writer);
+		$('.display').append(div);
 	}
 </script>

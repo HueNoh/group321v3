@@ -198,6 +198,7 @@
 }
 </style>
 <script>
+	var b_num = '${b_num}';
 	var webSocket = new WebSocket('ws://211.183.8.14/list');
 	webSocket.onopen = function(event) {
 		onOpen(event)
@@ -213,7 +214,6 @@
 		onMessage(event)
 	};
 
-	var b_num = '${b_num}';
 	var numOfList = 0; // 전체 리스트 갯수
 	window.onload = function() {
 
@@ -222,7 +222,7 @@
 					update : function(ev, ui) {
 
 						var result = $('#mainList').sortable('toArray');
-						send(ev.target.innerHTML, 'listMove', 'mainList',
+						send('mainList', 'listMove', '${sessionScope.id}',
 								'${sessionScope.b_num}', '0', '0');
 						var moveData = new Object();
 						var msg = '';
@@ -253,79 +253,7 @@
 
 				});
 
-		$.ajax({
-			url : '/main/searchList',
-			method : 'post',
-			data : {
-				bnum : b_num
-			}
-		}).done(
-				function(msg) {
-
-					var listArr = JSON.parse(msg);
-					console.log(msg);
-					console.log(listArr);
-					$.each(listArr, function(i) {
-
-						var l_num = listArr[i].l_num;
-						var id = l_num;
-						//nhs
-						var l_title = listArr[i].title;
-						
-						var div = document.createElement('div');
-						div.id = 'list' + id;
-						div.className = 'list';
-
-						var viewList = document.createElement('div');
-						viewList.id = id;
-						viewList.className = 'viewList';
-						//nhs
-						var list_title = document.createElement('div');
-						list_title.className = 'list_title';
-						list_title.innerHTML = l_title;
-						
-						var list_foot = document.createElement('div');
-						list_foot.className = 'list_foot';
-
-						var addCardDiv = document.createElement('div');
-						addCardDiv.className = 'addCard';
-
-						var aTag = document.createElement('a');
-						var createAText = document.createTextNode('addCard');
-
-						/*
-						cardSearch >> 데이터베이스에 있는 해당리스트의 카드들을 불러온다.
-						 */
-						cardSearch(b_num, l_num, id);
-
-						aTag.setAttribute('href', '#');
-						aTag.setAttribute('className', 'aaaa');
-						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
-								+ id + '\')');
-						aTag.appendChild(createAText);
-
-						addCardDiv.appendChild(aTag);
-						list_foot.appendChild(addCardDiv);
-
-						//nhs
-						viewList.appendChild(list_title);
-						
-						viewList.appendChild(div);
-						viewList.appendChild(list_foot);
-
-						document.getElementById('mainList').appendChild(
-								viewList);
-
-					});
-
-					numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
-
-					console.log('length_onload: ' + numOfList);
-
-					setWidthOnload(numOfList); // Onload 시 전체 width 설정
-
-				});
-
+		listSearch(b_num);
 		viewMsg();
 	};
 
@@ -375,7 +303,7 @@
 					var id = arrList.l_num;
 					//nhs
 					var l_title = arrList.title;
-					
+
 					var div = document.createElement('div');
 					div.id = 'list' + id;
 					div.className = 'list';
@@ -387,7 +315,7 @@
 					var list_title = document.createElement('div');
 					list_title.className = 'list_title';
 					list_title.innerHTML = l_title;
-					
+
 					var list_foot = document.createElement('div');
 					list_foot.className = 'list_foot';
 
@@ -406,12 +334,12 @@
 					addCardDiv.appendChild(aTag);
 
 					list_foot.appendChild(addCardDiv);
-						
+
 					viewList.appendChild(list_title);
-					
+
 					//nhs
 					viewList.appendChild(list_title);
-					
+
 					viewList.appendChild(div);
 					viewList.appendChild(list_foot);
 
@@ -424,7 +352,7 @@
 					listSortable(id);
 
 					var listHtml = $('#mainList')[0].innerHTML;
-					send(listHtml, 'listCreate', 'mainList',
+					send('mainList', 'listCreate', '${sessionScope.id}',
 							'${sessionScope.b_num}', '0', '0');
 
 				});
@@ -464,7 +392,7 @@
 					document.getElementById('list' + id).appendChild(newCard);
 
 					var cardHtml = $('#list' + id)[0].innerHTML;
-					send(cardHtml, 'cardCreate', 'list' + id,
+					send('cardCreate', 'cardCreate', '${sessionScope.id}',
 							'${sessionScope.b_num}', '0', '0');
 				});
 
@@ -474,7 +402,7 @@
 
 		$('#cardReply').empty();
 		$('#commentArea').val('');
-		
+
 		$.ajax({
 			method : 'post',
 			url : '/main/selectCardDetail',
@@ -579,6 +507,82 @@
 		});
 	}
 
+	function listSearch(b_num) {
+		$.ajax({
+			url : '/main/searchList',
+			method : 'post',
+			data : {
+				bnum : b_num
+			}
+		}).done(
+				function(msg) {
+
+					var listArr = JSON.parse(msg);
+					console.log(msg);
+					console.log(listArr);
+					$.each(listArr, function(i) {
+
+						var l_num = listArr[i].l_num;
+						var id = l_num;
+						//nhs
+						var l_title = listArr[i].title;
+
+						var div = document.createElement('div');
+						div.id = 'list' + id;
+						div.className = 'list';
+
+						var viewList = document.createElement('div');
+						viewList.id = id;
+						viewList.className = 'viewList';
+						//nhs
+						var list_title = document.createElement('div');
+						list_title.className = 'list_title';
+						list_title.innerHTML = l_title;
+
+						var list_foot = document.createElement('div');
+						list_foot.className = 'list_foot';
+
+						var addCardDiv = document.createElement('div');
+						addCardDiv.className = 'addCard';
+
+						var aTag = document.createElement('a');
+						var createAText = document.createTextNode('addCard');
+
+						/*
+						cardSearch >> 데이터베이스에 있는 해당리스트의 카드들을 불러온다.
+						 */
+						cardSearch(b_num, l_num, id);
+
+						aTag.setAttribute('href', '#');
+						aTag.setAttribute('className', 'aaaa');
+						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
+								+ id + '\')');
+						aTag.appendChild(createAText);
+
+						addCardDiv.appendChild(aTag);
+						list_foot.appendChild(addCardDiv);
+
+						//nhs
+						viewList.appendChild(list_title);
+
+						viewList.appendChild(div);
+						viewList.appendChild(list_foot);
+
+						document.getElementById('mainList').appendChild(
+								viewList);
+
+					});
+
+					numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
+
+					console.log('length_onload: ' + numOfList);
+
+					setWidthOnload(numOfList); // Onload 시 전체 width 설정
+
+				});
+
+	}
+
 	function cardSearch(b_num, l_num, id) {
 		$.ajax({
 			url : '/main/searchCard',
@@ -622,9 +626,9 @@
 						var parentId = ev.toElement.parentElement.id;
 						var cardArr = '';
 
-						send(ev.target.innerHTML, 'cardMove', 'list' + id,
-								'${sessionScope.b_num}', '0', '0');
 						if (targetId == parentId) {
+							send('cardMove', 'cardMove', '${sessionScope.id}',
+									'${sessionScope.b_num}', '0', '0');
 
 							for (var i = 0; i < result1.length; i++) {
 								if (i < (result1.length - 1)) {
@@ -652,13 +656,31 @@
 					}
 				});
 	}
+	function openChat() {
+
+		send('${sessionScope.id}', 'connec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
+		document.getElementById("mySidenavChat").style.width = "600px";
+	}
+
+	function closeChat() {
+		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
+		document.getElementById("mySidenavChat").style.width = "0";
+	}
+
+	function unConnect() {
+		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
+	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
 <body>
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1 style="top: -10px;">PROJECT 321</h1></a> <a
-			href="#" class="btn_board"> <img alt="board"
+		<a href="/main/board"><h1 style="top: -10px;"
+				onclick="unConnect();">PROJECT 321</h1></a> <a href="#"
+			class="btn_board"> <img alt="board"
 			src="/resources/images/btn_board.png" class="btn-board"> <span>&nbsp;&nbsp;Boards</span>
 		</a>
 		<form action="#" method="post" id="sch_main_wrap">
@@ -796,50 +818,14 @@
 			</div>
 		</div>
 
-		<div class="card-detail-sidebar">
-			<button>
-				<!-- 						<span class="glyphicon glyphicon-star">&nbsp;Label</span> -->
-				<span><img alt="label" src="/resources/images/btn-label.png"
-					width="20px" height="20px" class="btn-label">&nbsp;Label</span>
-			</button>
-			<br> <br>
-			<button>
-				<!-- 						<span class="glyphicon glyphicon-plus-sign">&nbsp;Attachment</span> -->
-				<span><img alt="label"
-					src="/resources/images/btn-attachment.png" width="20px"
-					height="20px" class="btn-attachment">&nbsp;Attachment</span>
-			</button>
-			<br> <br>
-			<button>
-				<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
-				<span><img alt="label" src="/resources/images/btn-delete.png"
-					width="20px" height="20px" class="btn-delete">&nbsp;Delete</span>
-			</button>
-			<br> <br>
-			<button>
-				<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
-				<span><img alt="label" src="/resources/images/btn-delete.png"
-					width="20px" height="20px" class="btn-delete">&nbsp;empty1</span>
-			</button>
-			<br> <br>
-			<button>
-				<!-- 						<span class="glyphicon glyphicon-remove-circle">&nbsp;Delete</span> -->
-				<span><img alt="label" src="/resources/images/btn-delete.png"
-					width="20px" height="20px" class="btn-delete">&nbsp;empty2</span>
-			</button>
-			<br> <br>
-		</div>
-	</div>
 
-	</div>
+
 	</div>
 </body>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="/resources/js/jquery-ui.js"></script>
 <script src="/resources/js/slidebars.js"></script>
-<script src="/resources/js/slidebars.atj.js"></script>
-<script src="/resources/js/sortable.atj.js"></script>
 <script src="/resources/js/scripts.js"></script>
 
 </html>
