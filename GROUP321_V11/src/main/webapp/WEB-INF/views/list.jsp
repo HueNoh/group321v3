@@ -253,67 +253,7 @@
 
 				});
 
-		$.ajax({
-			url : '/main/searchList',
-			method : 'post',
-			data : {
-				bnum : b_num
-			}
-		}).done(
-				function(msg) {
-
-					var listArr = JSON.parse(msg);
-
-					$.each(listArr, function(i) {
-
-						var l_num = listArr[i].l_num;
-						var id = l_num;
-						var div = document.createElement('div');
-						div.id = 'list' + id;
-						div.className = 'list';
-
-						var viewList = document.createElement('div');
-						viewList.id = id;
-						viewList.className = 'viewList';
-
-						var list_foot = document.createElement('div');
-						list_foot.className = 'list_foot';
-
-						var addCardDiv = document.createElement('div');
-						addCardDiv.className = 'addCard';
-
-						var aTag = document.createElement('a');
-						var createAText = document.createTextNode('addCard');
-
-						/*
-						cardSearch >> 데이터베이스에 있는 해당리스트의 카드들을 불러온다.
-						 */
-						cardSearch(b_num, l_num, id);
-
-						aTag.setAttribute('href', '#');
-						aTag.setAttribute('className', 'aaaa');
-						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
-								+ id + '\')');
-						aTag.appendChild(createAText);
-
-						addCardDiv.appendChild(aTag);
-						list_foot.appendChild(addCardDiv);
-
-						viewList.appendChild(div);
-						viewList.appendChild(list_foot);
-
-						document.getElementById('mainList').appendChild(
-								viewList);
-
-					});
-
-					numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
-
-					console.log('length_onload: ' + numOfList);
-
-					setWidthOnload(numOfList); // Onload 시 전체 width 설정
-
-				});
+		listSearch(b_num);
 
 		viewMsg();
 	};
@@ -451,7 +391,7 @@
 
 		$('#cardReply').empty();
 		$('#commentArea').val('');
-		
+
 		$.ajax({
 			method : 'post',
 			url : '/main/selectCardDetail',
@@ -554,6 +494,71 @@
 			}
 
 		});
+	}
+
+	function listSearch(b_num) {
+		$.ajax({
+			url : '/main/searchList',
+			method : 'post',
+			data : {
+				bnum : b_num
+			}
+		}).done(
+				function(msg) {
+
+					var listArr = JSON.parse(msg);
+
+					$.each(listArr, function(i) {
+
+						var l_num = listArr[i].l_num;
+						var id = l_num;
+						var div = document.createElement('div');
+						div.id = 'list' + id;
+						div.className = 'list';
+
+						var viewList = document.createElement('div');
+						viewList.id = id;
+						viewList.className = 'viewList';
+
+						var list_foot = document.createElement('div');
+						list_foot.className = 'list_foot';
+
+						var addCardDiv = document.createElement('div');
+						addCardDiv.className = 'addCard';
+
+						var aTag = document.createElement('a');
+						var createAText = document.createTextNode('addCard');
+
+						/*
+						cardSearch >> 데이터베이스에 있는 해당리스트의 카드들을 불러온다.
+						 */
+						cardSearch(b_num, l_num, id);
+
+						aTag.setAttribute('href', '#');
+						aTag.setAttribute('className', 'aaaa');
+						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
+								+ id + '\')');
+						aTag.appendChild(createAText);
+
+						addCardDiv.appendChild(aTag);
+						list_foot.appendChild(addCardDiv);
+
+						viewList.appendChild(div);
+						viewList.appendChild(list_foot);
+
+						document.getElementById('mainList').appendChild(
+								viewList);
+
+					});
+
+					numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
+
+					console.log('length_onload: ' + numOfList);
+
+					setWidthOnload(numOfList); // Onload 시 전체 width 설정
+
+				});
+
 	}
 
 	function cardSearch(b_num, l_num, id) {
