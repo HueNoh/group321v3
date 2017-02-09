@@ -13,7 +13,7 @@
 		var l_num = data[4];
 		var c_num = data[5];
 
-		if (b_num == '${sessionScope.b_num}' && id != '${sessionScope.id}') {
+		if (b_num == '${sessionScope.b_num}') {
 
 			if ("message" == access) {
 				chat(msg, id);
@@ -21,32 +21,41 @@
 				$('.display').scrollTop($('.display')[0].scrollHeight);
 
 			} else if ("open" == access) {
-				
-			} else if ("close" == access) {
-				
-			} else if ('listMove' == access) {
-				
-				$('#' + msg).html('');
-				listSearch(b_num);
-				
-			} else if ("cardMove" == access) {
-				$('#mainList').html('');
-				listSearch(b_num);
-				
-			} else if ('listCreate' == access) {
-				$('#mainList').html('');
-				listSearch(b_num);
-				$.each($('#' + msg)[0].childNodes, function(i) {
-					var lnum = this.id;
-					listSortable(lnum);
-				});
-			} else if ("cardCreate" == access) {
-				$('#mainList').html('');
-				listSearch(b_num);
 
+			} else if ("close" == access) {
+
+			} else if ('listMove' == access) {
+				if (id != '${sessionScope.id}') {
+
+					$('#' + msg).html('');
+					listSearch(b_num);
+				}
+
+			} else if ("cardMove" == access) {
+				if (id != '${sessionScope.id}') {
+					$('#mainList').html('');
+					listSearch(b_num);
+				}
+			} else if ('listCreate' == access) {
+				if (id != '${sessionScope.id}') {
+
+					$('#mainList').html('');
+					listSearch(b_num);
+					$.each($('#' + msg)[0].childNodes, function(i) {
+						var lnum = this.id;
+						listSortable(lnum);
+					});
+				}
+			} else if ("cardCreate" == access) {
+				if (id != '${sessionScope.id}') {
+					$('#mainList').html('');
+					listSearch(b_num);
+				}
 			} else if ("reply" == access) {
-				$('#cardReply').empty();
-				$('#cardReply').html(msg);
+				if (id != '${sessionScope.id}') {
+					$('#cardReply').empty();
+					$('#cardReply').html(msg);
+				}
 			} else if ("connec" == access) {
 				var div = document.createElement('div');
 				div.id = id;
@@ -179,7 +188,6 @@
 			}
 		}).done(function(msg) {
 
-			console.log('${member}');
 			var data = JSON.parse(msg);
 
 			$.each(data, function(i) {
