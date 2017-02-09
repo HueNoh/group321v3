@@ -121,7 +121,6 @@
 	margin-bottom: 4px;
 }
 
-
 .submenu_hidden {
 	display: none;
 }
@@ -340,7 +339,6 @@
 																								.appendChild(cardDiv);
 
 																					});
-
 																	listSortable(id);
 
 																});
@@ -650,7 +648,6 @@
 								}
 
 							}).done();
-						} else {
 						}
 					}
 				});

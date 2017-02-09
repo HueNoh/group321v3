@@ -26,100 +26,18 @@
 				$('#' + id).html(msg);
 
 				$.each($('#' + id)[0].childNodes, function(i) {
-					var cardSortId = "list" + this.id;
 					var lnum = this.id;
-					console.log("aewf: " + cardSortId);
 
-					$('#' + cardSortId).sortable({
-						connectWith : '.list',
-						update : function(ev, ui) {
-
-							send(ev.target.innerHTML, 'cardMove', cardSortId, '${sessionScope.b_num}', '0', '0');
-
-							var result1 = $('#' + cardSortId).sortable('toArray');
-							var targetId = ev.target.id;
-							var parentId = ev.toElement.parentElement.id;
-							var cardArr = '';
-							if (targetId == parentId) {
-
-								console.log(ev.target.innerHTML);
-								for (var i = 0; i < result1.length; i++) {
-									if (i < (result1.length - 1)) {
-										cardArr += result1[i] + ',';
-									} else {
-										cardArr += result1[i];
-									}
-
-								}
-
-								console.log(lnum);
-
-								$.ajax({
-									url : '/main/moveCard',
-									method : 'post',
-									data : {
-
-										bnum : '${b_num}',
-										lnum : lnum,
-										cnum : ev.toElement.id,
-										msg : cardArr,
-										length : result1.length
-									}
-
-								}).done();
-							}
-						}
-					});
+					listSortable(lnum);
 				});
 			} else if ("cardMove" == access) {
 				$('#' + id).html(msg);
 			} else if ('listCreate' == access) {
 				$('#' + id).html(msg);
 				$.each($('#' + id)[0].childNodes, function(i) {
-					var cardSortId = "list" + this.id;
 					var lnum = this.id;
-					console.log("aewf: " + cardSortId);
 
-					$('#' + cardSortId).sortable({
-						connectWith : '.list',
-						update : function(ev, ui) {
-
-							send(ev.target.innerHTML, 'cardMove', cardSortId, '${sessionScope.b_num}','0','0');
-
-							var result1 = $('#' + cardSortId).sortable('toArray');
-							var targetId = ev.target.id;
-							var parentId = ev.toElement.parentElement.id;
-							var cardArr = '';
-							if (targetId == parentId) {
-
-								console.log(ev.target.innerHTML);
-								for (var i = 0; i < result1.length; i++) {
-									if (i < (result1.length - 1)) {
-										cardArr += result1[i] + ',';
-									} else {
-										cardArr += result1[i];
-									}
-
-								}
-
-								console.log(lnum);
-
-								$.ajax({
-									url : '/main/moveCard',
-									method : 'post',
-									data : {
-
-										bnum : '${b_num}',
-										lnum : lnum,
-										cnum : ev.toElement.id,
-										msg : cardArr,
-										length : result1.length
-									}
-
-								}).done();
-							}
-						}
-					});
+					listSortable(lnum);
 				});
 			} else if ("cardCreate" == access) {
 				$('#' + id).html(msg);
@@ -129,10 +47,9 @@
 			}
 		}
 	}
-	
 
 	function onOpen(event) {
-		
+
 	}
 
 	function onError(event) {
@@ -227,27 +144,27 @@
 		$('.display').scrollTop($('.display')[0].scrollHeight);
 
 	}
-	
-	function viewMsg(){
-		 $.ajax({
-				method : 'post',
-				url : '/chat/viewMsg',
-				data : {
-					b_num : '${sessionScope.b_num}',
-					userId : '${sessionScope.id}'
-				}
-			}).done(function(msg) {
-				var data = JSON.parse(msg);
 
-				$.each(data, function(i) {
-					chat(data[i].content, data[i].m_id);
-				});
+	function viewMsg() {
+		$.ajax({
+			method : 'post',
+			url : '/chat/viewMsg',
+			data : {
+				b_num : '${sessionScope.b_num}',
+				userId : '${sessionScope.id}'
+			}
+		}).done(function(msg) {
+			var data = JSON.parse(msg);
 
-				$('.display').scrollTop($('.display')[0].scrollHeight);
-				
+			$.each(data, function(i) {
+				chat(data[i].content, data[i].m_id);
 			});
+
+			$('.display').scrollTop($('.display')[0].scrollHeight);
+
+		});
 	}
-	
+
 	function chatMsg(content) {
 		$.ajax({
 			method : 'post',
