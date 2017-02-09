@@ -205,9 +205,16 @@
 	document.onkeydown = refl;
 	function refl() {
 		if (event.keyCode == 116) {
-			event.keyCode = 0;
+			send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
+					'${sessionScope.b_num}', '0', '0');
+			location.href = '/main/board';
 			return false;
 		}
+	}
+
+	history.pushState(null, null, location.href);
+	window.onpopstate = function(event) {
+		history.go(1);
 	}
 
 	var b_num = '${b_num}';
@@ -413,7 +420,6 @@
 	function cardView(b_num, l_num, c_num) {
 		$('#cardReply').empty();
 		$('#commentArea').val('');
-		console.log(c_num);
 		$.ajax({
 			method : 'post',
 			url : '/main/selectCardDetail',
@@ -428,14 +434,13 @@
 					var detail = JSON.parse(msg);
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
-					
-					console.log(detail);
-					
+
+
 					handelDesc(0); // description textarea 숨기기
-					
+
 					var content = cardInfo.content;
-					
-					if(null != content) {
+
+					if (null != content) {
 						$('.content_div').text(content);
 					} else {
 						$('.content_div').text('');
@@ -468,7 +473,6 @@
 		}).done(function(msg) {
 
 			var replyInfo = JSON.parse(msg);
-			console.log(msg);
 
 			createReplyDiv(replyInfo.seq, replyInfo.content, replyInfo.m_id);
 
@@ -477,12 +481,12 @@
 		});
 
 	}
-	
+
 	function handelDesc(num) {
-		
+
 		$('.content_textarea').val('');
-		
-		if(num == 1) {
+
+		if (num == 1) {
 			$('.content_tag').hide();
 			$('.content_area').show();
 			$('.content_div').hide();
@@ -491,31 +495,31 @@
 			$('.content_area').hide();
 		}
 	}
-	
+
 	function sendDesc() {
 		$('.content_tag').show();
 		$('.content_div').show();
 		$('.content_area').hide();
-		
+
 		var content = $('.content_textarea').val();
-		
+
 		$.ajax({
-			method: 'post'
-			, url: '/main/updateContent'
-			, data: {
-				c_key: $('#cardNum')[0].value
-				, content: $('.content_textarea')[0].value
+			method : 'post',
+			url : '/main/updateContent',
+			data : {
+				c_key : $('#cardNum')[0].value,
+				content : $('.content_textarea')[0].value
 			}
-		}).done(function(msg){
-			
-// 			if(msg == 0) {
-				$('.content_div').text(content);
-// 			} else {
-// 				$('.content_div').text('');
-// 			}
-			
+		}).done(function(msg) {
+
+			// 			if(msg == 0) {
+			$('.content_div').text(content);
+			// 			} else {
+			// 				$('.content_div').text('');
+			// 			}
+
 		});
-		
+
 	}
 
 	function createReplyDiv(seq, cnt, m_id) {
@@ -580,8 +584,6 @@
 				function(msg) {
 
 					var listArr = JSON.parse(msg);
-					console.log(msg);
-					console.log(listArr);
 					$.each(listArr, function(i) {
 
 						var l_num = listArr[i].l_num;
@@ -754,7 +756,8 @@
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
 	<div
-		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
+		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
+		Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
@@ -804,18 +807,21 @@
 						<h1>card title</h1>
 						<div id="contentId">
 							<!-- 					<div class="card-desc"> -->
-<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
-							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="handelDesc(1);">&nbsp;content...</a>
+							<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
+							<a href="#" class="	 glyphicon-pencil content_tag"
+								onclick="handelDesc(1);">&nbsp;content...</a>
 							<div class="content_div"></div>
 							<div class="content_area" id="content_area">
 								<div class="content_text">
 									<textarea rows="10" cols="80" class="content_textarea"></textarea>
 								</div>
 								<div>
-									<button value="SAVE" style="width: 40px; height: 30px;" onclick="sendDesc();">
+									<button value="SAVE" style="width: 40px; height: 30px;"
+										onclick="sendDesc();">
 										<img alt="send" src="/resources/images/btn_send.png">
 									</button>
-									<button value="X" style="width: 40px; height: 30px;" onclick="handelDesc(0);">
+									<button value="X" style="width: 40px; height: 30px;"
+										onclick="handelDesc(0);">
 										<img alt="send" src="/resources/images/btn_cancel.png">
 									</button>
 								</div>

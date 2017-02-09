@@ -5,7 +5,6 @@
 	function onMessage(event) {
 
 		var data = event.data.split("::");
-		console.log(data);
 		var id = data[0];
 		var msg = data[1];
 		var access = data[2];
@@ -51,19 +50,35 @@
 					listSearch(b_num);
 				}
 			} else if ("connec" == access) {
-				var div = document.createElement('div');
-				div.id = id;
-				div.className = 'user';
+				console.log('${member}');
+				
+				if (id != '${sessionScope.id}') {
+					var div = document.createElement('div');
+					div.id = id;
+					div.className = 'user';
 
-				var content = document.createElement('div');
+					var content = document.createElement('div');
 
-				var contentText = document.createTextNode(msg);
+					var contentText = document.createTextNode(msg);
 
-				content.appendChild(contentText);
+					content.appendChild(contentText);
 
-				div.append(content);
-				$('#user').append(div);
+					div.append(content);
+					$('#user').append(div);
+				} else {
+					var div = document.createElement('div');
+					div.id = id;
+					div.className = 'user';
 
+					var content = document.createElement('div');
+
+					var contentText = document.createTextNode(msg);
+
+					content.appendChild(contentText);
+
+					div.append(content);
+					$('#user').append(div);
+				}
 			} else if ("unConnec" == access) {
 				$('#' + id).remove();
 			}
