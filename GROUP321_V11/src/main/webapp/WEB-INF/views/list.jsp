@@ -198,6 +198,14 @@
 }
 </style>
 <script>
+	document.onkeydown = refl;
+	function refl() {
+		if (event.keyCode == 116) {
+			event.keyCode = 0;
+			return false;
+		}
+	}
+
 	var b_num = '${b_num}';
 	var webSocket = new WebSocket('ws://211.183.8.14/list');
 	webSocket.onopen = function(event) {
@@ -399,10 +407,9 @@
 	}
 
 	function cardView(b_num, l_num, c_num) {
-
 		$('#cardReply').empty();
 		$('#commentArea').val('');
-
+		console.log(c_num);
 		$.ajax({
 			method : 'post',
 			url : '/main/selectCardDetail',
@@ -451,7 +458,6 @@
 
 			$('#commentArea').val('');
 
-			/* send($('#cardReply')[0].innerHTML ,'reply', replyInfo.m_id); */
 		});
 
 	}

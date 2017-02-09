@@ -12,7 +12,6 @@
 		var b_num = data[3];
 		var l_num = data[4];
 		var c_num = data[5];
-
 		if (b_num == '${sessionScope.b_num}') {
 
 			if ("message" == access) {
@@ -51,11 +50,6 @@
 					$('#mainList').html('');
 					listSearch(b_num);
 				}
-			} else if ("reply" == access) {
-				if (id != '${sessionScope.id}') {
-					$('#cardReply').empty();
-					$('#cardReply').html(msg);
-				}
 			} else if ("connec" == access) {
 				var div = document.createElement('div');
 				div.id = id;
@@ -73,6 +67,17 @@
 			} else if ("unConnec" == access) {
 				$('#' + id).remove();
 			}
+			/* else if ("reply" == access) {
+								if (id != '${sessionScope.id}'
+
+								&& c_num == '${sessionScope.c_num}') {
+									console.log(c_num);
+									console.log('ok');
+									$('#cardReply').empty();
+									$('#cardReply').html(msg);
+
+								}
+							}  */
 		}
 	}
 

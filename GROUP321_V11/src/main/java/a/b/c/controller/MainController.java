@@ -179,8 +179,15 @@ public class MainController {
 	@ResponseBody
 	public String selectCardDetail(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
+		session = request.getSession(false);
+		System.out.println("lnum : " + map.get("lnum") + " cnum : " + map.get("cnum"));
+
+		session.setAttribute("l_num", map.get("lnum"));
+		session.setAttribute("c_num", map.get("cnum"));
+		
+		System.out.println(session.getAttribute("c_num"));
+
 		List list = memberService.selectCardDetail(map);
-		System.out.println("cardDetail : " + list);
 		return new Gson().toJson(list);
 	}
 
