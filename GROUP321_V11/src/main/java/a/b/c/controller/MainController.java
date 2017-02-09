@@ -175,6 +175,16 @@ public class MainController {
 
 		return new Gson().toJson(obj);
 	}
+	
+	@RequestMapping(value = "/updateContent", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String updateContent(Locale locale, Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam Map map) {
+		List list = memberService.updateContent(map);
+
+		return "";
+	}
 
 	public String loginChk(@RequestParam Map map, HttpServletRequest request, HttpSession session, String route) {
 		session = request.getSession(false);
