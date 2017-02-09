@@ -33,6 +33,10 @@
 	float: left;
 }
 
+.list_title {
+	width: 90%;
+}
+
 .list_body {
 	width: 90%;
 }
@@ -268,6 +272,7 @@
 
 						var l_num = listArr[i].l_num;
 						var id = l_num;
+						var l_title = listArr[i].title;
 						var div = document.createElement('div');
 						div.id = 'list' + id;
 						div.className = 'list';
@@ -275,6 +280,9 @@
 						var viewList = document.createElement('div');
 						viewList.id = id;
 						viewList.className = 'viewList';
+						
+						var list_title = document.createElement('div');
+						list_title.className = 'list_title';
 
 						var list_foot = document.createElement('div');
 						list_foot.className = 'list_foot';
@@ -298,12 +306,15 @@
 
 						addCardDiv.appendChild(aTag);
 						list_foot.appendChild(addCardDiv);
-
+						
+						viewList.appendChild(list_title);
+						viewList.innerHTML = l_title;
 						viewList.appendChild(div);
 						viewList.appendChild(list_foot);
 
 						document.getElementById('mainList').appendChild(
 								viewList);
+						
 
 					});
 
@@ -369,7 +380,10 @@
 					var viewList = document.createElement('div');
 					viewList.id = id;
 					viewList.className = 'viewList';
-
+					
+					var list_title = document.createElement('div');
+					list_title.className = 'list_title';
+					
 					var list_foot = document.createElement('div');
 					list_foot.className = 'list_foot';
 
@@ -388,7 +402,9 @@
 					addCardDiv.appendChild(aTag);
 
 					list_foot.appendChild(addCardDiv);
-
+						
+					viewList.appendChild(list_title);
+					
 					viewList.appendChild(div);
 					viewList.appendChild(list_foot);
 
