@@ -8,10 +8,10 @@
 <title>Board</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="/resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <style>
-
 </style>
 <script>
 	var sessionId = '${sessionScope.id}';
@@ -84,7 +84,7 @@
 				div.className = 'board';
 
 				var aTag = document.createElement('a');
-				var createAText = document.createTextNode('프로젝트' + b_num);
+				var createAText = document.createTextNode(jArr[i].title + '_' + b_num);
 
 				aTag.setAttribute('href', '/main/list?b_num=' + b_num);
 				aTag.appendChild(createAText);
@@ -98,13 +98,13 @@
 
 	};
 
-	function addBoard() {
+	function addBoard(title) {
 		$.ajax({
 			method : 'post',
 			url : '/main/createBoard',
 			data : {
 				id : '${sessionScope.id}',
-				title : 'testTitle'
+				title : title
 			}
 
 		}).done(function(msg) {
@@ -116,7 +116,7 @@
 			div.className = 'board';
 
 			var aTag = document.createElement('a');
-			var createAText = document.createTextNode('프로젝트' + arrBoard.b_num);
+			var createAText = document.createTextNode(arrBoard.title + '_' + arrBoard.b_num);
 
 			aTag.setAttribute('href', '/main/list?b_num=' + arrBoard.b_num);
 			aTag.appendChild(createAText);
@@ -130,7 +130,24 @@
 			send(boardHtml, 'boardCreate', 'createBoard');
 			
 		});
-	}
+	};
+	
+	$(function(){
+		$('#CBContainer').css('display','none');
+		
+		$('#addBoard').click(function(){
+			$('#CBContainer').toggle();
+	    	$('#CBTitle').focus();
+			$('#CBTitle').val('');	 
+		});
+		
+		$('#CBSubmit').click(function(){
+			if ($('#CBTitle').val()) {
+				addBoard($('#CBTitle').val());
+			}
+		});
+	});
+	
 </script>
 </head>
 <body>
@@ -146,12 +163,20 @@
 		</form>
 	</header>
 	<!-- 타이틀바 -->
-	<div class="title-bar"><span class="title-main">Board</span></div>
+	<div class="title-bar">
+		<span class="title-main">Board</span>
+	</div>
 	<!-- 보드 -->
 	<div id="content">
 		<div id="viewBoard"></div>
 		<div id="createBoard"></div>
-		<div id="addBoard" onclick="addBoard();">Create</div>
+		<div id="addBoard">
+			<div>Create</div>
+			<div id="CBContainer">
+				<textarea id="CBTitle" style="width: 95%;"></textarea>
+				<button id="CBSubmit">SAVE</button>
+			</div>
+		</div>
 	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
