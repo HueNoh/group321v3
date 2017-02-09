@@ -33,6 +33,8 @@ public class HomeController {
 
 	@Autowired
 	MemberServiceInterface memberService;
+	
+	public static List<HttpSession> user;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -66,8 +68,9 @@ public class HomeController {
 			session = request.getSession();
 			session.setAttribute("id", map.get("id"));
 			session.setAttribute("b_num", 0);
+			 
 			loginChk = "redirect:/main/board";
-
+			
 		} else {
 			loginChk = "home";
 			model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");

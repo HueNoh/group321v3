@@ -62,6 +62,7 @@
     } );
 
     $( '.js-toggle-right-slidebar' ).on( 'click', function ( event ) {
+    	closeChat();
         event.stopPropagation();
         controller.toggle( 'slidebar-2' );
     } );

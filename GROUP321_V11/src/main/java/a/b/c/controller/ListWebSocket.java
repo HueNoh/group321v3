@@ -72,6 +72,18 @@ public class ListWebSocket {
 						client.getBasicRemote()
 								.sendText(id + "::" + msg + "::" + access + "::" + b_num + "::" + l_num + "::" + c_num);
 					}
+				} else if ("connec".equals(access)) {
+					for (int i = 0; i < clients.size(); i++) {
+						Session client = clients.get(i);
+						client.getBasicRemote()
+								.sendText(id + "::" + msg + "::" + access + "::" + b_num + "::" + l_num + "::" + c_num);
+					}
+				} else if ("unConnec".equals(access)) {
+					for (int i = 0; i < clients.size(); i++) {
+						Session client = clients.get(i);
+						client.getBasicRemote()
+								.sendText(id + "::" + msg + "::" + access + "::" + b_num + "::" + l_num + "::" + c_num);
+					}
 				}
 			}
 
@@ -85,13 +97,14 @@ public class ListWebSocket {
 	@OnOpen
 	public void onOpen(Session session) {
 		// Add session to the connected sessions set
+
 		clients.add(session);
 	}
 
 	@OnClose
 	public void onClose(Session session) {
 		// Remove session from the connected sessions set
-
+System.out.println("종종");
 		clients.remove(session);
 
 	}

@@ -198,6 +198,7 @@
 }
 </style>
 <script>
+	var b_num = '${b_num}';
 	var webSocket = new WebSocket('ws://211.183.8.14/list');
 	webSocket.onopen = function(event) {
 		onOpen(event)
@@ -213,7 +214,6 @@
 		onMessage(event)
 	};
 
-	var b_num = '${b_num}';
 	var numOfList = 0; // 전체 리스트 갯수
 	window.onload = function() {
 
@@ -505,7 +505,6 @@
 			}
 		}).done(
 				function(msg) {
-
 					var listArr = JSON.parse(msg);
 
 					$.each(listArr, function(i) {
@@ -604,9 +603,9 @@
 						var parentId = ev.toElement.parentElement.id;
 						var cardArr = '';
 
-						send(ev.target.innerHTML, 'cardMove', 'list' + id,
-								'${sessionScope.b_num}', '0', '0');
 						if (targetId == parentId) {
+							send(ev.target.innerHTML, 'cardMove', 'list' + id,
+									'${sessionScope.b_num}', '0', '0');
 
 							for (var i = 0; i < result1.length; i++) {
 								if (i < (result1.length - 1)) {
@@ -634,13 +633,31 @@
 					}
 				});
 	}
+	function openChat() {
+
+		send('${sessionScope.id}', 'connec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
+		document.getElementById("mySidenavChat").style.width = "600px";
+	}
+
+	function closeChat() {
+		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
+		document.getElementById("mySidenavChat").style.width = "0";
+	}
+
+	function unConnect() {
+		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
+	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
 <body>
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1 style="top: -10px;">PROJECT 321</h1></a> <a
-			href="#" class="btn_board"> <img alt="board"
+		<a href="/main/board"><h1 style="top: -10px;"
+				onclick="unConnect();">PROJECT 321</h1></a> <a href="#"
+			class="btn_board"> <img alt="board"
 			src="/resources/images/btn_board.png" class="btn-board"> <span>&nbsp;&nbsp;Boards</span>
 		</a>
 		<form action="#" method="post" id="sch_main_wrap">
@@ -820,8 +837,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="/resources/js/jquery-ui.js"></script>
 <script src="/resources/js/slidebars.js"></script>
-<script src="/resources/js/slidebars.atj.js"></script>
-<script src="/resources/js/sortable.atj.js"></script>
 <script src="/resources/js/scripts.js"></script>
 
 </html>

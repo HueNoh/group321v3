@@ -2,9 +2,11 @@ package a.b.c.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +33,7 @@ public class MainController {
 
 	@Autowired
 	MemberServiceInterface memberService;
+	InBoardMember inBoardMember;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
@@ -46,12 +49,54 @@ public class MainController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
 		session = request.getSession(false);
-		session.setAttribute("b_num", request.getParameter("b_num"));
-		model.addAttribute("b_num", request.getParameter("b_num"));
-		
-		System.out.println("session : " + request.getRequestedSessionId());
-		map.put("id", session.getAttribute("id"));
-		map.put("bnum", map.get("b_num"));
+
+		List inBoardMemberList = inBoardMember.getInstanceList();
+		String userId = (String) session.getAttribute("id");
+		int b_num = Integer.valueOf(request.getParameter("b_num"));
+
+		session.setAttribute("b_num", b_num);
+		model.addAttribute("b_num", b_num);
+
+		Map member = new HashMap<>();
+		// 셋에 중복 검사
+		System.out.println(session.getAttribute("id"));
+
+		boolean isOk = false;
+		if (null != session.getAttribute("id")) {
+			for (int i = 0; i < inBoardMemberList.size(); i++) {
+				Map map2 = (Map) inBoardMemberList.get(i);
+				if (userId.equals((String) map2.get("userId"))) {
+					Map map3= new HashMap<>();
+					map3.put("userId", userId);
+					map3.put("b_num", b_num);
+					inBoardMemberList.set(i, map3);
+					isOk = true;
+				}
+			}
+			if (!isOk) {
+				Map map4= new HashMap<>();
+				map4.put("userId", userId);
+				map4.put("b_num", b_num);
+				inBoardMemberList.add(map4);
+			}
+		}
+
+		/*
+		 * if (null != session.getAttribute("id")) { if
+		 * (inBoardMemberSet.contains(userId)) {
+		 * inBoardMemberMap.remove(userId); inBoardMemberSet.add(userId);
+		 * inBoardMemberMap.put(userId, b_num); } else {
+		 * inBoardMemberSet.add(userId); inBoardMemberMap.put(userId, b_num); }
+		 * }
+		 */
+
+		System.out.println("=====================");
+		System.out.println(inBoardMemberList);
+		System.out.println("=====================");
+
+		model.addAttribute("member", inBoardMemberList);
+		map.put("id", userId);
+		map.put("bnum", b_num);
 		try {
 
 			List list = memberService.selectBoardMember(map);
