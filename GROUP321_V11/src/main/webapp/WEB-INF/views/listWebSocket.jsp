@@ -27,7 +27,6 @@
 
 				$.each($('#' + id)[0].childNodes, function(i) {
 					var lnum = this.id;
-
 					listSortable(lnum);
 				});
 			} else if ("cardMove" == access) {
@@ -36,7 +35,6 @@
 				$('#' + id).html(msg);
 				$.each($('#' + id)[0].childNodes, function(i) {
 					var lnum = this.id;
-
 					listSortable(lnum);
 				});
 			} else if ("cardCreate" == access) {

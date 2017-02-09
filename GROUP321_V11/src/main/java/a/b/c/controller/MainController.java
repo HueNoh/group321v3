@@ -45,10 +45,11 @@ public class MainController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
+		session = request.getSession(false);
 		session.setAttribute("b_num", request.getParameter("b_num"));
 		model.addAttribute("b_num", request.getParameter("b_num"));
-
-		session = request.getSession(false);
+		
+		System.out.println("session : " + request.getRequestedSessionId());
 		map.put("id", session.getAttribute("id"));
 		map.put("bnum", map.get("b_num"));
 		try {
@@ -138,7 +139,6 @@ public class MainController {
 		return new Gson().toJson(list);
 	}
 
-	
 	@RequestMapping(value = "/moveList", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -149,8 +149,6 @@ public class MainController {
 		return new Gson().toJson(map);
 	}
 
-	
-	
 	@RequestMapping(value = "/moveCard", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -170,11 +168,11 @@ public class MainController {
 			@RequestParam Map map) {
 		int result = memberService.addCardReply(map);
 		JsonObject obj = new JsonObject();
-		
+
 		obj.addProperty("m_id", (String) map.get("m_id"));
 		obj.addProperty("content", (String) map.get("content"));
 		obj.addProperty("seq", (int) map.get("seq"));
-		
+
 		return new Gson().toJson(obj);
 	}
 
@@ -190,13 +188,14 @@ public class MainController {
 		}
 		return loginChk;
 	}
-	
-	@RequestMapping(value = "/selectHistory", method = { RequestMethod.POST, RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+
+	@RequestMapping(value = "/selectHistory", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String selectHistory(Model model, @RequestParam Map map) {
 
 		List list = memberService.selectHistory(map);
-		System.out.println("히스토리가져오기:"+list);
+		System.out.println("히스토리가져오기:" + list);
 		return new Gson().toJson(list);
 	}
 }
