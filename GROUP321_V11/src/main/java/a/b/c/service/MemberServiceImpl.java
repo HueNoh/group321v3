@@ -192,6 +192,12 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		// TODO Auto-generated method stub
 		return memberDao.updateContent(map);
 	}
+	
+	@Override
+	public List updateLabel(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.updateLabel(map);
+	}
 
 	@Override
 	public int chkIdDup(Map map) {

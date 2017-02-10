@@ -190,8 +190,10 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.updateContent(map);
 	}
 
-
-	
-
+	@Override
+	public List updateLabel(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.updateContent(map);
+	}
 
 }
