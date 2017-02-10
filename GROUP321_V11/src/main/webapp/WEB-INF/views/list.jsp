@@ -724,7 +724,6 @@
 	
 	function label(num) {
 		var backgroundColor = $('#label'+num).css("background-color");
-		alert(backgroundColor);
 		$('#selected_label'+num).css('background-color',backgroundColor);
 		$('#selected_label'+num).show();
 	}
