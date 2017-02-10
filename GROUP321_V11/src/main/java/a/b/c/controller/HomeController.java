@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,7 +34,8 @@ public class HomeController {
 
 	@Autowired
 	MemberServiceInterface memberService;
-	
+	InBoardMember inBoardMember;
+
 	public static List<HttpSession> user;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -51,64 +53,71 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 
 		model.addAttribute("serverTime", formattedDate);
-		
+
 		return "home";
 	}
 
-	@RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value = "/login", method = { RequestMethod.POST, RequestMethod.GET })
 	public String login(Model model, @RequestParam Map map, HttpSession session, HttpServletRequest request) {
 		// String page = null;
 
-		int result = memberService.loginChk(map);
-		model.addAttribute("loginChk", result);
-
 		String loginChk = null;
 
-		if (result == 0) {
-			session = request.getSession();
-			session.setAttribute("id", map.get("id"));
-			session.setAttribute("b_num", 0);
-			 
-			loginChk = "redirect:/main/board";
+		List inBoardMemberList = inBoardMember.getInstanceList();
+		Set inBoardMemberSet = inBoardMember.getInstanceSet();
+		Map inBoardMemberMap = inBoardMember.getInstanceMap();
+		
+		if (inBoardMemberSet.contains(map.get("id"))) {
+			model.addAttribute("err", "접속된 아이디입니다.");
+			loginChk = "home";
 			
 		} else {
-			loginChk = "home";
-			model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
+			int result = memberService.loginChk(map);
+			model.addAttribute("loginChk", result);
+
+			if (result == 0) {
+
+				session = request.getSession();
+				session.setAttribute("id", map.get("id"));
+				session.setAttribute("b_num", 0);
+				inBoardMemberSet.add(map.get("id"));
+				inBoardMemberMap.put(map.get("id"), 0);
+				
+				loginChk = "redirect:/main/board";
+
+			} else {
+				loginChk = "home";
+				model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
+			}
 		}
 		return loginChk;
 	}
-	
-	@RequestMapping(value = "/chkIdDup", method = {RequestMethod.GET, RequestMethod.POST})
+
+	@RequestMapping(value = "/chkIdDup", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public int chkId(Locale locale, Model model, @RequestParam Map map) {
 		logger.info("Welcome dupCheck! The client locale is {}.", locale);
-		
-		System.out.println("�븘�씠�뵒泥댄겕: "+map);
-		
+
+		System.out.println("�븘�씠�뵒泥댄겕: " + map);
+
 		int result = memberService.chkIdDup(map);
 		System.out.println(result);
-		
-			
+
 		return result;
 
 	}
 
-		
-
-	
-	
-	@RequestMapping(value = "/insertForm", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/insertForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String register(Locale locale, Model model, @RequestParam Map map) {
 		logger.info("Welcome insert! The client locale is {}.", locale);
 
 		return "insertForm";
 	}
-	
-	
+
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insert(Locale locale, Model model, @RequestParam Map map) {
 		logger.info("Welcome insert! The client locale is {}.", locale);
-		
+
 		int result = 0;
 		try {
 			result = memberService.insertMember(map);
@@ -119,6 +128,5 @@ public class HomeController {
 		return "success";
 
 	}
-	
 
 }
