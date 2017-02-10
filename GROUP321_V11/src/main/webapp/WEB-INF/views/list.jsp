@@ -9,6 +9,7 @@
 <title>List</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="/resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="/resources/css/slidebars.css">
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
@@ -218,7 +219,7 @@
 	}
 
 	var b_num = '${b_num}';
-	var webSocket = new WebSocket('ws://211.183.8.14/list');
+	var webSocket = new WebSocket('ws://211.183.8.20/list');
 	webSocket.onopen = function(event) {
 		onOpen(event)
 
@@ -304,13 +305,13 @@
 
 	}
 
-	function addList() {
+	function addList(title) {
 		$.ajax({
 			method : 'post',
 			url : '/main/createList',
 			data : {
 				id : '${sessionScope.id}',
-				title : 'TestTitle',
+				title : title,
 				bnum : b_num
 
 			}
@@ -434,7 +435,6 @@
 					var detail = JSON.parse(msg);
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
-
 
 					handelDesc(0); // description textarea 숨기기
 
@@ -737,6 +737,26 @@
 		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
 				'${sessionScope.b_num}', '0', '0');
 	}
+
+	//hs
+	$(function() {
+		$('#CBContainer').css('display', 'none');
+
+		$('#addList').click(function() {
+			$('#CBContainer').toggle();
+			$('#CBTitle').focus();
+			$('#CBTitle').val('');
+		});
+
+		$('#CBSubmit').click(function() {
+			if ($('#CBTitle').val()) {
+				addList($('#CBTitle').val());
+			}
+		});
+
+		
+		
+	});
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
@@ -763,7 +783,13 @@
 			<p></p>
 			<div class="content">
 				<div id="mainList" class="mainList"></div>
-				<div id="addList" onclick="addList();">Create</div>
+				<div id="addList">
+					<div>Create</div>
+					<div id="CBContainer">
+						<textarea id="CBTitle" style="width: 95%;"></textarea>
+						<button id="CBSubmit">SAVE</button>
+					</div>
+				</div>
 			</div>
 		</div>
 

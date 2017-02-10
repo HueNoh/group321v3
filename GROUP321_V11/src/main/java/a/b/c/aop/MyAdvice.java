@@ -62,17 +62,19 @@ public class MyAdvice {
 //		String userId = request.getParameter("id");
 		String bnum = request.getParameter("bnum");
 		String title = request.getParameter("title");
+		System.out.println(bnum);
+		System.out.println(title);
 		String methodName = joinPoint.getSignature().getName();
 		String msg = null;
 		Map map = new HashMap();
 		msg = userId+" ";
-		if (methodName.equals("createBoard")){
+		/*if (methodName.equals("createBoard")){
 			msg += "님이 "+title+"보드를 생성하였습니다.";
 			map.put("bnum", bnum);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
-		} else if (methodName.equals("createList")) {
+		} else */if (methodName.equals("createList")) {
 			msg += "님이 "+title+"리스트를 생성하였습니다.";
 			map.put("bnum", bnum);
 			map.put("id", userId);
