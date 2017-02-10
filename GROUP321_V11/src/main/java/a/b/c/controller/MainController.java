@@ -51,50 +51,53 @@ public class MainController {
 		session = request.getSession(false);
 
 		List inBoardMemberList = inBoardMember.getInstanceList();
+		Set inBoardMemberSet = inBoardMember.getInstanceSet();
+		Map inBoardMemberMap = inBoardMember.getInstanceMap();
 		String userId = (String) session.getAttribute("id");
 		int b_num = Integer.valueOf(request.getParameter("b_num"));
 
 		session.setAttribute("b_num", b_num);
 		model.addAttribute("b_num", b_num);
 
-		Map member = new HashMap<>();
+		// Map member = new HashMap<>();
 		// 셋에 중복 검사
-		System.out.println(session.getAttribute("id"));
+		// System.out.println(session.getAttribute("id"));
+		// boolean isOk = false;
+		// if (null != session.getAttribute("id")) {
+		// for (int i = 0; i < inBoardMemberList.size(); i++) {
+		// Map map2 = (Map) inBoardMemberList.get(i);
+		// if (userId.equals((String) map2.get("userId"))) {
+		// Map map3 = new HashMap<>();
+		// map3.put("userId", userId);
+		// map3.put("b_num", b_num);
+		// inBoardMemberList.set(i, map3);
+		// isOk = true;
+		// }
+		// }
+		// if (!isOk) {
+		// Map map4 = new HashMap<>();
+		// map4.put("userId", userId);
+		// map4.put("b_num", b_num);
+		// inBoardMemberList.add(map4);
+		// }
+		// }
 
-		boolean isOk = false;
 		if (null != session.getAttribute("id")) {
-			for (int i = 0; i < inBoardMemberList.size(); i++) {
-				Map map2 = (Map) inBoardMemberList.get(i);
-				if (userId.equals((String) map2.get("userId"))) {
-					Map map3 = new HashMap<>();
-					map3.put("userId", userId);
-					map3.put("b_num", b_num);
-					inBoardMemberList.set(i, map3);
-					isOk = true;
-				}
-			}
-			if (!isOk) {
-				Map map4 = new HashMap<>();
-				map4.put("userId", userId);
-				map4.put("b_num", b_num);
-				inBoardMemberList.add(map4);
+			if (inBoardMemberSet.contains(userId)) {
+				inBoardMemberMap.remove(userId);
+				inBoardMemberSet.add(userId);
+				inBoardMemberMap.put(userId, b_num);
+			} else {
+				inBoardMemberSet.add(userId);
+				inBoardMemberMap.put(userId, b_num);
 			}
 		}
 
-		/*
-		 * if (null != session.getAttribute("id")) { if
-		 * (inBoardMemberSet.contains(userId)) {
-		 * inBoardMemberMap.remove(userId); inBoardMemberSet.add(userId);
-		 * inBoardMemberMap.put(userId, b_num); } else {
-		 * inBoardMemberSet.add(userId); inBoardMemberMap.put(userId, b_num); }
-		 * }
-		 */
-
 		System.out.println("=====================");
-		System.out.println(inBoardMemberList);
+		System.out.println(inBoardMemberMap);
 		System.out.println("=====================");
 
-		model.addAttribute("member", inBoardMemberList);
+		model.addAttribute("member", inBoardMemberMap);
 		map.put("id", userId);
 		map.put("bnum", b_num);
 		try {
@@ -184,7 +187,7 @@ public class MainController {
 
 		session.setAttribute("l_num", map.get("lnum"));
 		session.setAttribute("c_num", map.get("cnum"));
-		
+
 		System.out.println(session.getAttribute("c_num"));
 
 		List list = memberService.selectCardDetail(map);
@@ -227,7 +230,7 @@ public class MainController {
 
 		return new Gson().toJson(obj);
 	}
-	
+
 	@RequestMapping(value = "/updateContent", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody

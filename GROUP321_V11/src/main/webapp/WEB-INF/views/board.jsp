@@ -14,6 +14,11 @@
 <style>
 </style>
 <script>
+	history.pushState(null, null, location.href);
+	window.onpopstate = function(event) {
+		history.go(1);
+	}
+	
 	var sessionId = '${sessionScope.id}';
 	var createDiv = '';
 	var webSocket = new WebSocket('ws://211.183.8.14/board');
@@ -122,13 +127,11 @@
 			aTag.appendChild(createAText);
 			div.appendChild(aTag);
 
-			
-			
 			document.getElementById('createBoard').appendChild(div);
-			
+
 			var boardHtml = $('#board' + arrBoard.b_num)[0].outerHTML;
 			send(boardHtml, 'boardCreate', 'createBoard');
-			
+
 		});
 	};
 	

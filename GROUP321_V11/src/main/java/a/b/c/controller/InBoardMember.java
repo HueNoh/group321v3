@@ -19,6 +19,9 @@ public class InBoardMember {
 	public static Map getInstanceMap() {
 		return LazyHolder2.msgMap;
 	}
+	public static Set getInstanceSet() {
+		return LazyHolder3.msgSet;
+	}
 
 	private static class LazyHolder {
 		private static final List msgList = new ArrayList<>();
@@ -26,5 +29,8 @@ public class InBoardMember {
 
 	private static class LazyHolder2 {
 		private static final Map msgMap = new HashMap<>();
+	}
+	private static class LazyHolder3 {
+		private static final Set msgSet = new HashSet<>();
 	}
 }
