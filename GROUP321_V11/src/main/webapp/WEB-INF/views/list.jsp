@@ -9,6 +9,7 @@
 <title>List</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="/resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="/resources/css/slidebars.css">
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
@@ -297,13 +298,13 @@
 
 	}
 
-	function addList() {
+	function addList(title) {
 		$.ajax({
 			method : 'post',
 			url : '/main/createList',
 			data : {
 				id : '${sessionScope.id}',
-				title : 'TestTitle',
+				title : title,
 				bnum : b_num
 
 			}
@@ -428,14 +429,14 @@
 					var detail = JSON.parse(msg);
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
-					
+
 					console.log(detail);
-					
+
 					handelDesc(0); // description textarea 숨기기
-					
+
 					var content = cardInfo.content;
-					
-					if(null != content) {
+
+					if (null != content) {
 						$('.content_div').text(content);
 					} else {
 						$('.content_div').text('');
@@ -477,12 +478,12 @@
 		});
 
 	}
-	
+
 	function handelDesc(num) {
-		
+
 		$('.content_textarea').val('');
-		
-		if(num == 1) {
+
+		if (num == 1) {
 			$('.content_tag').hide();
 			$('.content_area').show();
 			$('.content_div').hide();
@@ -491,31 +492,31 @@
 			$('.content_area').hide();
 		}
 	}
-	
+
 	function sendDesc() {
 		$('.content_tag').show();
 		$('.content_div').show();
 		$('.content_area').hide();
-		
+
 		var content = $('.content_textarea').val();
-		
+
 		$.ajax({
-			method: 'post'
-			, url: '/main/updateContent'
-			, data: {
-				c_key: $('#cardNum')[0].value
-				, content: $('.content_textarea')[0].value
+			method : 'post',
+			url : '/main/updateContent',
+			data : {
+				c_key : $('#cardNum')[0].value,
+				content : $('.content_textarea')[0].value
 			}
-		}).done(function(msg){
-			
-// 			if(msg == 0) {
-				$('.content_div').text(content);
-// 			} else {
-// 				$('.content_div').text('');
-// 			}
-			
+		}).done(function(msg) {
+
+			// 			if(msg == 0) {
+			$('.content_div').text(content);
+			// 			} else {
+			// 				$('.content_div').text('');
+			// 			}
+
 		});
-		
+
 	}
 
 	function createReplyDiv(seq, cnt, m_id) {
@@ -735,6 +736,26 @@
 		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
 				'${sessionScope.b_num}', '0', '0');
 	}
+
+	//hs
+	$(function() {
+		$('#CBContainer').css('display', 'none');
+
+		$('#addList').click(function() {
+			$('#CBContainer').toggle();
+			$('#CBTitle').focus();
+			$('#CBTitle').val('');
+		});
+
+		$('#CBSubmit').click(function() {
+			if ($('#CBTitle').val()) {
+				addList($('#CBTitle').val());
+			}
+		});
+
+		
+		
+	});
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
@@ -754,13 +775,20 @@
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
 	<div
-		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
+		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
+		Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
 			<div class="content">
 				<div id="mainList" class="mainList"></div>
-				<div id="addList" onclick="addList();">Create</div>
+				<div id="addList">
+					<div>Create</div>
+					<div id="CBContainer">
+						<textarea id="CBTitle" style="width: 95%;"></textarea>
+						<button id="CBSubmit">SAVE</button>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -804,18 +832,21 @@
 						<h1>card title</h1>
 						<div id="contentId">
 							<!-- 					<div class="card-desc"> -->
-<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
-							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="handelDesc(1);">&nbsp;content...</a>
+							<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
+							<a href="#" class="	 glyphicon-pencil content_tag"
+								onclick="handelDesc(1);">&nbsp;content...</a>
 							<div class="content_div"></div>
 							<div class="content_area" id="content_area">
 								<div class="content_text">
 									<textarea rows="10" cols="80" class="content_textarea"></textarea>
 								</div>
 								<div>
-									<button value="SAVE" style="width: 40px; height: 30px;" onclick="sendDesc();">
+									<button value="SAVE" style="width: 40px; height: 30px;"
+										onclick="sendDesc();">
 										<img alt="send" src="/resources/images/btn_send.png">
 									</button>
-									<button value="X" style="width: 40px; height: 30px;" onclick="handelDesc(0);">
+									<button value="X" style="width: 40px; height: 30px;"
+										onclick="handelDesc(0);">
 										<img alt="send" src="/resources/images/btn_cancel.png">
 									</button>
 								</div>
