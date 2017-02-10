@@ -63,4 +63,5 @@ public interface MemberMapper {
 	public List selectCardReply(Map map);
 
 	public List updateContent(Map map);
+
 }

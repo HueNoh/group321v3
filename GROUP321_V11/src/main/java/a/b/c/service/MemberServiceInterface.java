@@ -38,4 +38,9 @@ public interface MemberServiceInterface {
 	public List selectHistory(Map map);
 
 	public List updateContent(Map map);
+
+	int insertMember(Map map) throws Exception;
+
+	public int chkIdDup(Map map);
+
 }

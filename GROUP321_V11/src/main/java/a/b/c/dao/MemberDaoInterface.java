@@ -63,4 +63,5 @@ public interface MemberDaoInterface {
 	public List selectCardReply(Map map);
 
 	public List updateContent(Map map);
+
 }

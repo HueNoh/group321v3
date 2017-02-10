@@ -190,4 +190,8 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.updateContent(map);
 	}
 
+
+	
+
+
 }

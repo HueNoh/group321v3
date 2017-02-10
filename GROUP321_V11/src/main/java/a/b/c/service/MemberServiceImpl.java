@@ -26,6 +26,19 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public int insertMember(Map map) throws Exception {
+		int result = memberDao.insertMember(map);
+		if (0 == result) {
+			map.put("name", map.get("id"));
+		} else {
+			System.out.println("실패");
+		}
+
+		return result;
+	}
+
+	@Override
 	public List searchBoard(Map map) {
 		// TODO Auto-generated method stub
 
@@ -178,5 +191,11 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List updateContent(Map map) {
 		// TODO Auto-generated method stub
 		return memberDao.updateContent(map);
+	}
+
+	@Override
+	public int chkIdDup(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.chkIdDup(map);
 	}
 }

@@ -55,7 +55,7 @@ public class HomeController {
 		return "home";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
 	public String login(Model model, @RequestParam Map map, HttpSession session, HttpServletRequest request) {
 		// String page = null;
 
@@ -77,5 +77,48 @@ public class HomeController {
 		}
 		return loginChk;
 	}
+	
+	@RequestMapping(value = "/chkIdDup", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public int chkId(Locale locale, Model model, @RequestParam Map map) {
+		logger.info("Welcome dupCheck! The client locale is {}.", locale);
+		
+		System.out.println("�븘�씠�뵒泥댄겕: "+map);
+		
+		int result = memberService.chkIdDup(map);
+		System.out.println(result);
+		
+			
+		return result;
+
+	}
+
+		
+
+	
+	
+	@RequestMapping(value = "/insertForm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String register(Locale locale, Model model, @RequestParam Map map) {
+		logger.info("Welcome insert! The client locale is {}.", locale);
+
+		return "insertForm";
+	}
+	
+	
+	@RequestMapping(value = "/insert", method = RequestMethod.POST)
+	public String insert(Locale locale, Model model, @RequestParam Map map) {
+		logger.info("Welcome insert! The client locale is {}.", locale);
+		
+		int result = 0;
+		try {
+			result = memberService.insertMember(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("�쁾�쁾�쁾�쁾�쁾�쁾personService.insertPerson(map)�쁾�쁾�쁾�쁾�쁾�쁾�쁾�쁾�쁾" + String.valueOf(result));
+		}
+		return "success";
+
+	}
+	
 
 }

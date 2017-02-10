@@ -12,7 +12,7 @@
 	<style>
 		
 	</style>
-	  
+	   
 	  
   </head>
  <body>
@@ -20,7 +20,8 @@
 <div class="box">
 <form action="/login" id="log" method="post">
 
-<h1>project321</h1>
+<h2>가입을 환영합니다</h2>
+<h3>로그인을 해주세요</h3>
 
 <input type="text" name="id" placeholder="아이디" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
   
@@ -30,14 +31,7 @@
 
 </form>
 
-<form action="/insertForm" id="ins" method="post">
 
-<a href="ins" onclick="document.getElementById('ins').submit();" ><div id="btn2">회원가입</div></a> <!-- End Btn2 -->
- 
-
-
-
-</form>
 
 </div> <!-- End Box -->
 

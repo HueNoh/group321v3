@@ -145,16 +145,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		}
 	</select>
 	<!-- 히스토리 -->
-	<select id="insertHistory" statementType="CALLABLE"
-		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	<select id="insertHistory" statementType="CALLABLE" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
 		{
 		call
 		insertHistory(#{bnum}, #{msg})
 		}
 	</select>
-	
-	<select id="selectHistory" statementType="CALLABLE"
-		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+	<select id="selectHistory" statementType="CALLABLE" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
 		{
 		call
 		selectHistory(#{bnum})
@@ -236,12 +236,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		c_key = #{c_key}
 
 	</select>
-	
+
 	<select id="updateContent" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		update tb_card
 		set content = #{content}
-		where c_key = #{c_key}
+		where c_key =
+		#{c_key}
 	</select>
 
 </mapper>
