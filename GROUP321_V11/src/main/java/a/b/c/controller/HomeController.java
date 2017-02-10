@@ -114,7 +114,7 @@ public class HomeController {
 			result = memberService.insertMember(map);
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.debug("�쁾�쁾�쁾�쁾�쁾�쁾personService.insertPerson(map)�쁾�쁾�쁾�쁾�쁾�쁾�쁾�쁾�쁾" + String.valueOf(result));
+			logger.debug("personService.insertPerson(map)" + String.valueOf(result));
 		}
 		return "success";
 
