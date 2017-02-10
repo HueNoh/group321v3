@@ -127,6 +127,8 @@
 
 .label_name {
 	height: 40px;
+	margin-top: 10px;
+	display: block;
 }
 
 .submenu {
@@ -151,31 +153,38 @@
 }
 
 .submenu>li:nth-child(2) {
-	background-color: red;
+/* 	background-color: red; */
+	background-color: #A80700;
 }
 
 .submenu>li:nth-child(3) {
-	background-color: orange;
+/* 	background-color: orange; */
+	background-color: #E56D29;
 }
 
 .submenu>li:nth-child(4) {
-	background-color: yellow;
+/* 	background-color: yellow; */
+	background-color: #FFE641;
 }
 
 .submenu>li:nth-child(5) {
-	background-color: green;
+/* 	background-color: green; */
+	background-color: #68D168;
 }
 
 .submenu>li:nth-child(6) {
-	background-color: blue;
+/* 	background-color: blue; */
+	background-color: #52E4DC;
 }
 
 .submenu>li:nth-child(7) {
-	background-color: #98F5FF;
+/* 	background-color: #98F5FF; */
+	background-color: #3296FF;
 }
 
 .submenu>li:nth-child(8) {
-	background-color: violet;
+/* 	background-color: violet; */
+	background-color: #6A5ACD;
 }
 
 .label_div > input{
@@ -746,8 +755,7 @@
 		</form>
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div
-		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
+	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
 		Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
@@ -801,6 +809,9 @@
 							<input id="selected_label2" type="button" >
 							<input id="selected_label3" type="button" >
 							<input id="selected_label4" type="button" >
+							<input id="selected_label5" type="button" >
+							<input id="selected_label6" type="button" >
+							<input id="selected_label7" type="button" >
 						</div>
 						
 						<div id="contentId">

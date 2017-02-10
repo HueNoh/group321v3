@@ -43,4 +43,5 @@ public interface MemberServiceInterface {
 
 	public int chkIdDup(Map map);
 
+	public List updateLabel(Map map);
 }
