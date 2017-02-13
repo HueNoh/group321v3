@@ -14,7 +14,11 @@
 		if (b_num == '${sessionScope.b_num}') {
 
 			if ("message" == access) {
-				chat(msg, id);
+				if (chatOnOff) {
+					chat(msg, id);
+				} else {
+					alert(msg);
+				}
 
 				$('.display').scrollTop($('.display')[0].scrollHeight);
 
@@ -90,7 +94,7 @@
 	}
 
 	function onError(event) {
-// 		alert(event.data);
+		// 		alert(event.data);
 	}
 
 	function onClose() {

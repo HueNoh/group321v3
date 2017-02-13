@@ -142,7 +142,7 @@
 	background-color: white;
 }
 
-.submenu > li {
+.submenu>li {
 	margin: 0 7px 0 7px;
 	border-radius: 5px;
 	margin-bottom: 5px;
@@ -154,46 +154,45 @@
 }
 
 .submenu>li:nth-child(2) {
-/* 	background-color: red; */
+	/* 	background-color: red; */
 	background-color: #A80700;
 }
 
 .submenu>li:nth-child(3) {
-/* 	background-color: orange; */
+	/* 	background-color: orange; */
 	background-color: #E56D29;
 }
 
 .submenu>li:nth-child(4) {
-/* 	background-color: yellow; */
+	/* 	background-color: yellow; */
 	background-color: #FFE641;
 }
 
 .submenu>li:nth-child(5) {
-/* 	background-color: green; */
+	/* 	background-color: green; */
 	background-color: #68D168;
 }
 
 .submenu>li:nth-child(6) {
-/* 	background-color: blue; */
+	/* 	background-color: blue; */
 	background-color: #52E4DC;
 }
 
 .submenu>li:nth-child(7) {
-/* 	background-color: #98F5FF; */
+	/* 	background-color: #98F5FF; */
 	background-color: #3296FF;
 }
 
 .submenu>li:nth-child(8) {
-/* 	background-color: violet; */
+	/* 	background-color: violet; */
 	background-color: #6A5ACD;
 }
 
-.label_div > input{
+.label_div>input {
 	display: none;
-	width:80px;
+	width: 80px;
 	height: 20px;
 }
-
 </style>
 <script>
 	document.onkeydown = refl;
@@ -209,6 +208,8 @@
 	window.onpopstate = function(event) {
 		history.go(1);
 	}
+
+	var chatOnOff = false;
 
 	var b_num = '${b_num}';
 	var webSocket = new WebSocket('ws://211.183.8.20/list');
@@ -228,9 +229,13 @@
 	};
 
 	var numOfList = 0; // 전체 리스트 갯수
-	
+
 	window.onload = function() {
-		var users = ${users};
+		var users = $
+		{
+			users
+		}
+		;
 		userConnection(users);
 		$('#mainList').sortable(
 				{
@@ -433,25 +438,28 @@
 					handelDesc(0); // description textarea 숨기기
 
 					var content = cardInfo.content;
-					
+
 					var label = cardInfo.label;
-					console.log('label: '+label);
-// 					var labelArr = null;
-					
-					if(null == label) {
+					console.log('label: ' + label);
+					// 					var labelArr = null;
+
+					if (null == label) {
 						label = "0,0,0,0,0,0,0";
 					}
-					
+
 					var labelArr = label.split(',');
-					
- 					for(var i=1; i<=7; i++) {
- 						$('#selected_label'+i).hide();
- 						if('0' != labelArr[i-1]) {
- 							$('#selected_label'+i).css('background-color',rgb2hex($('#label'+i).css("background-color")));
- 							$('#selected_label'+i).show();
- 						}
- 					}
-					
+
+					for (var i = 1; i <= 7; i++) {
+						$('#selected_label' + i).hide();
+						if ('0' != labelArr[i - 1]) {
+							$('#selected_label' + i).css(
+									'background-color',
+									rgb2hex($('#label' + i).css(
+											"background-color")));
+							$('#selected_label' + i).show();
+						}
+					}
+
 					if (null != content) {
 						$('.content_div').text(content);
 					} else {
@@ -733,11 +741,14 @@
 				});
 	}
 	function openChat() {
-
+		chatOnOff = true;
+		console.log(chatOnOff);
 		document.getElementById("mySidenavChat").style.width = "600px";
 	}
 
 	function closeChat() {
+		chatOnOff = false;
+		console.log(chatOnOff);
 		document.getElementById("mySidenavChat").style.width = "0";
 	}
 
@@ -793,88 +804,84 @@
 			$('#user').append(div);
 		});
 	}
- 	
-	function label(num) {
-		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
-		$('#selected_label'+num).css('background-color',backgroundColor);
 
-		var isNone = $('#selected_label'+num).css('display');
-		
-		
-		
+	function label(num) {
+		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
+		$('#selected_label' + num).css('background-color', backgroundColor);
+
+		var isNone = $('#selected_label' + num).css('display');
+
 		$.ajax({
 			method : 'post',
 			url : '/main/selectLabel',
 			data : {
-				c_key: $('#cardNum')[0].value
+				c_key : $('#cardNum')[0].value
 			}
-		}).done(function(msg){
+		}).done(function(msg) {
 			var detail = JSON.parse(msg);
-			
+
 			var label = detail.label;
-			
+
 			var labelArr;
-			
-			if('none' != isNone) {
-				labelArr = makeLabelArr(label, num,'del');
-				$('#selected_label'+num).hide();
+
+			if ('none' != isNone) {
+				labelArr = makeLabelArr(label, num, 'del');
+				$('#selected_label' + num).hide();
 			} else {
-				labelArr = makeLabelArr(label, num,'ins');
-				$('#selected_label'+num).show();
-	 		}
-		
-			
+				labelArr = makeLabelArr(label, num, 'ins');
+				$('#selected_label' + num).show();
+			}
+
 			var tempArr = labelArr.toString();
-			
-	 		$.ajax({
-				method: 'post'
-				, url: '/main/updateLabel'
-				, data: {
-					c_key: $('#cardNum')[0].value
-					, label: tempArr
+
+			$.ajax({
+				method : 'post',
+				url : '/main/updateLabel',
+				data : {
+					c_key : $('#cardNum')[0].value,
+					label : tempArr
 				}
-			}).done(function(msg){
-				
+			}).done(function(msg) {
+
 			});
-			
+
 		});
 	}
-	
-	
+
 	function makeLabelArr(label, num, action) {
- 		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
-		
+		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
+
 		var labelArr = label.split(',');
-		
-		if('ins' == action) {
-			labelArr[num-1] = backgroundColor;
-		} else if('del' == action){
-			labelArr[num-1] = 0;
+
+		if ('ins' == action) {
+			labelArr[num - 1] = backgroundColor;
+		} else if ('del' == action) {
+			labelArr[num - 1] = 0;
 		}
 		return labelArr;
 	}
-	
+
 	function selectLabelArr(c_key) {
 		$.ajax({
 			method : 'post',
 			url : '/main/selectLabel',
 			data : {
-				c_key: c_key
+				c_key : c_key
 			}
-		}).done(function(msg){
+		}).done(function(msg) {
 			var detail = JSON.parse(msg);
-			
+
 			var label = detail.label;
-			console.log('label1: '+label);
+			console.log('label1: ' + label);
 		});
 	}
-	
-	function rgb2hex(orig){
-		var rgb = orig.replace(/\s/g,'').match(/^rgba?\((\d+),(\d+),(\d+)/i);
-		return (rgb && rgb.length === 4) ? "#" +
-		("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-		("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-		("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : orig;
+
+	function rgb2hex(orig) {
+		var rgb = orig.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+)/i);
+		return (rgb && rgb.length === 4) ? "#"
+				+ ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2)
+				+ ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2)
+				+ ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2) : orig;
 	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
@@ -894,7 +901,8 @@
 		</form>
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
+	<div
+		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
 		Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
@@ -950,15 +958,15 @@
 
 						<h1>card title</h1>
 						<div class="label_div">
-							<input id="selected_label1" type="button" >
-							<input id="selected_label2" type="button" >
-							<input id="selected_label3" type="button" >
-							<input id="selected_label4" type="button" >
-							<input id="selected_label5" type="button" >
-							<input id="selected_label6" type="button" >
-							<input id="selected_label7" type="button" >
+							<input id="selected_label1" type="button"> <input
+								id="selected_label2" type="button"> <input
+								id="selected_label3" type="button"> <input
+								id="selected_label4" type="button"> <input
+								id="selected_label5" type="button"> <input
+								id="selected_label6" type="button"> <input
+								id="selected_label7" type="button">
 						</div>
-						
+
 						<div id="contentId">
 							<!-- 					<div class="card-desc"> -->
 							<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
@@ -996,7 +1004,7 @@
 								<ul class="submenu">
 									<span class="label_name">Labels</span>
 									<li id="label1" onclick="label('1');">&nbsp; <span></span>
-									</li >
+									</li>
 									<li id="label2" onclick="label('2');">&nbsp; <span></span>
 									</li>
 									<li id="label3" onclick="label('3');">&nbsp; <span></span>
@@ -1009,7 +1017,7 @@
 									</li>
 									<li id="label7" onclick="label('7');">&nbsp; <span></span>
 									</li>
-<!-- 									<a href="#" style="display: none;">add color...</a> -->
+									<!-- 									<a href="#" style="display: none;">add color...</a> -->
 								</ul>
 							</div>
 
