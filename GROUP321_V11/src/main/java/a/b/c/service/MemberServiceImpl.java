@@ -204,4 +204,10 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		// TODO Auto-generated method stub
 		return memberDao.chkIdDup(map);
 	}
+
+	@Override
+	public String selectLabel(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.selectLabel(map);
+	}
 }

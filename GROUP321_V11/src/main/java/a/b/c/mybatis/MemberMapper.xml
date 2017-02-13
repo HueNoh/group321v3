@@ -245,6 +245,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{c_key}
 	</select>
 	
+	<select id="selectLabel" resultType="String"
+		parameterType="java.util.HashMap">
+		select label
+		from tb_card
+		where c_key = #{c_key}
+	</select>
+	
 	<select id="updateLabel" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		update tb_card

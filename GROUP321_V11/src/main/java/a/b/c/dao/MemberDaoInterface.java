@@ -65,4 +65,6 @@ public interface MemberDaoInterface {
 	public List updateContent(Map map);
 
 	public List updateLabel(Map map);
+
+	public String selectLabel(Map map);
 }

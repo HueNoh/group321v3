@@ -429,11 +429,28 @@
 					var detail = JSON.parse(msg);
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
-
 					handelDesc(0); // description textarea 숨기기
 
 					var content = cardInfo.content;
-
+					
+					var label = cardInfo.label;
+					console.log('label: '+label);
+// 					var labelArr = null;
+					
+					if(null == label) {
+						label = "0,0,0,0,0,0,0";
+					}
+					
+					var labelArr = label.split(',');
+					
+ 					for(var i=1; i<=7; i++) {
+ 						$('#selected_label'+i).hide();
+ 						if('0' != labelArr[i-1]) {
+ 							$('#selected_label'+i).css('background-color',rgb2hex($('#label'+i).css("background-color")));
+ 							$('#selected_label'+i).show();
+ 						}
+ 					}
+					
 					if (null != content) {
 						$('.content_div').text(content);
 					} else {
@@ -751,11 +768,88 @@
 		
 		
 	});
-	
+ 	
 	function label(num) {
-		var backgroundColor = $('#label'+num).css("background-color");
+		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
 		$('#selected_label'+num).css('background-color',backgroundColor);
-		$('#selected_label'+num).show();
+
+		var isNone = $('#selected_label'+num).css('display');
+		
+		
+		
+		$.ajax({
+			method : 'post',
+			url : '/main/selectLabel',
+			data : {
+				c_key: $('#cardNum')[0].value
+			}
+		}).done(function(msg){
+			var detail = JSON.parse(msg);
+			
+			var label = detail.label;
+			
+			var labelArr;
+			
+			if('none' != isNone) {
+				labelArr = makeLabelArr(label, num,'del');
+				$('#selected_label'+num).hide();
+			} else {
+				labelArr = makeLabelArr(label, num,'ins');
+				$('#selected_label'+num).show();
+	 		}
+		
+			
+			var tempArr = labelArr.toString();
+			
+	 		$.ajax({
+				method: 'post'
+				, url: '/main/updateLabel'
+				, data: {
+					c_key: $('#cardNum')[0].value
+					, label: tempArr
+				}
+			}).done(function(msg){
+				
+			});
+			
+		});
+	}
+	
+	
+	function makeLabelArr(label, num, action) {
+ 		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
+		
+		var labelArr = label.split(',');
+		
+		if('ins' == action) {
+			labelArr[num-1] = backgroundColor;
+		} else if('del' == action){
+			labelArr[num-1] = 0;
+		}
+		return labelArr;
+	}
+	
+	function selectLabelArr(c_key) {
+		$.ajax({
+			method : 'post',
+			url : '/main/selectLabel',
+			data : {
+				c_key: c_key
+			}
+		}).done(function(msg){
+			var detail = JSON.parse(msg);
+			
+			var label = detail.label;
+			console.log('label1: '+label);
+		});
+	}
+	
+	function rgb2hex(orig){
+		var rgb = orig.replace(/\s/g,'').match(/^rgba?\((\d+),(\d+),(\d+)/i);
+		return (rgb && rgb.length === 4) ? "#" +
+		("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+		("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+		("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : orig;
 	}
 	
 </script>
