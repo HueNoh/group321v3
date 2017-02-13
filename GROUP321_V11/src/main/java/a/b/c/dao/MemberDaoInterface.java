@@ -64,4 +64,6 @@ public interface MemberDaoInterface {
 
 	public List updateContent(Map map);
 
+	public List memberConnection(Map map);
+
 }

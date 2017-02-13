@@ -66,7 +66,6 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		map.put("c_key", map.get("cnum"));
 
 		List list = memberDao.selectCardReply(map);
-		System.out.println("aewf:" + list);
 		for (int i = 0; i < list.size(); i++) {
 			map2.put(i, list.get(i));
 		}
@@ -137,7 +136,6 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		int result = 0;
 		try {
 			List list_maxCh = memberDao.maxCh_num(map);
-			System.out.println("list_maxCh.size() : " + list_maxCh.size());
 			if (0 < list_maxCh.size()) {
 				Map map_maxSeq = new HashMap<>();
 
@@ -191,6 +189,12 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List updateContent(Map map) {
 		// TODO Auto-generated method stub
 		return memberDao.updateContent(map);
+	}
+
+	@Override
+	public List memberConnection(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.memberConnection(map);
 	}
 
 	@Override

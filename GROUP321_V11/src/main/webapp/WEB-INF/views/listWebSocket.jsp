@@ -50,35 +50,23 @@
 					listSearch(b_num);
 				}
 			} else if ("connec" == access) {
-				console.log('${member}');
-				
-				if (id != '${sessionScope.id}') {
-					var div = document.createElement('div');
-					div.id = id;
-					div.className = 'user';
 
-					var content = document.createElement('div');
+				var div = document.createElement('div');
+				div.id = id;
+				div.className = 'user';
 
-					var contentText = document.createTextNode(msg);
+				var content = document.createElement('div');
 
-					content.appendChild(contentText);
+				var contentText = document.createTextNode(msg);
 
-					div.append(content);
-					$('#user').append(div);
-				} else {
-					var div = document.createElement('div');
-					div.id = id;
-					div.className = 'user';
+				content.appendChild(contentText);
 
-					var content = document.createElement('div');
+				div.append(content);
+				$('#user').append(div);
 
-					var contentText = document.createTextNode(msg);
+				/* 	var users=${users};
+					userConnection(users); */
 
-					content.appendChild(contentText);
-
-					div.append(content);
-					$('#user').append(div);
-				}
 			} else if ("unConnec" == access) {
 				$('#' + id).remove();
 			}
@@ -97,7 +85,8 @@
 	}
 
 	function onOpen(event) {
-
+		send('${sessionScope.id}', 'connec', '${sessionScope.id}',
+				'${sessionScope.b_num}', '0', '0');
 	}
 
 	function onError(event) {

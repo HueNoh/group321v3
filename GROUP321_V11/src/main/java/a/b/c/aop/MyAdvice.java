@@ -62,8 +62,6 @@ public class MyAdvice {
 //		String userId = request.getParameter("id");
 		String bnum = request.getParameter("bnum");
 		String title = request.getParameter("title");
-		System.out.println(bnum);
-		System.out.println(title);
 		String methodName = joinPoint.getSignature().getName();
 		String msg = null;
 		Map map = new HashMap();

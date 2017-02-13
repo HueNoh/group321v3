@@ -66,11 +66,11 @@ public class HomeController {
 		List inBoardMemberList = inBoardMember.getInstanceList();
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
-		
+
 		if (inBoardMemberSet.contains(map.get("id"))) {
 			model.addAttribute("err", "접속된 아이디입니다.");
 			loginChk = "home";
-			
+
 		} else {
 			int result = memberService.loginChk(map);
 			model.addAttribute("loginChk", result);
@@ -82,7 +82,7 @@ public class HomeController {
 				session.setAttribute("b_num", 0);
 				inBoardMemberSet.add(map.get("id"));
 				inBoardMemberMap.put(map.get("id"), 0);
-				
+
 				loginChk = "redirect:/main/board";
 
 			} else {

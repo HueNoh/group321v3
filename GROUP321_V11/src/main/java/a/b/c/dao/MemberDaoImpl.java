@@ -128,11 +128,13 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.selectCardDetail(map);
 	}
+
 	@Override
 	public List moveList(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.moveList(map);
 	}
+
 	@Override
 	public List moveCard(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
@@ -144,6 +146,7 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.msgInsert(map);
 	}
+
 	@Override
 	public int addCardReply(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
@@ -161,11 +164,13 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.maxCh_num(map);
 	}
+
 	@Override
 	public List maxCard_Reply(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.maxCard_Reply(map);
 	}
+
 	@Override
 	public List selectCardReply(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
@@ -190,8 +195,10 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.updateContent(map);
 	}
 
-
-	
-
+	@Override
+	public List memberConnection(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.memberConnection(map);
+	}
 
 }

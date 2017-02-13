@@ -2,10 +2,13 @@ package a.b.c.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,6 +34,7 @@ public class ChatController {
 
 	@Autowired
 	MemberServiceInterface memberService;
+	InBoardMember inBoardMember;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -43,10 +47,10 @@ public class ChatController {
 	public String chatMsg(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		System.out.println(map);
-		String error=null;
+		String error = null;
 
 		try {
-			
+
 			int result = memberService.msgInsert(map);
 			if (0 != result) {
 				error = "001";
@@ -59,8 +63,6 @@ public class ChatController {
 			e.printStackTrace();
 		}
 
-
-
 		return error;
 	}
 
@@ -70,12 +72,12 @@ public class ChatController {
 			@RequestParam Map map) {
 
 		Map map2 = new HashMap<>();
-		JsonArray jarr= new JsonArray();
+		JsonArray jarr = new JsonArray();
 		try {
 			List list = memberService.msgSelect(map);
 			for (int i = 0; i < list.size(); i++) {
 				map2 = (Map) list.get(i);
-				JsonObject obj= new JsonObject();
+				JsonObject obj = new JsonObject();
 				obj.addProperty("m_id", (String) map2.get("m_id"));
 				obj.addProperty("content", (String) map2.get("content"));
 				jarr.add(obj);
@@ -85,6 +87,36 @@ public class ChatController {
 			e.printStackTrace();
 		}
 		return new Gson().toJson(jarr);
+	}
+
+	@RequestMapping(value = "/ucConnection", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String ucConnection(Locale locale, Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam Map map) {
+		int b_num = Integer.valueOf((String) map.get("b_num"));
+
+		Map inBoardMemberMap = inBoardMember.getInstanceMap();
+		Set inBoardMemberSet = inBoardMember.getInstanceSet();
+
+		inBoardMemberMap.remove(session.getAttribute("id"));
+		inBoardMemberMap.put(session.getAttribute("id"), 0);
+
+		List list2 = new ArrayList<>();
+
+		Iterator it = inBoardMemberMap.keySet().iterator();
+		while (it.hasNext()) {
+			String id = (String) it.next();
+			if (b_num == (int) inBoardMemberMap.get(id)) {
+				list2.add(id);
+			}
+		}
+		System.out.println("===============================");
+		System.out.println("list2 : "+list2);
+		System.out.println("inBoardMemberMap : "+inBoardMemberMap);
+		System.out.println("===============================");
+		model.addAttribute("users", new Gson().toJson(list2));
+		
+		return new Gson().toJson(list2);
 	}
 
 }

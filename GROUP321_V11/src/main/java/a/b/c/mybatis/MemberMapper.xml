@@ -245,4 +245,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{c_key}
 	</select>
 
+	<select id="memberConnection" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		update tb_member_connection
+		set b_num = #{b_num}
+		where
+		m_id = #{m_id}
+	</select>
+
 </mapper>

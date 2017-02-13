@@ -45,7 +45,6 @@ public class BoardSocket {
 			try {
 				synchronized (clients) {
 					if ("board".equals(create)) {
-						System.out.println(msg);
 						for (int i = 0; i < clients.size(); i++) {
 							Session client = clients.get(i);
 							client.getBasicRemote().sendText(id + "::" + msg + "::" + access);

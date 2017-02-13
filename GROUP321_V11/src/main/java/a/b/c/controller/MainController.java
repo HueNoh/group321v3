@@ -3,6 +3,7 @@ package a.b.c.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -50,37 +51,16 @@ public class MainController {
 	public String list(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
 		session = request.getSession(false);
 
-		List inBoardMemberList = inBoardMember.getInstanceList();
-		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
+		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		String userId = (String) session.getAttribute("id");
-		int b_num = Integer.valueOf(request.getParameter("b_num"));
+		int b_num = Integer.valueOf((String) map.get("b_num"));
 
 		session.setAttribute("b_num", b_num);
 		model.addAttribute("b_num", b_num);
 
-		// Map member = new HashMap<>();
-		// 셋에 중복 검사
-		// System.out.println(session.getAttribute("id"));
-		// boolean isOk = false;
-		// if (null != session.getAttribute("id")) {
-		// for (int i = 0; i < inBoardMemberList.size(); i++) {
-		// Map map2 = (Map) inBoardMemberList.get(i);
-		// if (userId.equals((String) map2.get("userId"))) {
-		// Map map3 = new HashMap<>();
-		// map3.put("userId", userId);
-		// map3.put("b_num", b_num);
-		// inBoardMemberList.set(i, map3);
-		// isOk = true;
-		// }
-		// }
-		// if (!isOk) {
-		// Map map4 = new HashMap<>();
-		// map4.put("userId", userId);
-		// map4.put("b_num", b_num);
-		// inBoardMemberList.add(map4);
-		// }
-		// }
+		map.put("id", userId);
+		map.put("bnum", b_num);
 
 		if (null != session.getAttribute("id")) {
 			if (inBoardMemberSet.contains(userId)) {
@@ -93,24 +73,28 @@ public class MainController {
 			}
 		}
 
-		System.out.println("=====================");
-		System.out.println(inBoardMemberMap);
-		System.out.println("=====================");
-
-		model.addAttribute("member", inBoardMemberMap);
-		map.put("id", userId);
-		map.put("bnum", b_num);
-		try {
-
-			List list = memberService.selectBoardMember(map);
-			if (0 < list.size()) {
-
-				return loginChk(map, request, session, "list");
-			} else {
-				return loginChk(map, request, session, "list");
+		List list2 = new ArrayList<>();
+		Iterator it = inBoardMemberMap.keySet().iterator();
+		while (it.hasNext()) {
+			String id = (String) it.next();
+			// if (b_num == (int) inBoardMemberMap.get(id)) {
+			// list2.add(id);
+			// }
+			if (b_num == (int) inBoardMemberMap.get(id) && !userId.equals(id)) {
+				list2.add(id);
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		}
+		System.out.println("===============================");
+		System.out.println("list2 : " + list2);
+		System.out.println("inBoardMemberMap : " + inBoardMemberMap);
+		System.out.println("===============================");
+		model.addAttribute("users", new Gson().toJson(list2));
+
+		List list = memberService.selectBoardMember(map);
+		if (0 < list.size()) {
+
+			return loginChk(map, request, session, "list");
+		} else {
 			return loginChk(map, request, session, "list");
 		}
 
@@ -183,12 +167,9 @@ public class MainController {
 	public String selectCardDetail(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		session = request.getSession(false);
-		System.out.println("lnum : " + map.get("lnum") + " cnum : " + map.get("cnum"));
 
 		session.setAttribute("l_num", map.get("lnum"));
 		session.setAttribute("c_num", map.get("cnum"));
-
-		System.out.println(session.getAttribute("c_num"));
 
 		List list = memberService.selectCardDetail(map);
 		return new Gson().toJson(list);
@@ -209,9 +190,7 @@ public class MainController {
 	@ResponseBody
 	public String moveCard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-		System.out.println("move: " + map);
 		map.put("cardArr", map.get("msg"));
-		System.out.println(map);
 		List list = memberService.moveCard(map);
 		return new Gson().toJson("aa");
 	}

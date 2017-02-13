@@ -206,8 +206,7 @@
 	document.onkeydown = refl;
 	function refl() {
 		if (event.keyCode == 116) {
-			send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
-					'${sessionScope.b_num}', '0', '0');
+			unConnect();
 			location.href = '/main/board';
 			return false;
 		}
@@ -235,8 +234,10 @@
 	};
 
 	var numOfList = 0; // 전체 리스트 갯수
+	
 	window.onload = function() {
-
+		var users = ${users};
+		userConnection(users);
 		$('#mainList').sortable(
 				{
 					update : function(ev, ui) {
@@ -722,20 +723,29 @@
 	}
 	function openChat() {
 
-		send('${sessionScope.id}', 'connec', '${sessionScope.id}',
-				'${sessionScope.b_num}', '0', '0');
 		document.getElementById("mySidenavChat").style.width = "600px";
 	}
 
 	function closeChat() {
-		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
-				'${sessionScope.b_num}', '0', '0');
 		document.getElementById("mySidenavChat").style.width = "0";
 	}
 
 	function unConnect() {
-		send('${sessionScope.id}', 'unConnec', '${sessionScope.id}',
-				'${sessionScope.b_num}', '0', '0');
+		$.ajax({
+			url : '/chat/ucConnection',
+			method : 'post',
+			dataType : 'json',
+			data : {
+				b_num : '${sessionScope.b_num}'
+			}
+
+		}).done(
+				function(msg) {
+					send('${sessionScope.id}', 'unConnec',
+							'${sessionScope.id}', '${sessionScope.b_num}', '0',
+							'0');
+				});
+
 	}
 
 	//hs
@@ -754,9 +764,24 @@
 			}
 		});
 
-		
-		
 	});
+
+	function userConnection(users) {
+		$.each(users, function(i) {
+			var div = document.createElement('div');
+			div.id = users[i];
+			div.className = 'user';
+
+			var content = document.createElement('div');
+
+			var contentText = document.createTextNode(users[i]);
+
+			content.appendChild(contentText);
+
+			div.append(content);
+			$('#user').append(div);
+		});
+	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>

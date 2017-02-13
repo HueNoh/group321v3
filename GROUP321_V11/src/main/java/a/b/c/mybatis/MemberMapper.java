@@ -64,4 +64,6 @@ public interface MemberMapper {
 
 	public List updateContent(Map map);
 
+	public List memberConnection(Map map);
+
 }

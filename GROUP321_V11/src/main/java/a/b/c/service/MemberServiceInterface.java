@@ -26,7 +26,7 @@ public interface MemberServiceInterface {
 	public List insertList(Map map);
 
 	public List insertCard(Map map);
-	
+
 	public int addCardReply(Map map);
 
 	public List moveList(Map map);
@@ -38,6 +38,8 @@ public interface MemberServiceInterface {
 	public List selectHistory(Map map);
 
 	public List updateContent(Map map);
+
+	public List memberConnection(Map map);
 
 	int insertMember(Map map) throws Exception;
 
