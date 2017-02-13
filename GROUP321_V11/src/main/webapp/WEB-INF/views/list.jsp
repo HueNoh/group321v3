@@ -190,8 +190,11 @@
 
 .label_div>input {
 	display: none;
-	width: 80px;
+	width: 40px;
 	height: 20px;
+	border-radius: 5px;
+    border: 1px;
+    box-shadow: 2px 2px 1px lightslategrey;
 }
 </style>
 <script>
@@ -881,6 +884,7 @@
 	function closeMsg() {
 		document.getElementById("msgOff").style.top = "100%";
 	}
+		
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
@@ -904,6 +908,7 @@
 			</fieldset>
 			<a href="#"><span class="btn_ico_sch"></span></a>
 		</form>
+<!-- 		<button id="testDatepicker" style="width: 80px; height: 20px;"></button> -->
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
 	<div
@@ -929,7 +934,7 @@
 				<a class="menu-icon" href="#"><i class="icon-reorder"></i></a>
 				<ul class="side-menu">
 					<h2 class="title">Menu</h2>
-					<li class="link"><a href="#" class="link_tag1">Board</a></li>
+					<li class="link"><a href="#" class="link_tag1">Filter</a></li>
 					<li class="link" onclick="getHistory();"><a href="#"
 						class="link_tag2" id="myBtn">History</a></li>
 					<li class="link"><a href="#" onclick="openChat();"
@@ -1005,8 +1010,9 @@
 
 					<div class="card-detail-sidebar">
 						<button onclick="labelView();" class="btn-label-view dropdown">
+<!-- 						<input type="button" onclick="labelView();" class="btn-label-view dropdown"> -->
 							<span class="btn_label_toggle"><img alt="label"
-								src="/resources/images/btn-label.png" width="20px" height="20px"
+								src="/resources/images/btn_label.png" width="20px" height="20px"
 								class="btn-label">&nbsp;Label</span>
 							<div class="submenu_hidden">
 								<ul class="submenu">
@@ -1035,25 +1041,26 @@
 						<br> <br>
 						<button>
 							<span><img alt="label"
-								src="/resources/images/btn-attachment.png" width="20px"
+								src="/resources/images/btn_attachment.png" width="20px"
 								height="20px" class="btn-attachment">&nbsp;Attachment</span>
 						</button>
 						<br> <br>
 						<button>
 							<span><img alt="label"
-								src="/resources/images/btn-delete.png" width="20px"
+								src="/resources/images/btn_delete.png" width="20px"
 								height="20px" class="btn-delete">&nbsp;Delete</span>
 						</button>
 						<br> <br>
+<!-- 						<input type="text" id="date_picker"> -->
 						<button>
 							<span><img alt="label"
-								src="/resources/images/btn-delete.png" width="20px"
-								height="20px" class="btn-delete">&nbsp;empty1</span>
+								src="/resources/images/btn_calendar.png" width="20px"
+								height="20px" class="btn-calendar">&nbsp;&nbsp;&nbsp;Calendar</span>
 						</button>
 						<br> <br>
 						<button>
 							<span><img alt="label"
-								src="/resources/images/btn-delete.png" width="20px"
+								src="/resources/images/btn_delete.png" width="20px"
 								height="20px" class="btn-delete">&nbsp;empty2</span>
 						</button>
 						<br> <br>
