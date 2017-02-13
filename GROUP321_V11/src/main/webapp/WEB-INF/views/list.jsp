@@ -800,8 +800,6 @@
 
 		var isNone = $('#selected_label'+num).css('display');
 		
-		
-		
 		$.ajax({
 			method : 'post',
 			url : '/main/selectLabel',
@@ -840,7 +838,6 @@
 		});
 	}
 	
-	
 	function makeLabelArr(label, num, action) {
  		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
 		
@@ -853,22 +850,7 @@
 		}
 		return labelArr;
 	}
-	
-	function selectLabelArr(c_key) {
-		$.ajax({
-			method : 'post',
-			url : '/main/selectLabel',
-			data : {
-				c_key: c_key
-			}
-		}).done(function(msg){
-			var detail = JSON.parse(msg);
-			
-			var label = detail.label;
-			console.log('label1: '+label);
-		});
-	}
-	
+
 	function rgb2hex(orig){
 		var rgb = orig.replace(/\s/g,'').match(/^rgba?\((\d+),(\d+),(\d+)/i);
 		return (rgb && rgb.length === 4) ? "#" +
@@ -950,13 +932,13 @@
 
 						<h1>card title</h1>
 						<div class="label_div">
-							<input id="selected_label1" type="button" >
-							<input id="selected_label2" type="button" >
-							<input id="selected_label3" type="button" >
-							<input id="selected_label4" type="button" >
-							<input id="selected_label5" type="button" >
-							<input id="selected_label6" type="button" >
-							<input id="selected_label7" type="button" >
+							<input id="selected_label1" type="button" onclick="label('1')">
+							<input id="selected_label2" type="button" onclick="label('2')">
+							<input id="selected_label3" type="button" onclick="label('3')">
+							<input id="selected_label4" type="button" onclick="label('4')">
+							<input id="selected_label5" type="button" onclick="label('5')">
+							<input id="selected_label6" type="button" onclick="label('6')">
+							<input id="selected_label7" type="button" onclick="label('7')">
 						</div>
 						
 						<div id="contentId">
