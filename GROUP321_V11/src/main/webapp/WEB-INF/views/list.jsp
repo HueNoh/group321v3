@@ -231,11 +231,7 @@
 	var numOfList = 0; // 전체 리스트 갯수
 
 	window.onload = function() {
-		var users = $
-		{
-			users
-		}
-		;
+		var users = ${users};
 		userConnection(users);
 		$('#mainList').sortable(
 				{
