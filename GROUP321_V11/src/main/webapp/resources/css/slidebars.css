@@ -131,6 +131,10 @@ html, body {
 	position: absolute;
 	top: 0px;
 }
+.js-toggle-right-slidebar:hover {
+	text-decoration: none;
+	color: black;
+}
 
 .nav {
 	border: 1px;
