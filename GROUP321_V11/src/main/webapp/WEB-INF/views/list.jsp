@@ -436,25 +436,9 @@
 					var content = cardInfo.content;
 
 					var label = cardInfo.label;
-					console.log('label: ' + label);
-					// 					var labelArr = null;
-
-					if (null == label) {
-						label = "0,0,0,0,0,0,0";
-					}
-
-					var labelArr = label.split(',');
-
-					for (var i = 1; i <= 7; i++) {
-						$('#selected_label' + i).hide();
-						if ('0' != labelArr[i - 1]) {
-							$('#selected_label' + i).css(
-									'background-color',
-									rgb2hex($('#label' + i).css(
-											"background-color")));
-							$('#selected_label' + i).show();
-						}
-					}
+// 					console.log('label: ' + label);
+					
+					labelShow(label);
 
 					if (null != content) {
 						$('.content_div').text(content);
@@ -475,6 +459,26 @@
 				});
 
 	}
+	
+	function labelShow(label) {
+		if (null == label) {
+			label = "0,0,0,0,0,0,0";
+		}
+
+		var labelArr = label.split(',');
+
+		for (var i = 1; i <= 7; i++) {
+			$('#selected_label' + i).hide();
+			if ('0' != labelArr[i - 1]) {
+				$('#selected_label' + i).css(
+						'background-color',
+						rgb2hex($('#label' + i).css(
+								"background-color")));
+				$('#selected_label' + i).show();
+			}
+		}
+	}
+	
 	function comment() {
 		$.ajax({
 			method : 'post',
@@ -844,7 +848,6 @@
 
 		});
 	}
-
 	function makeLabelArr(label, num, action) {
 		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
 
@@ -856,21 +859,6 @@
 			labelArr[num - 1] = 0;
 		}
 		return labelArr;
-	}
-
-	function selectLabelArr(c_key) {
-		$.ajax({
-			method : 'post',
-			url : '/main/selectLabel',
-			data : {
-				c_key : c_key
-			}
-		}).done(function(msg) {
-			var detail = JSON.parse(msg);
-
-			var label = detail.label;
-			console.log('label1: ' + label);
-		});
 	}
 
 	function rgb2hex(orig) {
@@ -978,13 +966,13 @@
 
 						<h1>card title</h1>
 						<div class="label_div">
-							<input id="selected_label1" type="button"> <input
-								id="selected_label2" type="button"> <input
-								id="selected_label3" type="button"> <input
-								id="selected_label4" type="button"> <input
-								id="selected_label5" type="button"> <input
-								id="selected_label6" type="button"> <input
-								id="selected_label7" type="button">
+							<input id="selected_label1" type="button" onclick="label('1')">
+							<input id="selected_label2" type="button" onclick="label('2')">
+							<input id="selected_label3" type="button" onclick="label('3')">
+							<input id="selected_label4" type="button" onclick="label('4')">
+							<input id="selected_label5" type="button" onclick="label('5')">
+							<input id="selected_label6" type="button" onclick="label('6')">
+							<input id="selected_label7" type="button" onclick="label('7')">
 						</div>
 
 						<div id="contentId">
