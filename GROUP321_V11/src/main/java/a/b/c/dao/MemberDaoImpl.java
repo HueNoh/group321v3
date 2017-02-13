@@ -200,5 +200,15 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.memberConnection(map);
 	}
+	public List updateLabel(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.updateLabel(map);
+	}
+
+	@Override
+	public String selectLabel(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectLabel(map);
+	}
 
 }

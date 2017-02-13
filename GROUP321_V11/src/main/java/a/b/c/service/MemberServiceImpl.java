@@ -190,6 +190,12 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		// TODO Auto-generated method stub
 		return memberDao.updateContent(map);
 	}
+	
+	@Override
+	public List updateLabel(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.updateLabel(map);
+	}
 
 	@Override
 	public List memberConnection(Map map) {
@@ -201,5 +207,11 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public int chkIdDup(Map map) {
 		// TODO Auto-generated method stub
 		return memberDao.chkIdDup(map);
+	}
+
+	@Override
+	public String selectLabel(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.selectLabel(map);
 	}
 }

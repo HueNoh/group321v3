@@ -126,23 +126,27 @@
 	display: none;
 }
 
+.label_name {
+	height: 40px;
+	margin-top: 10px;
+	display: block;
+}
+
 .submenu {
-	/* 
-	top: 251px;
-    left: 1285px;
-    position: fixed;
-    margin-top: 20px;
-    background-color: white;
-    width: 300px;
-    border: 1px solid gray;
-    border-radius: 5px;
-     */
 	position: relative;
 	float: right;
 	margin-top: 20px;
-	border: 4px solid lightgray;
+	border: 1px solid lightgray;
+	box-shadow: 3px 4px 3px lightslategrey;
 	border-radius: 5px;
 	background-color: white;
+}
+
+.submenu > li {
+	margin: 0 7px 0 7px;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	width: 250px;
 }
 
 .submenu:first-child {
@@ -150,57 +154,46 @@
 }
 
 .submenu>li:nth-child(2) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: red;
-	width: 250px;
+/* 	background-color: red; */
+	background-color: #A80700;
 }
 
 .submenu>li:nth-child(3) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: orange;
-	width: 250px;
+/* 	background-color: orange; */
+	background-color: #E56D29;
 }
 
 .submenu>li:nth-child(4) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: yellow;
-	width: 250px;
+/* 	background-color: yellow; */
+	background-color: #FFE641;
 }
 
 .submenu>li:nth-child(5) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: green;
-	width: 250px;
+/* 	background-color: green; */
+	background-color: #68D168;
 }
 
 .submenu>li:nth-child(6) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: blue;
-	width: 250px;
+/* 	background-color: blue; */
+	background-color: #52E4DC;
 }
 
 .submenu>li:nth-child(7) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: navy;
-	width: 250px;
+/* 	background-color: #98F5FF; */
+	background-color: #3296FF;
 }
 
 .submenu>li:nth-child(8) {
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: violet;
-	width: 250px;
+/* 	background-color: violet; */
+	background-color: #6A5ACD;
 }
 
-/* .content_area {
+.label_div > input{
 	display: none;
-} */
+	width:80px;
+	height: 20px;
+}
+
 </style>
 <script>
 	document.onkeydown = refl;
@@ -219,6 +212,7 @@
 
 	var b_num = '${b_num}';
 	var webSocket = new WebSocket('ws://211.183.8.20/list');
+
 	webSocket.onopen = function(event) {
 		onOpen(event)
 
@@ -436,11 +430,28 @@
 					var detail = JSON.parse(msg);
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
-
 					handelDesc(0); // description textarea 숨기기
 
 					var content = cardInfo.content;
-
+					
+					var label = cardInfo.label;
+					console.log('label: '+label);
+// 					var labelArr = null;
+					
+					if(null == label) {
+						label = "0,0,0,0,0,0,0";
+					}
+					
+					var labelArr = label.split(',');
+					
+ 					for(var i=1; i<=7; i++) {
+ 						$('#selected_label'+i).hide();
+ 						if('0' != labelArr[i-1]) {
+ 							$('#selected_label'+i).css('background-color',rgb2hex($('#label'+i).css("background-color")));
+ 							$('#selected_label'+i).show();
+ 						}
+ 					}
+					
 					if (null != content) {
 						$('.content_div').text(content);
 					} else {
@@ -782,6 +793,89 @@
 			$('#user').append(div);
 		});
 	}
+ 	
+	function label(num) {
+		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
+		$('#selected_label'+num).css('background-color',backgroundColor);
+
+		var isNone = $('#selected_label'+num).css('display');
+		
+		
+		
+		$.ajax({
+			method : 'post',
+			url : '/main/selectLabel',
+			data : {
+				c_key: $('#cardNum')[0].value
+			}
+		}).done(function(msg){
+			var detail = JSON.parse(msg);
+			
+			var label = detail.label;
+			
+			var labelArr;
+			
+			if('none' != isNone) {
+				labelArr = makeLabelArr(label, num,'del');
+				$('#selected_label'+num).hide();
+			} else {
+				labelArr = makeLabelArr(label, num,'ins');
+				$('#selected_label'+num).show();
+	 		}
+		
+			
+			var tempArr = labelArr.toString();
+			
+	 		$.ajax({
+				method: 'post'
+				, url: '/main/updateLabel'
+				, data: {
+					c_key: $('#cardNum')[0].value
+					, label: tempArr
+				}
+			}).done(function(msg){
+				
+			});
+			
+		});
+	}
+	
+	
+	function makeLabelArr(label, num, action) {
+ 		var backgroundColor = rgb2hex($('#label'+num).css("background-color"));
+		
+		var labelArr = label.split(',');
+		
+		if('ins' == action) {
+			labelArr[num-1] = backgroundColor;
+		} else if('del' == action){
+			labelArr[num-1] = 0;
+		}
+		return labelArr;
+	}
+	
+	function selectLabelArr(c_key) {
+		$.ajax({
+			method : 'post',
+			url : '/main/selectLabel',
+			data : {
+				c_key: c_key
+			}
+		}).done(function(msg){
+			var detail = JSON.parse(msg);
+			
+			var label = detail.label;
+			console.log('label1: '+label);
+		});
+	}
+	
+	function rgb2hex(orig){
+		var rgb = orig.replace(/\s/g,'').match(/^rgba?\((\d+),(\d+),(\d+)/i);
+		return (rgb && rgb.length === 4) ? "#" +
+		("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+		("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+		("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : orig;
+	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
@@ -800,8 +894,7 @@
 		</form>
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div
-		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
+	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
 		Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
@@ -856,6 +949,16 @@
 						<input type="hidden" id="cardNum">
 
 						<h1>card title</h1>
+						<div class="label_div">
+							<input id="selected_label1" type="button" >
+							<input id="selected_label2" type="button" >
+							<input id="selected_label3" type="button" >
+							<input id="selected_label4" type="button" >
+							<input id="selected_label5" type="button" >
+							<input id="selected_label6" type="button" >
+							<input id="selected_label7" type="button" >
+						</div>
+						
 						<div id="contentId">
 							<!-- 					<div class="card-desc"> -->
 							<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
@@ -890,29 +993,24 @@
 								src="/resources/images/btn-label.png" width="20px" height="20px"
 								class="btn-label">&nbsp;Label</span>
 							<div class="submenu_hidden">
-								<div class="submenu_main">
-									<ul class="submenu">
-										<span>labels</span>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<li>&nbsp; <span></span>
-										</li>
-										<a href="#">add color...</a>
-									</ul>
-								</div>
-
+								<ul class="submenu">
+									<span class="label_name">Labels</span>
+									<li id="label1" onclick="label('1');">&nbsp; <span></span>
+									</li >
+									<li id="label2" onclick="label('2');">&nbsp; <span></span>
+									</li>
+									<li id="label3" onclick="label('3');">&nbsp; <span></span>
+									</li>
+									<li id="label4" onclick="label('4');">&nbsp; <span></span>
+									</li>
+									<li id="label5" onclick="label('5');">&nbsp; <span></span>
+									</li>
+									<li id="label6" onclick="label('6');">&nbsp; <span></span>
+									</li>
+									<li id="label7" onclick="label('7');">&nbsp; <span></span>
+									</li>
+<!-- 									<a href="#" style="display: none;">add color...</a> -->
+								</ul>
 							</div>
 
 						</button>

@@ -63,6 +63,10 @@ public interface MemberMapper {
 	public List selectCardReply(Map map);
 
 	public List updateContent(Map map);
+	
+	public List updateLabel(Map map);
+	
+	public String selectLabel(Map map);
 
 	public List memberConnection(Map map);
 
