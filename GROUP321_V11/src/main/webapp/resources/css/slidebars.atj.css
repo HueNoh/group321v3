@@ -50,6 +50,27 @@
 	margin-left: 50px;
 }
 
+.msgSide {
+	height: 150px;
+	width: 200px;
+	position: fixed;
+	z-index: 111;
+	top: 100%;
+	right: 0;
+	background-color: #FFFFFF;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+}
+
+.msgSide .closeMsg {
+	position: absolute;
+	top: 0;
+	right: 25px;
+	font-size: 36px;
+	margin-left: 50px;
+}
+
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
 	transition: margin-left .5s;

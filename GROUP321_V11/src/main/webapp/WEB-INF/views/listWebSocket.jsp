@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 
 <script type="text/javascript">
+	
 	function onMessage(event) {
 
 		var data = event.data.split("::");
@@ -17,7 +18,22 @@
 				if (chatOnOff) {
 					chat(msg, id);
 				} else {
-					alert(msg);
+
+					$('#message').empty();
+				 	var div = document.createElement('div');
+					div.id = 'offMsg';
+					div.className = 'offMsg';
+
+					var content = document.createElement('div');
+
+					var contentText = document.createTextNode(msg);
+
+					content.appendChild(contentText);
+					$('#message').append(content);
+					
+					openMsg();
+					
+					setInterval(closeMsg, 5000);
 				}
 
 				$('.display').scrollTop($('.display')[0].scrollHeight);

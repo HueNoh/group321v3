@@ -66,8 +66,8 @@ public class HomeController {
 		List inBoardMemberList = inBoardMember.getInstanceList();
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
-
-		if (inBoardMemberSet.contains(map.get("id"))) {
+		System.out.println(session.getAttribute("id"));
+		if (inBoardMemberSet.contains(session.getAttribute("id"))) {
 			model.addAttribute("err", "접속된 아이디입니다.");
 			loginChk = "home";
 

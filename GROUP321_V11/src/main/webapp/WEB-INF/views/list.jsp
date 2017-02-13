@@ -740,6 +740,7 @@
 		chatOnOff = true;
 		console.log(chatOnOff);
 		document.getElementById("mySidenavChat").style.width = "600px";
+		closeMsg();
 	}
 
 	function closeChat() {
@@ -879,10 +880,30 @@
 				+ ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2)
 				+ ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2) : orig;
 	}
+
+	function openMsg() {
+		var bodyHeight=document.body.offsetHeight-150;
+		
+		console.log(document.body.offsetHeight);
+		console.log(bodyHeight);
+		document.getElementById("msgOff").style.top = bodyHeight+"px";
+		
+	}
+
+	function closeMsg() {
+		document.getElementById("msgOff").style.top = "100%";
+	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
 <body>
+
+	<div id="msgOff" class="msgSide">
+		<a href="javascript:void(0)" class="closeMsg" onclick="closeMsg();">&times;</a>
+		<div id="message" onclick="openChat();"></div>
+	</div>
+
+
 	<header id="header" class="clearfix">
 		<a href="/main/board"><h1 style="top: -10px;"
 				onclick="unConnect();">PROJECT 321</h1></a> <a href="#"
@@ -942,6 +963,9 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
 			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
+
+
+
 		<div id="cardModal" class="card-modal">
 			<div class="modal-content">
 				<p>
@@ -1054,6 +1078,7 @@
 
 
 	</div>
+
 </body>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
