@@ -47,9 +47,9 @@ public class HomeController {
 	public String home(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
 		String route = null;
 		session = request.getSession(false);
-		if(null!=session){
+		if (null != session) {
 			route = "redirect:/main/board";
-		}else{
+		} else {
 			route = "/";
 		}
 
@@ -62,31 +62,62 @@ public class HomeController {
 
 		String loginChk = null;
 
-		List inBoardMemberList = inBoardMember.getInstanceList();
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
+
 		System.out.println(session.getAttribute("id"));
-		if (inBoardMemberSet.contains(session.getAttribute("id"))) {
-			model.addAttribute("err", "접속된 아이디입니다.");
-			loginChk = "home";
-
-		} else {
-			int result = memberService.loginChk(map);
-			model.addAttribute("loginChk", result);
-
-			if (result == 0) {
-
-				session = request.getSession();
-				session.setAttribute("id", map.get("id"));
-				session.setAttribute("b_num", 0);
-				inBoardMemberSet.add(map.get("id"));
-				inBoardMemberMap.put(map.get("id"), 0);
-
+		if (null != session.getAttribute("id")) {
+			if (session.getAttribute("id").equals(map.get("id"))) {
+				System.out.println(session.getAttribute("id"));
+				System.out.println(map.get("id"));
 				loginChk = "redirect:/main/board";
+			} else {
+				if (inBoardMemberSet.contains(map.get("id"))) {
+					model.addAttribute("err", "접속된 아이디입니다.");
+					loginChk = "home";
+
+				} else {
+					int result = memberService.loginChk(map);
+					model.addAttribute("loginChk", result);
+
+					if (result == 0) {
+
+						session = request.getSession();
+						session.setAttribute("id", map.get("id"));
+						session.setAttribute("b_num", 0);
+						inBoardMemberSet.add(map.get("id"));
+						inBoardMemberMap.put(map.get("id"), 0);
+
+						loginChk = "redirect:/main/board";
+
+					} else {
+						loginChk = "home";
+						model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
+					}
+				}
+			}
+		} else {
+			if (inBoardMemberSet.contains(map.get("id"))) {
+				model.addAttribute("err", "접속된 아이디입니다.");
+				loginChk = "home";
 
 			} else {
-				loginChk = "home";
-				model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
+				int result = memberService.loginChk(map);
+				model.addAttribute("loginChk", result);
+
+				if (result == 0) {
+
+					session = request.getSession();
+					session.setAttribute("id", map.get("id"));
+					session.setAttribute("b_num", 0);
+					inBoardMemberSet.add(map.get("id"));
+					inBoardMemberMap.put(map.get("id"), 0);
+
+					loginChk = "redirect:/main/board";
+				} else {
+					loginChk = "home";
+					model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
+				}
 			}
 		}
 		return loginChk;
