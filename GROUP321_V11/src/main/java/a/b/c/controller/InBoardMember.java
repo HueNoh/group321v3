@@ -12,24 +12,26 @@ public class InBoardMember {
 	private InBoardMember() {
 	}
 
-	public static List getInstanceList() {
-		return LazyHolder.msgList;
-	}
-	
 	public static Map getInstanceMap() {
-		return LazyHolder2.msgMap;
+		return LazyHolder.magMap;
 	}
+
+	public static Map getUserIpMap() {
+		return LazyHolderUser.userMap;
+	}
+
 	public static Set getInstanceSet() {
 		return LazyHolder3.msgSet;
 	}
 
 	private static class LazyHolder {
-		private static final List msgList = new ArrayList<>();
+		private static final Map magMap = new HashMap<>();
 	}
 
-	private static class LazyHolder2 {
-		private static final Map msgMap = new HashMap<>();
+	private static class LazyHolderUser {
+		private static final Map userMap = new HashMap<>();
 	}
+
 	private static class LazyHolder3 {
 		private static final Set msgSet = new HashSet<>();
 	}

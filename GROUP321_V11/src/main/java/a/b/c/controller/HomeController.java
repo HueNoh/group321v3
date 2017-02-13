@@ -3,6 +3,7 @@ package a.b.c.controller;
 import java.text.DateFormat;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -36,8 +37,6 @@ public class HomeController {
 	MemberServiceInterface memberService;
 	InBoardMember inBoardMember;
 
-	public static List<HttpSession> user;
-
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	/**
@@ -64,15 +63,33 @@ public class HomeController {
 
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
+		Map inUserIpMap = inBoardMember.getUserIpMap();
 
 		System.out.println(session.getAttribute("id"));
+
 		if (null != session.getAttribute("id")) {
-			if (session.getAttribute("id").equals(map.get("id"))) {
-				System.out.println(session.getAttribute("id"));
+
+			loginChk = "redirect:/main/board";
+
+		} else {
+			System.out.println(inUserIpMap);
+			boolean userOk = false;
+			
+			if (inBoardMemberSet.contains(map.get("id"))) {
 				System.out.println(map.get("id"));
-				loginChk = "redirect:/main/board";
-			} else {
-				if (inBoardMemberSet.contains(map.get("id"))) {
+				Iterator it = inUserIpMap.keySet().iterator();
+				while (it.hasNext()) {
+					String ip = (String) it.next();
+					if (inUserIpMap.get(ip).equals(map.get("id")) && !ip.equals(request.getRemoteHost())) {
+						userOk = true;
+						break;
+					} else {
+						userOk = false;
+					}
+
+				}
+				System.out.println(userOk);
+				if (userOk) {
 					model.addAttribute("err", "접속된 아이디입니다.");
 					loginChk = "home";
 
@@ -86,21 +103,15 @@ public class HomeController {
 						session.setAttribute("id", map.get("id"));
 						session.setAttribute("b_num", 0);
 						inBoardMemberSet.add(map.get("id"));
-						inBoardMemberMap.put(map.get("id"), 0);
+						inUserIpMap.remove(request.getRemoteHost());
+						inUserIpMap.put(request.getRemoteHost(), map.get("id"));
 
 						loginChk = "redirect:/main/board";
-
 					} else {
 						loginChk = "home";
 						model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
 					}
 				}
-			}
-		} else {
-			if (inBoardMemberSet.contains(map.get("id"))) {
-				model.addAttribute("err", "접속된 아이디입니다.");
-				loginChk = "home";
-
 			} else {
 				int result = memberService.loginChk(map);
 				model.addAttribute("loginChk", result);
@@ -111,7 +122,8 @@ public class HomeController {
 					session.setAttribute("id", map.get("id"));
 					session.setAttribute("b_num", 0);
 					inBoardMemberSet.add(map.get("id"));
-					inBoardMemberMap.put(map.get("id"), 0);
+					inUserIpMap.remove(request.getRemoteHost());
+					inUserIpMap.put(request.getRemoteHost(), map.get("id"));
 
 					loginChk = "redirect:/main/board";
 				} else {
@@ -119,6 +131,7 @@ public class HomeController {
 					model.addAttribute("err", "아이디와 비밀번호를 확인해 주세요.");
 				}
 			}
+
 		}
 		return loginChk;
 	}

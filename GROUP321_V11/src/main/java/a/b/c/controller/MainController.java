@@ -1,14 +1,11 @@
 package a.b.c.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import a.b.c.service.MemberServiceInterface;
 
@@ -39,19 +33,20 @@ public class MainController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
-
+		
 		return loginChk(map, request, session, "board");
 	}
 
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
 	public String board(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
+
 		return loginChk(map, request, session, "board");
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
 		session = request.getSession(false);
-
+		
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		String userId = (String) session.getAttribute("id");
@@ -85,10 +80,6 @@ public class MainController {
 				list2.add(id);
 			}
 		}
-		System.out.println("===============================");
-		System.out.println("list2 : " + list2);
-		System.out.println("inBoardMemberMap : " + inBoardMemberMap);
-		System.out.println("===============================");
 		model.addAttribute("users", new Gson().toJson(list2));
 
 		List list = memberService.selectBoardMember(map);
@@ -218,27 +209,27 @@ public class MainController {
 			@RequestParam Map map) {
 		List list = memberService.updateContent(map);
 		System.out.println(list);
-		
+
 		return "";
 	}
-	
+
 	@RequestMapping(value = "/selectLabel", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String selectLabel(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		String str = memberService.selectLabel(map);
-		
-		if(str == null) {
+
+		if (str == null) {
 			str = "0,0,0,0,0,0,0";
 		}
-		
+
 		JsonObject obj = new JsonObject();
 		obj.addProperty("label", str);
 
 		return new Gson().toJson(obj);
 	}
-	
+
 	@RequestMapping(value = "/updateLabel", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -246,8 +237,8 @@ public class MainController {
 			@RequestParam Map map) {
 		List list = memberService.updateLabel(map);
 		JsonObject obj = new JsonObject();
-		obj.addProperty("label", (String)map.get("label"));
-//
+		obj.addProperty("label", (String) map.get("label"));
+		//
 		return new Gson().toJson(obj);
 	}
 

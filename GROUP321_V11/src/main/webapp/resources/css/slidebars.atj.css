@@ -61,6 +61,7 @@
 	overflow-x: hidden;
 	transition: 0.5s;
 	padding-top: 60px;
+	border: 1px solid #999;
 }
 
 .msgSide .closeMsg {
