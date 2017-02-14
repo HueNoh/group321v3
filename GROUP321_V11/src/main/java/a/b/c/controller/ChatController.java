@@ -1,18 +1,24 @@
 package a.b.c.controller;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
+import javax.mail.internet.HeaderTokenizer.Token;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.parsing.TokenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,11 +81,38 @@ public class ChatController {
 		JsonArray jarr = new JsonArray();
 		try {
 			List list = memberService.msgSelect(map);
-			System.out.println(list);
 			for (int i = 0; i < list.size(); i++) {
 				map2 = (Map) list.get(i);
 				JsonObject obj = new JsonObject();
-				obj.addProperty("seq", (int) map2.get("seq"));
+
+				Date s = (Date) map2.get("regdate");
+				String date = String.valueOf(s);
+
+				StringTokenizer st = new StringTokenizer(date);
+				List dateList = new ArrayList<>();
+				while (st.hasMoreTokens()) {
+					dateList.add(st.nextToken());
+				}
+
+				StringTokenizer dateToken = new StringTokenizer((String) dateList.get(1), ":");
+				dateList.clear();
+
+				while (dateToken.hasMoreTokens()) {
+					dateList.add((String) dateToken.nextToken());
+				}
+
+				String h = null;
+				String m = (String) dateList.get(1);
+				String amPm = null;
+				if (12 > Integer.valueOf((String) dateList.get(0))) {
+					amPm = "오전";
+					h = (String) dateList.get(0);
+				} else {
+					amPm = "오후";
+					int temp = Integer.valueOf((String) dateList.get(0)) - 12;
+					h = temp + "";
+				}
+				obj.addProperty("date", amPm + " " + h + ":" + m);
 				obj.addProperty("m_id", (String) map2.get("m_id"));
 				obj.addProperty("content", (String) map2.get("content"));
 				jarr.add(obj);

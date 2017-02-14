@@ -15,7 +15,20 @@
 
 			if ("message" == access) {
 				if (chatOnOff) {
-					chat(msg, id);
+					var date = new Date();
+					var amPm = '';
+					var h = '';
+					var m = date.getMinutes();
+					if (12 > date.getHours()) {
+						amPm = '오전';
+						h = date.getHours();
+					} else {
+						amPm = '오후';
+						h = date.getHours() - 12;
+					}
+
+					var regDate = amPm + ' ' + h + ':' + m;
+					chat(msg, id, regDate);
 				} else {
 
 					$('#message').empty();
@@ -160,7 +173,7 @@
 
 	}
 
-	function chat(msg, id, seq) {
+	function chat(msg, id, regdate) {
 		if (id == '${sessionScope.id}') {
 
 			var div = document.createElement('div');
@@ -168,19 +181,23 @@
 
 			var content = document.createElement('div');
 			content.className = "myContent";
-			var writer = document.createElement('div');
-			writer.className = "msgWriter";
+
+			var date = document.createElement('div');
+			date.className = "myDate";
+
 			var b = document.createElement('div');
 			b.className = 'b';
 
 			var contentText = document.createTextNode(msg);
-			var writerText = document.createTextNode(id);
+			var dateText = document.createTextNode(regdate);
 
 			content.appendChild(contentText);
-			writer.appendChild(writerText);
+
+			date.appendChild(dateText);
 
 			div.append(b);
 			div.append(content);
+			div.append(date);
 
 			$('.display').append(div);
 		} else {
@@ -199,17 +216,24 @@
 			var writer = document.createElement('div');
 			writer.className = "memberWriter";
 
+			var date = document.createElement('div');
+			date.className = "memberDate";
+
 			var b = document.createElement('div');
 			b.className = 'm';
 
 			var contentText = document.createTextNode(msg);
 			var writerText = document.createTextNode(id);
+			var dateText = document.createTextNode(regdate);
 
 			content.appendChild(contentText);
 			writer.appendChild(writerText);
+			date.appendChild(dateText);
+
 			box.append(writer);
 			box.append(b);
 			box.append(content);
+			box.append(date);
 
 			div.append(box);
 
@@ -232,7 +256,8 @@
 
 			var data = JSON.parse(msg);
 			$.each(data, function(i) {
-				chat(data[i].content, data[i].m_id);
+				var regdate = data[i].date;
+				chat(data[i].content, data[i].m_id, regdate);
 			});
 
 			$('.display').scrollTop($('.display')[0].scrollHeight);
