@@ -159,11 +159,12 @@ public class MainController {
 	public String selectCardDetail(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		session = request.getSession(false);
-
+		
 		session.setAttribute("l_num", map.get("lnum"));
 		session.setAttribute("c_num", map.get("cnum"));
 
 		List list = memberService.selectCardDetail(map);
+		
 		return new Gson().toJson(list);
 	}
 

@@ -20,15 +20,17 @@
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
 .viewList, #addList {
-	width: 150px;
+	width: 200px;
 	height: 100%;
 	margin: 5px;
 	border: 1px solid black;
 	float: left;
 }
 
+
+
 .list {
-	width: 150px;
+	width: 200px;
 	height: 100%;
 	min-height: 10px;
 	float: left;
@@ -193,9 +195,48 @@
 	width: 40px;
 	height: 20px;
 	border-radius: 5px;
-    border: 1px;
-    box-shadow: 2px 2px 1px lightslategrey;
+	border: 1px;
+	box-shadow: 2px 2px 1px lightslategrey;
 }
+
+.list > .list-card > div:nth-child(1) {
+/*     border: 2px solid #A80700; */
+    background-color: #A80700;
+}
+.list > .list-card > div:nth-child(2) {
+/*     border: 2px solid #E56D29; */
+    background-color: #E56D29;
+}
+.list > .list-card > div:nth-child(3) {
+/*     border: 2px solid #FFE641; */
+    background-color: #FFE641;
+}
+.list > .list-card > div:nth-child(4) {
+/*     border: 2px solid #68D168; */
+    background-color: #68D168;
+}
+.list > .list-card > div:nth-child(5) {
+/*     border: 2px solid #52E4DC; */
+    background-color: #52E4DC;
+}
+.list > .list-card > div:nth-child(6) {
+/*     border: 2px solid #3296FF; */
+    background-color: #3296FF;
+}
+.list > .list-card > div:nth-child(7) {
+    /* border: 2px solid #6A5ACD; */
+    
+    background-color: #6A5ACD;
+}
+
+.list > .list-card > div { 
+ 	display: none; 
+	float: left;
+    width: 18px;
+    height: 3px;
+    margin-right: 4px;
+}
+
 </style>
 <script>
 	document.onkeydown = refl;
@@ -273,6 +314,7 @@
 				});
 
 		listSearch(b_num);
+
 		viewMsg();
 	};
 
@@ -404,6 +446,13 @@
 						cardView(b_num, l_num, c_num)
 
 					};
+					// 카드 내부의 label div 생성!!!
+					for (var j = 1; j <= 7; j++) {
+						var labelDiv = document.createElement('div');
+						labelDiv.id = 'labelDiv'+c_num+'_'+j;
+						newCard.append(labelDiv);
+					}
+					
 					var createCardText = document
 							.createTextNode('card' + c_num);
 
@@ -435,12 +484,12 @@
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
 					handelDesc(0); // description textarea 숨기기
-
+					console.log(detail);
 					var content = cardInfo.content;
 
 					var label = cardInfo.label;
-// 					console.log('label: ' + label);
-					
+					// 					console.log('label: ' + label);
+
 					labelShow(label);
 
 					if (null != content) {
@@ -462,7 +511,7 @@
 				});
 
 	}
-	
+
 	function labelShow(label) {
 		if (null == label) {
 			label = "0,0,0,0,0,0,0";
@@ -473,15 +522,13 @@
 		for (var i = 1; i <= 7; i++) {
 			$('#selected_label' + i).hide();
 			if ('0' != labelArr[i - 1]) {
-				$('#selected_label' + i).css(
-						'background-color',
-						rgb2hex($('#label' + i).css(
-								"background-color")));
+				$('#selected_label' + i).css('background-color',
+						rgb2hex($('#label' + i).css("background-color")));
 				$('#selected_label' + i).show();
 			}
 		}
 	}
-	
+
 	function comment() {
 		$.ajax({
 			method : 'post',
@@ -491,7 +538,6 @@
 				c_key : $('#cardNum')[0].value,
 				m_id : '${sessionScope.id}',
 				content : $('#commentArea')[0].value
-
 			}
 		}).done(function(msg) {
 
@@ -670,6 +716,42 @@
 
 	}
 
+	function labelSet(b_num, l_num, c_num) {
+		$.ajax({
+			method : 'post',
+			url : '/main/selectCardDetail',
+			data : {
+				bnum : b_num,
+				lnum : l_num,
+				cnum : c_num
+			}
+		}).done(function(msg) {
+
+			var detail = JSON.parse(msg);
+			var cardInfo = detail[0];
+			var cardReply = detail[1];
+			
+			var label = cardInfo.label;
+			
+			if (label == null) {
+				label = "0,0,0,0,0,0,0";
+			}
+			
+			var labelArr = label.split(',');
+			
+			console.log('labelSet: '+labelArr);
+			
+			for(var i=1; i<=7; i++) {
+				if('0' != labelArr[i-1]) {
+					$('#labelDiv'+c_num+'_'+i).css('background-color',
+							rgb2hex($('#label' + i).css("background-color")));
+					$('#labelDiv'+c_num+'_'+i).show();
+				}
+			}
+		});
+
+	}
+
 	function cardSearch(b_num, l_num, id) {
 		$.ajax({
 			url : '/main/searchCard',
@@ -688,12 +770,23 @@
 				cardDiv.id = c_num;
 				cardDiv.className = 'list-card';
 				cardDiv.onclick = function() {
-					cardView(b_num, l_num, c_num)
+					cardView(b_num, l_num, c_num);
 				};
+
+				labelSet(b_num, l_num, c_num);
+				
+				// 카드 내부의 label div 생성!!!
+				for (var j = 1; j <= 7; j++) {
+					var labelDiv = document.createElement('div');
+					labelDiv.id = 'labelDiv'+c_num+'_'+j;
+					cardDiv.append(labelDiv);
+				}
+				
 
 				var createCardText = document.createTextNode('card' + c_num);
 
 				cardDiv.appendChild(createCardText);
+
 				$('#list' + id).append(cardDiv);
 
 			});
@@ -825,15 +918,20 @@
 			var detail = JSON.parse(msg);
 
 			var label = detail.label;
+			console.log(detail);
+			
+			var c_num = $('#cardNum')[0].value;
 
 			var labelArr;
 
 			if ('none' != isNone) {
 				labelArr = makeLabelArr(label, num, 'del');
 				$('#selected_label' + num).hide();
+				$('#labelDiv'+c_num+'_'+num).hide();
 			} else {
 				labelArr = makeLabelArr(label, num, 'ins');
 				$('#selected_label' + num).show();
+				$('#labelDiv'+c_num+'_'+num).show();
 			}
 
 			var tempArr = labelArr.toString();
@@ -873,18 +971,17 @@
 	}
 
 	function openMsg() {
-		var bodyHeight=document.body.offsetHeight-150;
-		
+		var bodyHeight = document.body.offsetHeight - 150;
+
 		console.log(document.body.offsetHeight);
 		console.log(bodyHeight);
-		document.getElementById("msgOff").style.top = bodyHeight+"px";
-		
+		document.getElementById("msgOff").style.top = bodyHeight + "px";
+
 	}
 
 	function closeMsg() {
 		document.getElementById("msgOff").style.top = "100%";
 	}
-		
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
 </head>
@@ -908,7 +1005,7 @@
 			</fieldset>
 			<a href="#"><span class="btn_ico_sch"></span></a>
 		</form>
-<!-- 		<button id="testDatepicker" style="width: 80px; height: 20px;"></button> -->
+		<!-- 		<button id="testDatepicker" style="width: 80px; height: 20px;"></button> -->
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
 	<div
@@ -1010,7 +1107,7 @@
 
 					<div class="card-detail-sidebar">
 						<button onclick="labelView();" class="btn-label-view dropdown">
-<!-- 						<input type="button" onclick="labelView();" class="btn-label-view dropdown"> -->
+							<!-- 						<input type="button" onclick="labelView();" class="btn-label-view dropdown"> -->
 							<span class="btn_label_toggle"><img alt="label"
 								src="/resources/images/btn_label.png" width="20px" height="20px"
 								class="btn-label">&nbsp;Label</span>
@@ -1051,7 +1148,7 @@
 								height="20px" class="btn-delete">&nbsp;Delete</span>
 						</button>
 						<br> <br>
-<!-- 						<input type="text" id="date_picker"> -->
+						<!-- 						<input type="text" id="date_picker"> -->
 						<button>
 							<span><img alt="label"
 								src="/resources/images/btn_calendar.png" width="20px"
