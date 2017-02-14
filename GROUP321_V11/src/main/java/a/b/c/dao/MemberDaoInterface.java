@@ -64,12 +64,18 @@ public interface MemberDaoInterface {
 
 	public List updateContent(Map map);
 
-
 	public List memberConnection(Map map);
-
 
 	public List updateLabel(Map map);
 
 	public String selectLabel(Map map);
+
+	public List selectBoardMembers(Map map);
+
+	public List searchMembers(Map map);
+
+	public int addMembers(Map map);
+
+	public int removeMembers(Map map);
 
 }

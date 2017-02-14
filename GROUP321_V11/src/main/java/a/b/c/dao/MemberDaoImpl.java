@@ -200,6 +200,7 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.memberConnection(map);
 	}
+
 	public List updateLabel(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.updateLabel(map);
@@ -209,6 +210,26 @@ public class MemberDaoImpl implements MemberDaoInterface {
 	public String selectLabel(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.selectLabel(map);
+	}
+
+	public List selectBoardMembers(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectBoardMembers(map);
+	}
+
+	public List searchMembers(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.searchMembers(map);
+	}
+
+	public int addMembers(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.addMembers(map);
+	}
+
+	public int removeMembers(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.removeMembers(map);
 	}
 
 }

@@ -33,7 +33,7 @@ public class MainController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
-		
+
 		return loginChk(map, request, session, "board");
 	}
 
@@ -46,7 +46,7 @@ public class MainController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model, @RequestParam Map map, HttpServletRequest request, HttpSession session) {
 		session = request.getSession(false);
-		
+
 		Map inBoardMemberMap = inBoardMember.getInstanceMap();
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		String userId = (String) session.getAttribute("id");
@@ -208,7 +208,6 @@ public class MainController {
 	public String updateContent(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		List list = memberService.updateContent(map);
-		System.out.println(list);
 
 		return "";
 	}
@@ -263,5 +262,41 @@ public class MainController {
 		List list = memberService.selectHistory(map);
 		System.out.println("히스토리가져오기:" + list);
 		return new Gson().toJson(list);
+	}
+
+	@RequestMapping(value = "/inUsers", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String inUsers(Model model, @RequestParam Map map) {
+
+		List list = memberService.selectBoardMembers(map);
+
+		return new Gson().toJson(list);
+	}
+
+	@RequestMapping(value = "/searchUser", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String searchUser(Model model, @RequestParam Map map) {
+
+		List list = memberService.searchMembers(map);
+		return new Gson().toJson(list);
+	}
+
+	@RequestMapping(value = "/inviteUser", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String inviteUser(Model model, @RequestParam Map map) {
+
+		int result = memberService.addMembers(map);
+		return new Gson().toJson(result);
+	}
+	@RequestMapping(value = "/boardOut", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String boardOut(Model model, @RequestParam Map map) {
+		
+		int result = memberService.removeMembers(map);
+		return new Gson().toJson(result);
 	}
 }

@@ -74,7 +74,7 @@ public class HomeController {
 		} else {
 			System.out.println(inUserIpMap);
 			boolean userOk = false;
-			
+
 			if (inBoardMemberSet.contains(map.get("id"))) {
 				System.out.println(map.get("id"));
 				Iterator it = inUserIpMap.keySet().iterator();
@@ -86,9 +86,8 @@ public class HomeController {
 					} else {
 						userOk = false;
 					}
-
 				}
-				System.out.println(userOk);
+				
 				if (userOk) {
 					model.addAttribute("err", "접속된 아이디입니다.");
 					loginChk = "home";

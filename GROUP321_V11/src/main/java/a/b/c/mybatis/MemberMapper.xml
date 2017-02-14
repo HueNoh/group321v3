@@ -244,14 +244,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c_key =
 		#{c_key}
 	</select>
-	
-	<select id="selectLabel" resultType="String"
-		parameterType="java.util.HashMap">
+
+	<select id="selectLabel" resultType="String" parameterType="java.util.HashMap">
 		select label
 		from tb_card
 		where c_key = #{c_key}
 	</select>
-	
+
 	<select id="updateLabel" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		update tb_card
@@ -266,5 +265,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where
 		m_id = #{m_id}
 	</select>
+
+	<select id="selectBoardMembers" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		call selectMembers(#{bnum})
+	</select>
+
+	<select id="searchMembers" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		select m_id
+		from tb_member
+		where m_id like #{result}
+	</select>
+
+	<select id="addMembers" resultType="int" parameterType="java.util.HashMap">
+		call
+		addMembers(#{id}, #{bnum});
+
+	</select>
+	<select id="removeMembers" resultType="int" parameterType="java.util.HashMap">
+		call
+		removeMembers(#{id}, #{bnum});
+	</select>
+
 
 </mapper>

@@ -196,6 +196,34 @@
     border: 1px;
     box-shadow: 2px 2px 1px lightslategrey;
 }
+
+#searchUser {
+	height: 5%;
+	width: 100%;
+}
+
+#inUser, #resultUser {
+	height: 40%;
+	width: 100%;
+	overflow-y: auto;
+}
+
+.user-inUsers, .user-searchUsers {
+	height: 30px;
+	width: 100%;
+	border: 1px solid #999;
+}
+
+.searchUsers, .inUsers {
+	float: left;
+	width: 80%;
+	float: left;
+}
+
+.inviteButton, .inUsersButton {
+	float: right;
+	width: 20%;
+}
 </style>
 <script>
 	document.onkeydown = refl;
@@ -215,7 +243,7 @@
 	var chatOnOff = false;
 
 	var b_num = '${b_num}';
-	var webSocket = new WebSocket('ws://211.183.8.20/list');
+	var webSocket = new WebSocket('ws://211.183.8.14/list');
 
 	webSocket.onopen = function(event) {
 		onOpen(event)
@@ -234,7 +262,12 @@
 	var numOfList = 0; // 전체 리스트 갯수
 
 	window.onload = function() {
-		var users = ${users};
+		var users = $
+		{
+			users
+		}
+		;
+
 		userConnection(users);
 		$('#mainList').sortable(
 				{
@@ -274,6 +307,7 @@
 
 		listSearch(b_num);
 		viewMsg();
+		inUsers();
 	};
 
 	function setWidthOnload(num) {
@@ -439,8 +473,8 @@
 					var content = cardInfo.content;
 
 					var label = cardInfo.label;
-// 					console.log('label: ' + label);
-					
+					// 					console.log('label: ' + label);
+
 					labelShow(label);
 
 					if (null != content) {
@@ -462,7 +496,7 @@
 				});
 
 	}
-	
+
 	function labelShow(label) {
 		if (null == label) {
 			label = "0,0,0,0,0,0,0";
@@ -473,15 +507,13 @@
 		for (var i = 1; i <= 7; i++) {
 			$('#selected_label' + i).hide();
 			if ('0' != labelArr[i - 1]) {
-				$('#selected_label' + i).css(
-						'background-color',
-						rgb2hex($('#label' + i).css(
-								"background-color")));
+				$('#selected_label' + i).css('background-color',
+						rgb2hex($('#label' + i).css("background-color")));
 				$('#selected_label' + i).show();
 			}
 		}
 	}
-	
+
 	function comment() {
 		$.ajax({
 			method : 'post',
@@ -745,14 +777,12 @@
 	}
 	function openChat() {
 		chatOnOff = true;
-		console.log(chatOnOff);
 		document.getElementById("mySidenavChat").style.width = "600px";
 		closeMsg();
 	}
 
 	function closeChat() {
 		chatOnOff = false;
-		console.log(chatOnOff);
 		document.getElementById("mySidenavChat").style.width = "0";
 	}
 
@@ -873,16 +903,23 @@
 	}
 
 	function openMsg() {
-		var bodyHeight=document.body.offsetHeight-150;
-		
+		var bodyHeight = document.body.offsetHeight - 150;
+
 		console.log(document.body.offsetHeight);
 		console.log(bodyHeight);
-		document.getElementById("msgOff").style.top = bodyHeight+"px";
-		
+		document.getElementById("msgOff").style.top = bodyHeight + "px";
+
 	}
 
 	function closeMsg() {
 		document.getElementById("msgOff").style.top = "100%";
+	}
+	function inviteMember() {
+		document.getElementById("invite").style.width = "300px";
+	}
+	function closeInviteMember() {
+		document.getElementById("invite").style.width = "0px";
+
 	}
 		
 </script>
@@ -940,7 +977,8 @@
 					<li class="link"><a href="#" onclick="openChat();"
 						class="link_tag3 js-close-right-slidebar">Chatting</a></li>
 					<li class="link"><a href="#" class="link_tag4">File</a></li>
-					<li class="link"><a href="#" class="link_tag5">Members</a></li>
+					<li class="link"><a href="#" onclick="inviteMember()"
+						class="link_tag5 js-close-right-slidebar">Members</a></li>
 				</ul>
 			</ul>
 		</div>
@@ -957,6 +995,11 @@
 			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
 
+		<div id="invite" class="side-invite">
+			<a href="javascript:void(0)" class="close-invite"
+				onclick="closeInviteMember();">&times;</a>
+			<jsp:include page="invite.jsp" flush="false"></jsp:include>
+		</div>
 
 
 		<div id="cardModal" class="card-modal">
