@@ -287,6 +287,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		call
 		removeMembers(#{id}, #{bnum});
 	</select>
+	
+	<select id="selectLink" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		call selectLink(#{c_key});
+	</select>
+	
+	<select id="insertLink" resultType="int" parameterType="java.util.HashMap">
+		call insertLink(#{c_key}, #{content});
+	</select>
+	
+	<select id="deleteLink" resultType="int" parameterType="java.util.HashMap">
+		call deleteLink(#{c_key}, #{seq});
+	</select>
 
 
 </mapper>

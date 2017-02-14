@@ -248,6 +248,29 @@
     margin-right: 4px;
 }
 
+#popup_layer { 
+width:400px;
+height: 100px;
+padding: 2em;
+margin-bottom:30px; 
+background:#fff; 
+border:solid 1px #ccc; 
+position:absolute; 
+top:260px; 
+left:50%;
+margin-left: -200px; 
+
+box-shadow: 0px 1px 20px #333; 
+z-index:999; 
+display:none;
+}
+#attachLink {
+	height: 10em;
+	overflow-y: scroll;
+	border: 2px solid grey;
+}
+
+
 </style>
 <script>
 	document.onkeydown = refl;
@@ -494,8 +517,13 @@
 				function(msg) {
 
 					var detail = JSON.parse(msg);
+					
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
+					//hs
+					var cardLink = detail[2];
+					console.log('cardLink='+cardLink);
+					
 					handelDesc(0); // description textarea 숨기기
 					console.log(detail);
 					var content = cardInfo.content;
@@ -517,6 +545,22 @@
 								cardReply[i].m_id);
 
 					});
+					
+					//hs
+					$.each(cardLink, function(i){
+						var node = document.createElement('div');
+						var textNode = document.createTextNode(cardLink[i].content);
+						var aTag = document.createElement('a');
+						aTag.href = cardLink[i].content;
+						aTag.appendChild(textNode);
+						aTag.target='_blank';
+						node.appendChild(aTag);
+						//console.log(node);
+						
+						$('#attachLink').append(node);
+					});
+					
+					
 
 					document.getElementById('cardNum').value = c_num;
 
@@ -889,8 +933,8 @@
 
 	//hs
 	$(function() {
+		//리스트 타이틀
 		$('#CBContainer').css('display', 'none');
-
 		$('#addList').click(function() {
 			$('#CBContainer').toggle();
 			$('#CBTitle').focus();
@@ -902,6 +946,45 @@
 				addList($('#CBTitle').val());
 			}
 		});
+		
+		//링크 등록
+		$('#insertLink').click(function(){ 
+	        $('#popup_layer, #overlay_t').toggle();
+	        $('#insertLinkInput').focus();
+	        $('#insertLinkInput').val('');
+	        $('#popup_layer').css("top", "40%"); 	         
+	    }); 
+	    $('#overlay_t, .close').click(function(){ 
+	        $('#popup_layer, #overlay_t').hide(); 
+	    });
+	    $('#linkSubmit').click(function(){
+	    	if($('#insertLinkInput').val()){
+				$.ajax({
+					method : 'post',
+					url : '/main/insertLink',
+					data : {
+						c_key : $('#cardNum')[0].value,
+						content : $('#insertLinkInput').val()
+					}
+				}).done(function(msg){
+					$('#popup_layer, #overlay_t').hide();
+					var insertLink = JSON.parse(msg);
+					
+					var node = document.createElement('div');
+					var textNode = document.createTextNode(insertLink.content);
+					var aTag = document.createElement('a');
+					aTag.href = insertLink.content;
+					aTag.appendChild(textNode);
+					aTag.target='_blank';
+					node.appendChild(aTag);
+					
+					$('#attachLink').prepend(node);
+					
+				});
+	    	}else{
+	    		$('#popup_layer, #overlay_t').hide();
+	    	}
+	    });
 
 	});
 
@@ -1137,6 +1220,7 @@
 						<h3>Add Comment</h3>
 						<textarea rows="10" cols="80" id="commentArea" required="required"></textarea>
 						<input type="button" value="SAVE" onclick="comment();">
+						<div id="attachLink"></div>
 						<div id="cardReply"></div>
 					</div>
 
@@ -1173,10 +1257,19 @@
 
 
 						<br> <br>
-						<button>
+						<!-- <button>
 							<span><img alt="label"
 								src="/resources/images/btn_attachment.png" width="20px"
 								height="20px" class="btn-attachment">&nbsp;Attachment</span>
+						</button> -->
+						<button id="insertLink">
+							<span><img alt="label" src="/resources/images/btn-attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
+							<div id="overlay_t"></div> 
+							<div id="popup_layer">
+								<input type="text" id="insertLinkInput" placeholder="attach link">
+								<input type="button" id="linkSubmit" class="close" value="save">
+								<!-- <button id="linkSubmit">SAVE</button> -->
+							</div>
 						</button>
 						<br> <br>
 						<button>

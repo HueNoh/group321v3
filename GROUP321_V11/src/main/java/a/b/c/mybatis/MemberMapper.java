@@ -75,6 +75,13 @@ public interface MemberMapper {
 	public List searchMembers(Map map);
 
 	public int addMembers(Map map);
-	public int removeMembers(Map map);
 
+	public int removeMembers(Map map);
+	
+	public List selectLink(Map map);
+	
+	public int insertLink(Map map);
+	
+	public int deleteLink(Map map);
+	
 }

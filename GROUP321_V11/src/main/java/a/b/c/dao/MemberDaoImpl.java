@@ -232,4 +232,22 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.removeMembers(map);
 	}
 
+	@Override
+	public List selectLink(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectLink(map);
+	}
+
+	@Override
+	public int insertLink(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.insertLink(map);
+	}
+
+	@Override
+	public int deleteLink(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.deleteLink(map);
+	}
+
 }
