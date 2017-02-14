@@ -86,14 +86,10 @@
 				var div = document.createElement('div');
 				div.id = id;
 				div.className = 'user';
-
-				var content = document.createElement('div');
-
+			
 				var contentText = document.createTextNode(msg);
 
-				content.appendChild(contentText);
-
-				div.append(content);
+				div.append(contentText);
 				$('#user').append(div);
 
 				/* 	var users=${users};
