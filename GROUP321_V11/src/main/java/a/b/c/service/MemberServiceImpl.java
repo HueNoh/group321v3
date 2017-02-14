@@ -190,7 +190,7 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		// TODO Auto-generated method stub
 		return memberDao.updateContent(map);
 	}
-	
+
 	@Override
 	public List updateLabel(Map map) {
 		// TODO Auto-generated method stub
@@ -213,5 +213,46 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public String selectLabel(Map map) {
 		// TODO Auto-generated method stub
 		return memberDao.selectLabel(map);
+	}
+
+	@Override
+	public List selectBoardMembers(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.selectBoardMembers(map);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List searchMembers(Map map) {
+		// TODO Auto-generated method stub
+		List list = memberDao.selectBoardMembers(map);
+		List list2 = memberDao.searchMembers(map);
+
+		for (int i = 0; i < list.size(); i++) {
+			Map map2 = (Map) list.get(i);
+			String id = (String) map2.get("m_id");
+
+			for (int j = 0; j < list2.size(); j++) {
+				Map map3 = (Map) list2.get(j);
+				String id2 = (String) map3.get("m_id");
+
+				if (id.equals(id2)) {
+					list2.remove(j);
+				}
+			}
+		}
+		return list2;
+	}
+
+	@Override
+	public int addMembers(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.addMembers(map);
+	}
+
+	@Override
+	public int removeMembers(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.removeMembers(map);
 	}
 }
