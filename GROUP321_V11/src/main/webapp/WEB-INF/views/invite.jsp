@@ -149,8 +149,7 @@
 		});
 	}
 </script>
-
-<p>초대할 유저</p>
+<p>유저 검색</p>
 <div id="searchUser">
 	<input type="text" id="userSearch" /> <input type="button"
 		onclick="searchUser();" value="검색">

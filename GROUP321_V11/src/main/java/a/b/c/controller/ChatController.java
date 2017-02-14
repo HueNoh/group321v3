@@ -75,9 +75,11 @@ public class ChatController {
 		JsonArray jarr = new JsonArray();
 		try {
 			List list = memberService.msgSelect(map);
+			System.out.println(list);
 			for (int i = 0; i < list.size(); i++) {
 				map2 = (Map) list.get(i);
 				JsonObject obj = new JsonObject();
+				obj.addProperty("seq", (int) map2.get("seq"));
 				obj.addProperty("m_id", (String) map2.get("m_id"));
 				obj.addProperty("content", (String) map2.get("content"));
 				jarr.add(obj);
@@ -111,11 +113,11 @@ public class ChatController {
 			}
 		}
 		System.out.println("===============================");
-		System.out.println("list2 : "+list2);
-		System.out.println("inBoardMemberMap : "+inBoardMemberMap);
+		System.out.println("list2 : " + list2);
+		System.out.println("inBoardMemberMap : " + inBoardMemberMap);
 		System.out.println("===============================");
 		model.addAttribute("users", new Gson().toJson(list2));
-		
+
 		return new Gson().toJson(list2);
 	}
 

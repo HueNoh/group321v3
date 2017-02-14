@@ -18,6 +18,9 @@ var btn = document.getElementById("myBtn");
 var hisClose = document.getElementById("hisClose");
 var cardModal = document.getElementById("cardModal");
 
+var chatClose = document.getElementById("mySidenavChat");
+var inviteClose = document.getElementById("invite");
+
 // When the user clicks the button, open the modal
 btn.onclick = function() {
 	modal.style.display = "block";
@@ -25,7 +28,7 @@ btn.onclick = function() {
 
 // When the user clicks on <span> (x), close the modal
 hisClose.onclick = function() {
-	
+
 	modal.style.display = "none";
 }
 cardClose.onclick = function() {
@@ -38,6 +41,10 @@ window.onclick = function(event) {
 		modal.style.display = "none";
 	} else if (event.target == cardModal) {
 		cardModal.style.display = "none";
+	} else if (event.target == chatClose) {
+		closeChat();
+	} else if (event.target == inviteClose) {
+		closeInviteMember();
 	}
 }
 
