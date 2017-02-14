@@ -228,6 +228,28 @@
     margin-right: 4px;
 }
 
+#popup_layer { 
+width:400px;
+height: 200px;
+padding: 2em;
+margin-bottom:30px; 
+background:#fff; 
+border:solid 1px #ccc; 
+position:absolute; 
+top:260px; 
+left:45%; 
+
+box-shadow: 0px 1px 20px #333; 
+z-index:999; 
+display:none;
+}
+#attachLink {
+	height: 10em;
+	overflow-y: scroll;
+	border: 2px solid grey;
+}
+
+
 </style>
 <script>
 	document.onkeydown = refl;
@@ -864,8 +886,8 @@
 
 	//hs
 	$(function() {
+		//리스트 타이틀
 		$('#CBContainer').css('display', 'none');
-
 		$('#addList').click(function() {
 			$('#CBContainer').toggle();
 			$('#CBTitle').focus();
@@ -877,6 +899,38 @@
 				addList($('#CBTitle').val());
 			}
 		});
+		
+		//링크 등록
+		$('#insertLink').click(function(){ 
+	        $('#popup_layer, #overlay_t').show(); 
+	        $('#popup_layer').css("top", "40%"); 	         
+	    }); 
+	    $('#overlay_t, .close').click(function(e){ 
+	        e.preventDefault(); 
+	        $('#popup_layer, #overlay_t').hide(); 
+	    });
+	    $('#linkSubmit').click(function(){
+	    	if($('#insertLinkInput').val()){
+				$.ajax({
+					method : 'post',
+					url : '/main/insertLink',
+					data : {
+						ckey : $('#cardNum')[0].value,
+						content : $('#insertLinkInput').val()
+					}
+				}).done(function(msg){
+
+					var links = JSON.parse(msg);
+					var msg = '';
+					for (i = 0; i < links.length; i++) {
+						msg += links[i].content + ' ' + links[i].regdate + '<br>'
+						$('#attachLink').html(msg);
+					}
+				});
+	    	}else{
+	    		$('#popup_layer, #overlay_t').hide();
+	    	}
+	    });
 
 	});
 
@@ -1144,10 +1198,19 @@
 
 
 						<br> <br>
-						<button>
+						<!-- <button>
 							<span><img alt="label"
 								src="/resources/images/btn_attachment.png" width="20px"
 								height="20px" class="btn-attachment">&nbsp;Attachment</span>
+						</button> -->
+						<button id="insertLink">
+							<span><img alt="label" src="/resources/images/btn-attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
+							<div id="overlay_t"></div> 
+							<div id="popup_layer">
+								<input type="text" id="insertLinkInput" placeholder="attach link">
+								<input type="button" id="linkSubmit" class="close" value="save">
+								<!-- <button id="linkSubmit">SAVE</button> -->
+							</div>
 						</button>
 						<br> <br>
 						<button>
