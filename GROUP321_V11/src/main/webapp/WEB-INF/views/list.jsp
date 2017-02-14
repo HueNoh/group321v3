@@ -351,7 +351,7 @@
 		var borderWidth = $('.viewList').css("borderWidth").replace('px', '');
 		var listWidth = $('.viewList').width() + margin * 2 + borderWidth * 2;
 		var afterWidth = currentWidth + listWidth;
-
+	
 		if (((num + 1) * listWidth) > currentWidth) {
 
 			$('.g3-container').css('width', afterWidth);
