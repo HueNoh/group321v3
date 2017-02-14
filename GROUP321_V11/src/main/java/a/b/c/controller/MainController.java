@@ -162,11 +162,34 @@ public class MainController {
 		
 		session.setAttribute("l_num", map.get("lnum"));
 		session.setAttribute("c_num", map.get("cnum"));
+		
+		System.out.println(map);
 
 		List list = memberService.selectCardDetail(map);
+		System.out.println(list);
+		return new Gson().toJson(list);
+	}
+	
+	@RequestMapping(value = "/selectLink", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String selectLink(@RequestParam Map map) {
+		
+		List list = memberService.selectLink(map);
 		
 		return new Gson().toJson(list);
 	}
+	
+	@RequestMapping(value = "/insertLink", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertLink(@RequestParam Map map) {
+		System.out.println("insertLinkMap: "+map);
+		int result = memberService.insertLink(map);
+		List list = memberService.selectLink(map);
+		
+		
+		return new Gson().toJson(list.get(0));
+	}
+	
 
 	@RequestMapping(value = "/moveList", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")

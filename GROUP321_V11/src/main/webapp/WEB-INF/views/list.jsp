@@ -230,14 +230,15 @@
 
 #popup_layer { 
 width:400px;
-height: 200px;
+height: 100px;
 padding: 2em;
 margin-bottom:30px; 
 background:#fff; 
 border:solid 1px #ccc; 
 position:absolute; 
 top:260px; 
-left:45%; 
+left:50%;
+margin-left: -200px; 
 
 box-shadow: 0px 1px 20px #333; 
 z-index:999; 
@@ -500,8 +501,13 @@ display:none;
 				function(msg) {
 
 					var detail = JSON.parse(msg);
+					
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
+					//hs
+					var cardLink = detail[2];
+					console.log('cardLink='+cardLink);
+					
 					handelDesc(0); // description textarea 숨기기
 					console.log(detail);
 					var content = cardInfo.content;
@@ -523,6 +529,22 @@ display:none;
 								cardReply[i].m_id);
 
 					});
+					
+					//hs
+					$.each(cardLink, function(i){
+						var node = document.createElement('div');
+						var textNode = document.createTextNode(cardLink[i].content);
+						var aTag = document.createElement('a');
+						aTag.href = cardLink[i].content;
+						aTag.appendChild(textNode);
+						aTag.target='_blank';
+						node.appendChild(aTag);
+						//console.log(node);
+						
+						$('#attachLink').append(node);
+					});
+					
+					
 
 					document.getElementById('cardNum').value = c_num;
 
@@ -902,11 +924,12 @@ display:none;
 		
 		//링크 등록
 		$('#insertLink').click(function(){ 
-	        $('#popup_layer, #overlay_t').show(); 
+	        $('#popup_layer, #overlay_t').toggle();
+	        $('#insertLinkInput').focus();
+	        $('#insertLinkInput').val('');
 	        $('#popup_layer').css("top", "40%"); 	         
 	    }); 
-	    $('#overlay_t, .close').click(function(e){ 
-	        e.preventDefault(); 
+	    $('#overlay_t, .close').click(function(){ 
 	        $('#popup_layer, #overlay_t').hide(); 
 	    });
 	    $('#linkSubmit').click(function(){
@@ -915,17 +938,23 @@ display:none;
 					method : 'post',
 					url : '/main/insertLink',
 					data : {
-						ckey : $('#cardNum')[0].value,
+						c_key : $('#cardNum')[0].value,
 						content : $('#insertLinkInput').val()
 					}
 				}).done(function(msg){
-
-					var links = JSON.parse(msg);
-					var msg = '';
-					for (i = 0; i < links.length; i++) {
-						msg += links[i].content + ' ' + links[i].regdate + '<br>'
-						$('#attachLink').html(msg);
-					}
+					$('#popup_layer, #overlay_t').hide();
+					var insertLink = JSON.parse(msg);
+					
+					var node = document.createElement('div');
+					var textNode = document.createTextNode(insertLink.content);
+					var aTag = document.createElement('a');
+					aTag.href = insertLink.content;
+					aTag.appendChild(textNode);
+					aTag.target='_blank';
+					node.appendChild(aTag);
+					
+					$('#attachLink').prepend(node);
+					
 				});
 	    	}else{
 	    		$('#popup_layer, #overlay_t').hide();
@@ -1164,6 +1193,7 @@ display:none;
 						<h3>Add Comment</h3>
 						<textarea rows="10" cols="80" id="commentArea" required="required"></textarea>
 						<input type="button" value="SAVE" onclick="comment();">
+						<div id="attachLink"></div>
 						<div id="cardReply"></div>
 					</div>
 

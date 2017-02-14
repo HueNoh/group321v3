@@ -63,16 +63,21 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List selectCardDetail(Map map) {
 		// TODO Auto-generated method stub
 		Map map2 = new HashMap<>();
+		Map linkMap = new HashMap<>();
 		map.put("c_key", map.get("cnum"));
 
 		List list = memberDao.selectCardReply(map);
 		for (int i = 0; i < list.size(); i++) {
 			map2.put(i, list.get(i));
 		}
-
+		
 		List list2 = memberDao.selectCardDetail(map);
 		list2.add(map2);
-
+		System.out.println("list2.get(0)="+list2.get(0));
+		//hs
+		List linkList = memberDao.selectLink((Map) list2.get(0));
+		list2.add(linkList);
+		System.out.println("linkList="+linkList);
 		return list2;
 	}
 
@@ -254,5 +259,23 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public int removeMembers(Map map) {
 		// TODO Auto-generated method stub
 		return memberDao.removeMembers(map);
+	}
+
+	@Override
+	public List selectLink(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.selectLink(map);
+	}
+
+	@Override
+	public int insertLink(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.insertLink(map);
+	}
+
+	@Override
+	public int deleteLink(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.deleteLink(map);
 	}
 }
