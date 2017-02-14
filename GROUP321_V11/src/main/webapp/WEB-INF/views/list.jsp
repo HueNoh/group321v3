@@ -268,6 +268,7 @@ display:none;
 	height: 10em;
 	overflow-y: scroll;
 	border: 2px solid grey;
+	width: 90%;
 }
 
 
