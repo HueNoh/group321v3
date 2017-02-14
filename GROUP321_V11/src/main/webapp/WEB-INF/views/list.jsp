@@ -192,6 +192,11 @@
 	box-shadow: 2px 2px 1px lightslategrey;
 }
 
+#invite{
+	min-height: 50%;
+	overflow-y: aute;
+}
+
 #searchUser {
 	height: 5%;
 	width: 100%;
@@ -266,11 +271,7 @@
 	var numOfList = 0; // 전체 리스트 갯수
 
 	window.onload = function() {
-		var users = $
-		{
-			users
-		}
-		;
+		var users = ${users};
 
 		userConnection(users);
 		$('#mainList').sortable(
@@ -1053,13 +1054,10 @@
 			</div>
 		</div>
 		<div id="mySidenavChat" class="sidenav-chat" style="margin-top: 50px;">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeChat()">&times;</a>
 			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
 
 		<div id="invite" class="side-invite">
-			<a href="javascript:void(0)" class="close-invite"
-				onclick="closeInviteMember();">&times;</a>
 			<jsp:include page="invite.jsp" flush="false"></jsp:include>
 		</div>
 

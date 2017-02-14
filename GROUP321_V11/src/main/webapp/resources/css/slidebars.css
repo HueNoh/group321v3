@@ -217,7 +217,6 @@ html, body {
 	color: white; /* Basic colors, overwrite this in your own css. */
 	-webkit-overflow-scrolling: touch;
 	/* Enables momentum scrolling on iOS devices, may be removed by setting to 'auto' in your own CSS. */
-	
 }
 
 [off-canvas*=right] {
@@ -228,8 +227,7 @@ html, body {
 	margin-top: 50px;
 	background-color: gray;
 	text-align: left;
-	margin-left :100px;
-	
+	margin-left: 100px;
 }
 
 [off-canvas*=reveal] {

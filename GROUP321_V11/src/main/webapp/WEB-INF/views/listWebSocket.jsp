@@ -2,7 +2,6 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 
 <script type="text/javascript">
-	
 	function onMessage(event) {
 
 		var data = event.data.split("::");
@@ -20,7 +19,7 @@
 				} else {
 
 					$('#message').empty();
-				 	var div = document.createElement('div');
+					var div = document.createElement('div');
 					div.id = 'offMsg';
 					div.className = 'offMsg';
 
@@ -30,9 +29,9 @@
 
 					content.appendChild(contentText);
 					$('#message').append(content);
-					
+
 					openMsg();
-					
+
 					setInterval(closeMsg, 5000);
 				}
 
@@ -161,13 +160,18 @@
 
 	}
 
-	function chat(msg, id) {
+	function chat(msg, id, seq) {
 		if (id == '${sessionScope.id}') {
+
 			var div = document.createElement('div');
 			div.className = 'myMsg';
 
 			var content = document.createElement('div');
+			content.className = "myContent";
 			var writer = document.createElement('div');
+			writer.className = "msgWriter";
+			var b = document.createElement('div');
+			b.className = 'b';
 
 			var contentText = document.createTextNode(msg);
 			var writerText = document.createTextNode(id);
@@ -175,30 +179,39 @@
 			content.appendChild(contentText);
 			writer.appendChild(writerText);
 
+			div.append(b);
 			div.append(content);
-			div.append(writer);
+
 			$('.display').append(div);
 		} else {
+			var box = document.createElement('div');
+			box.className = 'box';
+
 			var div = document.createElement('div');
 			div.className = 'memberMsg';
-			var proImg = document.createElement('img');
+
+			var proImg = document.createElement('IMG');
 			proImg.className = 'profileImg';
 
 			var content = document.createElement('div');
+			content.className = "memberContent";
+
 			var writer = document.createElement('div');
+			writer.className = "memberWriter";
+
+			var b = document.createElement('div');
+			b.className = 'm';
 
 			var contentText = document.createTextNode(msg);
 			var writerText = document.createTextNode(id);
 
 			content.appendChild(contentText);
 			writer.appendChild(writerText);
+			box.append(writer);
+			box.append(b);
+			box.append(content);
 
-			content.appendChild(proImg);
-			content.appendChild(contentText);
-			writer.appendChild(writerText);
-
-			div.appendChild(content);
-			div.appendChild(writer);
+			div.append(box);
 
 			$('.display').append(div);
 		}
@@ -218,7 +231,6 @@
 		}).done(function(msg) {
 
 			var data = JSON.parse(msg);
-
 			$.each(data, function(i) {
 				chat(data[i].content, data[i].m_id);
 			});
