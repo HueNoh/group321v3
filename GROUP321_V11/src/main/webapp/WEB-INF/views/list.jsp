@@ -36,6 +36,10 @@
 	float: left;
 }
 
+.list-card:hover {
+    cursor: pointer;
+}
+
 .list_body {
 	width: 90%;
 }
@@ -44,11 +48,6 @@
 	width: 90%;
 }
 
-/* .list-card {
-	width: 90%;
-	border: 1px solid black;
-	float: left;
-} */
 #content, #mainList {
 	height: 100%;
 	background-color: yellowgreen;
@@ -86,6 +85,7 @@
 	height: 600px;
 	margin-top: 100px;
 	float: right;
+	margin-right: 10px;
 }
 
 .card-detail-sidebar>button {
@@ -139,7 +139,7 @@
 	float: right;
 	margin-top: 20px;
 	border: 1px solid lightgray;
-	box-shadow: 3px 4px 3px lightslategrey;
+	box-shadow: 0px 0px 3px 3px lightslategrey;
 	border-radius: 5px;
 	background-color: white;
 }
@@ -148,38 +148,53 @@
 	margin: 0 7px 0 7px;
 	border-radius: 5px;
 	margin-bottom: 5px;
-	width: 250px;
+	width: 188px;
+	height: 30px;
+	cursor: pointer;
+}
+
+.submenu>li>span {
+	font-size: 20px;
+    font-weight: bold;
+    color: black;
 }
 
 .submenu:first-child {
 	text-align: center;
 }
-
-.submenu>li:nth-child(2) {
-	background-color: #A80700;
+/* id=label_text */
+#label_text { 
+	border-radius: 5px;
+    margin-bottom: 5px;
+    width: 188px;
+    height: 30px;
 }
 
 .submenu>li:nth-child(3) {
-	background-color: #E56D29;
+	background-color: #CD3861;
 }
 
 .submenu>li:nth-child(4) {
-	background-color: #FFE641;
+	background-color: #E56D29;
 }
 
 .submenu>li:nth-child(5) {
-	background-color: #68D168;
+	background-color: #FFE641;
 }
 
 .submenu>li:nth-child(6) {
-	background-color: #52E4DC;
+	background-color: #68D168;
 }
 
 .submenu>li:nth-child(7) {
-	background-color: #3296FF;
+	background-color: #52E4DC;
 }
 
 .submenu>li:nth-child(8) {
+	background-color: #3296FF;
+}
+
+.submenu>li:nth-child(9) {
 	background-color: #6A5ACD;
 }
 
@@ -612,7 +627,16 @@
 	}
 
 	function labelView() {
-		$('.btn_label_toggle').next("div").toggleClass('submenu_hidden');
+// 		console.log('inside');
+// 		$('.btn_label_toggle').next("div").toggleClass('submenu_hidden');
+		if($('.btn-label-view').next("div").hasClass('submenu_hidden')) {
+			$('.btn-label-view').next("div").removeClass('submenu_hidden');
+// 			$('.btn_label_toggle').next("div").show();
+		} else {
+			$('.btn-label-view').next("div").addClass('submenu_hidden');
+// 			$('.btn_label_toggle').next("div").hide();
+		}
+		
 	}
 
 	function getHistory() {
@@ -901,6 +925,11 @@
 		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
 		$('#selected_label' + num).css('background-color', backgroundColor);
 		
+		var labelText = $('#label_text').val();
+		
+// 		$('#label'+num).value(labelText);
+		$('#label'+num).children('span').text(labelText);
+		
 		var isNone = $('#selected_label' + num).css('display');
 
 		$.ajax({
@@ -1117,30 +1146,32 @@
 						<button onclick="labelView();" class="btn-label-view dropdown">
 							<!-- 						<input type="button" onclick="labelView();" class="btn-label-view dropdown"> -->
 							<span class="btn_label_toggle"><img alt="label"
-								src="/resources/images/btn_label.png" width="20px" height="20px"
-								class="btn-label">&nbsp;Label</span>
-							<div class="submenu_hidden">
-								<ul class="submenu">
-									<span class="label_name">Labels</span>
-									<li id="label1" onclick="label('1');">&nbsp; <span></span>
-									</li>
-									<li id="label2" onclick="label('2');">&nbsp; <span></span>
-									</li>
-									<li id="label3" onclick="label('3');">&nbsp; <span></span>
-									</li>
-									<li id="label4" onclick="label('4');">&nbsp; <span></span>
-									</li>
-									<li id="label5" onclick="label('5');">&nbsp; <span></span>
-									</li>
-									<li id="label6" onclick="label('6');">&nbsp; <span></span>
-									</li>
-									<li id="label7" onclick="label('7');">&nbsp; <span></span>
-									</li>
-									<!-- 									<a href="#" style="display: none;">add color...</a> -->
-								</ul>
-							</div>
-
+							src="/resources/images/btn_label.png" width="20px" height="20px"
+							class="btn-label">&nbsp;Label</span>
 						</button>
+						<div class="submenu_hidden">
+							<ul class="submenu">
+								<span class="label_name">Labels</span>
+								<input type="text" id="label_text">
+								<li id="label1" onclick="label('1');">&nbsp; <span></span>
+								</li>
+								<li id="label2" onclick="label('2');">&nbsp; <span></span>
+								</li>
+								<li id="label3" onclick="label('3');">&nbsp; <span></span>
+								</li>
+								<li id="label4" onclick="label('4');">&nbsp; <span></span>
+								</li>
+								<li id="label5" onclick="label('5');">&nbsp; <span></span>
+								</li>
+								<li id="label6" onclick="label('6');">&nbsp; <span></span>
+								</li>
+								<li id="label7" onclick="label('7');">&nbsp; <span></span>
+								</li>
+								<!-- 									<a href="#" style="display: none;">add color...</a> -->
+							</ul>
+						</div>
+
+						
 
 
 						<br> <br>
