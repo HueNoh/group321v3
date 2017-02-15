@@ -81,8 +81,8 @@
 				}
 			} else if ("cardCreate" == access) {
 				if (id != '${sessionScope.id}') {
-					$('#mainList').html('');
-					listSearch(b_num);
+					$('#list'+msg).html('');
+					cardSearch(b_num, l_num, msg);
 				}
 			} else if ("connec" == access) {
 
