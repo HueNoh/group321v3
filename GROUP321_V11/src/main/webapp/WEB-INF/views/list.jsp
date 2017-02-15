@@ -423,8 +423,6 @@
 
 					var aTag = document.createElement('a');
 					var createAText = document.createTextNode('addCard');
-					aTag.setAttribute('href', '#');
-					aTag.setAttribute('className', 'aaaa');
 					aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
 							+ ',\'' + id + '\')');
 
@@ -753,8 +751,6 @@
 						 */
 						cardSearch(b_num, l_num, id);
 
-						aTag.setAttribute('href', '#');
-						aTag.setAttribute('className', 'aaaa');
 						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
 								+ id + '\')');
 						aTag.appendChild(createAText);
