@@ -324,11 +324,7 @@
 	var cardl_num = 0;
 	var cardId = 0;
 	window.onload = function() {
-		var users = $
-		{
-			users
-		}
-		;
+		var users = ${users};
 
 		userConnection(users);
 		$('#mainList').sortable(
@@ -464,41 +460,40 @@
 					lnum : cardl_num
 
 				}
-			}).done(
-					function(msg) {
-						console.log(msg);
-						var cardArr = JSON.parse(msg);
+			}).done(function(msg) {
+				console.log(msg);
+				var cardArr = JSON.parse(msg);
 
-						var newCard = document.createElement('div');
-						var c_num = cardArr.c_num;
+				var newCard = document.createElement('div');
+				var c_num = cardArr.c_num;
 
-						newCard.id = c_num;
-						newCard.className = 'list-card';
-						newCard.onclick = function() {
+				newCard.id = c_num;
+				newCard.className = 'list-card';
+				newCard.onclick = function() {
 
-							cardView(b_num, cardl_num, c_num)
+					cardView(b_num, cardl_num, c_num)
 
-						};
-						// 카드 내부의 label div 생성!!!
-						for (var j = 1; j <= 7; j++) {
-							var labelDiv = document.createElement('div');
-							labelDiv.id = 'labelDiv' + c_num + '_' + j;
-							newCard.append(labelDiv);
-						}
+				};
+				// 카드 내부의 label div 생성!!!
+				for (var j = 1; j <= 7; j++) {
+					var labelDiv = document.createElement('div');
+					labelDiv.id = 'labelDiv' + c_num + '_' + j;
+					newCard.append(labelDiv);
+				}
 
-						var createCardText = document
-								.createTextNode(cardArr.title);
+				var createCardText = document
+						.createTextNode(cardArr.title);
 
-						newCard.appendChild(createCardText);
-						document.getElementById('list' + cardId).appendChild(
-								newCard);
+				newCard.appendChild(createCardText);
+				document.getElementById('list' + cardId).appendChild(
+						newCard);
 
-						var cardHtml = $('#list' + cardId)[0].innerHTML;
-						send('cardCreate', 'cardCreate', '${sessionScope.id}',
-								'${sessionScope.b_num}', '0', '0');
-						$('#addCardContainer' + cardId).toggle();
-						$('#addCardTitle' + cardId).val('');
-					});
+				var cardHtml = $('#list' + cardId)[0].innerHTML;
+				send('cardCreate', 'cardCreate', '${sessionScope.id}',
+						'${sessionScope.b_num}', '0', '0');
+				$('#addCardContainer' + cardId).toggle();
+				$('#addCardTitle' + cardId).val('');
+			});
 		}
 	}
 
@@ -513,59 +508,58 @@
 				lnum : l_num,
 				cnum : c_num
 			}
-		}).done(
-				function(msg) {
-					console.log(msg);
-					var detail = JSON.parse(msg);
+		}).done(function(msg) {
+			console.log(msg);
+			var detail = JSON.parse(msg);
 
-					var cardInfo = detail[0];
-					var cardReply = detail[1];
-					//hs
-					var cardLink = detail[2];
-					console.log('cardLink=' + cardLink[0]);
+			var cardInfo = detail[0];
+			var cardReply = detail[1];
+			//hs
+			var cardLink = detail[2];
+			console.log('cardLink=' + cardLink[0]);
 
-					handelDesc(0); // description textarea 숨기기
-					console.log(detail);
-					var content = cardInfo.content;
+			handelDesc(0); // description textarea 숨기기
+			console.log(detail);
+			var content = cardInfo.content;
 
-					var label = cardInfo.label;
-					// 					console.log('label: ' + label);
+			var label = cardInfo.label;
+			// 					console.log('label: ' + label);
 
-					labelShow(label);
+			labelShow(label);
 
-					if (null != content) {
-						$('.content_div').text(content);
-					} else {
-						$('.content_div').text('');
-					}
+			if (null != content) {
+				$('.content_div').text(content);
+			} else {
+				$('.content_div').text('');
+			}
 
-					$.each(cardReply, function(i) {
+			$.each(cardReply, function(i) {
 
-						createReplyDiv(cardReply[i].seq, cardReply[i].content,
-								cardReply[i].m_id);
+				createReplyDiv(cardReply[i].seq, cardReply[i].content,
+						cardReply[i].m_id);
 
-					});
+			});
 
-					//hs
-					$('#attachLink').children().empty();
-					$.each(cardLink, function(i) {
-						var node = document.createElement('div');
-						var textNode = document
-								.createTextNode(cardLink[i].content);
-						var aTag = document.createElement('a');
-						aTag.href = cardLink[i].content;
-						aTag.appendChild(textNode);
-						aTag.target = '_blank';
-						node.appendChild(aTag);
-						//console.log(node);
+			//hs
+			$('#attachLink').children().empty();
+			$.each(cardLink, function(i) {
+				var node = document.createElement('div');
+				var textNode = document
+						.createTextNode(cardLink[i].content);
+				var aTag = document.createElement('a');
+				aTag.href = cardLink[i].content;
+				aTag.appendChild(textNode);
+				aTag.target = '_blank';
+				node.appendChild(aTag);
+				//console.log(node);
 
-						$('#attachLink').append(node);
-					});
+				$('#attachLink').append(node);
+			});
 
-					document.getElementById('cardNum').value = c_num;
+			document.getElementById('cardNum').value = c_num;
 
-					cardModal.style.display = "block";
-				});
+			cardModal.style.display = "block";
+		});
 
 	}
 
@@ -820,33 +814,32 @@
 				lnum : l_num,
 				cnum : c_num
 			}
-		}).done(
-				function(msg) {
+		}).done(function(msg) {
 
-					var detail = JSON.parse(msg);
-					var cardInfo = detail[0];
-					var cardReply = detail[1];
+			var detail = JSON.parse(msg);
+			var cardInfo = detail[0];
+			var cardReply = detail[1];
 
-					var label = cardInfo.label;
+			var label = cardInfo.label;
 
-					if (label == null) {
-						label = "0,0,0,0,0,0,0";
-					}
+			if (label == null) {
+				label = "0,0,0,0,0,0,0";
+			}
 
-					var labelArr = label.split(',');
+			var labelArr = label.split(',');
 
-					console.log('labelSet: ' + labelArr);
+			console.log('labelSet: ' + labelArr);
 
-					for (var i = 1; i <= 7; i++) {
-						if ('0' != labelArr[i - 1]) {
-							$('#labelDiv' + c_num + '_' + i).css(
-									'background-color',
-									rgb2hex($('#label' + i).css(
-											"background-color")));
-							$('#labelDiv' + c_num + '_' + i).show();
-						}
-					}
-				});
+			for (var i = 1; i <= 7; i++) {
+				if ('0' != labelArr[i - 1]) {
+					$('#labelDiv' + c_num + '_' + i).css(
+							'background-color',
+							rgb2hex($('#label' + i).css(
+									"background-color")));
+					$('#labelDiv' + c_num + '_' + i).show();
+				}
+			}
+		});
 
 	}
 
@@ -894,44 +887,43 @@
 	}
 	function listSortable(id) {
 
-		$('#list' + id).sortable(
-				{
-					connectWith : '.list',
-					update : function(ev, ui) {
-						var result1 = $('#list' + id).sortable('toArray');
-						var targetId = ev.target.id;
-						var parentId = ev.toElement.parentElement.id;
-						var cardArr = '';
+		$('#list' + id).sortable({
+			connectWith : '.list',
+			update : function(ev, ui) {
+				var result1 = $('#list' + id).sortable('toArray');
+				var targetId = ev.target.id;
+				var parentId = ev.toElement.parentElement.id;
+				var cardArr = '';
 
-						if (targetId == parentId) {
-							send('cardMove', 'cardMove', '${sessionScope.id}',
-									'${sessionScope.b_num}', '0', '0');
+				if (targetId == parentId) {
+					send('cardMove', 'cardMove', '${sessionScope.id}',
+							'${sessionScope.b_num}', '0', '0');
 
-							for (var i = 0; i < result1.length; i++) {
-								if (i < (result1.length - 1)) {
-									cardArr += result1[i] + ',';
-								} else {
-									cardArr += result1[i];
-								}
-
-							}
-
-							$.ajax({
-								url : '/main/moveCard',
-								method : 'post',
-								data : {
-
-									bnum : b_num,
-									lnum : id,
-									cnum : ev.toElement.id,
-									msg : cardArr,
-									length : result1.length
-								}
-
-							}).done();
+					for (var i = 0; i < result1.length; i++) {
+						if (i < (result1.length - 1)) {
+							cardArr += result1[i] + ',';
+						} else {
+							cardArr += result1[i];
 						}
+
 					}
-				});
+
+					$.ajax({
+						url : '/main/moveCard',
+						method : 'post',
+						data : {
+
+							bnum : b_num,
+							lnum : id,
+							cnum : ev.toElement.id,
+							msg : cardArr,
+							length : result1.length
+						}
+
+					}).done();
+				}
+			}
+		});
 	}
 	function openChat() {
 		chatOnOff = true;
@@ -953,12 +945,11 @@
 				b_num : '${sessionScope.b_num}'
 			}
 
-		}).done(
-				function(msg) {
-					send('${sessionScope.id}', 'unConnec',
-							'${sessionScope.id}', '${sessionScope.b_num}', '0',
-							'0');
-				});
+		}).done(function(msg) {
+			send('${sessionScope.id}', 'unConnec',
+					'${sessionScope.id}', '${sessionScope.b_num}', '0',
+					'0');
+		});
 
 	}
 
@@ -1055,42 +1046,41 @@
 			data : {
 				c_key : $('#cardNum')[0].value
 			}
-		}).done(
-				function(msg) {
-					var detail = JSON.parse(msg);
+		}).done(function(msg) {
+			var detail = JSON.parse(msg);
 
-					var label = detail.label;
-					console.log(detail);
+			var label = detail.label;
+			console.log(detail);
 
-					var c_num = $('#cardNum')[0].value;
+			var c_num = $('#cardNum')[0].value;
 
-					var labelArr;
-					$('#labelDiv' + c_num + '_' + num).css('background-color',
-							backgroundColor);
-					if ('none' != isNone) {
-						labelArr = makeLabelArr(label, num, 'del');
-						$('#selected_label' + num).hide();
-						$('#labelDiv' + c_num + '_' + num).hide();
-					} else {
-						labelArr = makeLabelArr(label, num, 'ins');
-						$('#selected_label' + num).show();
-						$('#labelDiv' + c_num + '_' + num).show();
-					}
+			var labelArr;
+			$('#labelDiv' + c_num + '_' + num).css('background-color',
+					backgroundColor);
+			if ('none' != isNone) {
+				labelArr = makeLabelArr(label, num, 'del');
+				$('#selected_label' + num).hide();
+				$('#labelDiv' + c_num + '_' + num).hide();
+			} else {
+				labelArr = makeLabelArr(label, num, 'ins');
+				$('#selected_label' + num).show();
+				$('#labelDiv' + c_num + '_' + num).show();
+			}
 
-					var tempArr = labelArr.toString();
+			var tempArr = labelArr.toString();
 
-					$.ajax({
-						method : 'post',
-						url : '/main/updateLabel',
-						data : {
-							c_key : $('#cardNum')[0].value,
-							label : tempArr
-						}
-					}).done(function(msg) {
+			$.ajax({
+				method : 'post',
+				url : '/main/updateLabel',
+				data : {
+					c_key : $('#cardNum')[0].value,
+					label : tempArr
+				}
+			}).done(function(msg) {
 
-					});
+			});
 
-				});
+		});
 	}
 	function makeLabelArr(label, num, action) {
 		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
