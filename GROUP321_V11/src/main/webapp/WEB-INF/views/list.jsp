@@ -706,6 +706,9 @@
 		var div = document.createElement('div');
 		div.id = 'list' + id;
 		div.className = 'list';
+		
+		var addCardArea = document.createElement('div');
+		addCardArea.className = 'addCardArea';
 
 		var viewList = document.createElement('div');
 		viewList.id = 'viewList' + id;
@@ -753,7 +756,10 @@
 
 		addCardDiv.appendChild(aTag);
 		addCardDiv.appendChild(addCardContainer);
+		addCardArea.append(addCardContainer);
+		list_foot.append(addCardArea);
 		list_foot.appendChild(addCardDiv);
+		
 
 		//nhs
 		viewList.appendChild(list_title);
