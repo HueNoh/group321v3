@@ -755,7 +755,6 @@
 		addCardContainer.append(addCardSubmit);
 
 		addCardDiv.appendChild(aTag);
-		addCardDiv.appendChild(addCardContainer);
 		addCardArea.append(addCardContainer);
 		list_foot.append(addCardArea);
 		list_foot.appendChild(addCardDiv);
