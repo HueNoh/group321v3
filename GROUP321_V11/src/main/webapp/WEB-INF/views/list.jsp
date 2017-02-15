@@ -291,7 +291,7 @@ display:none;
 	var chatOnOff = false;
 
 	var b_num = '${b_num}';
-	var webSocket = new WebSocket('ws://211.183.8.14/list');
+	var webSocket = new WebSocket('ws://211.183.8.20/list');
 
 	webSocket.onopen = function(event) {
 		onOpen(event)
@@ -1097,6 +1097,10 @@ display:none;
 	function closeInviteMember() {
 		document.getElementById("invite").style.width = "0px";
 
+	}
+	function profile(){
+		alert("프로필")
+		
 	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>

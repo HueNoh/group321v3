@@ -86,9 +86,8 @@
 				var div = document.createElement('div');
 				div.id = id;
 				div.className = 'user';
-			
-				var contentText = document.createTextNode(msg);
 
+				var contentText = document.createTextNode(msg);
 				div.append(contentText);
 				$('#user').append(div);
 
