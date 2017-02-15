@@ -51,10 +51,13 @@ public class MainController {
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		String userId = (String) session.getAttribute("id");
 		int b_num = Integer.valueOf((String) map.get("b_num"));
-
+		
+		System.out.println("list map: "+map);
 		session.setAttribute("b_num", b_num);
 		model.addAttribute("b_num", b_num);
-
+		
+		model.addAttribute("title", memberService.selectBoardOne(map).get("title"));
+		
 		map.put("id", userId);
 		map.put("bnum", b_num);
 
@@ -83,6 +86,7 @@ public class MainController {
 		model.addAttribute("users", new Gson().toJson(list2));
 
 		List list = memberService.selectBoardMember(map);
+
 		if (0 < list.size()) {
 
 			return loginChk(map, request, session, "list");
@@ -91,7 +95,18 @@ public class MainController {
 		}
 
 	}
-
+	
+	@RequestMapping(value = "/deleteBoard", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public int deleteBoard(@RequestParam Map map){
+		int result = memberService.deleteBoard(map);
+		System.out.println("deleteBoard map: "+map);
+		System.out.println(result);
+		return result;
+		
+	}
+	
+	
 	@RequestMapping(value = "/searchBoard", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String searchBoard(Locale locale, Model model, HttpSession session, HttpServletRequest request,

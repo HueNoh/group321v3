@@ -256,4 +256,10 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		return mapper.deleteLink(map);
 	}
 
+	@Override
+	public Map selectBoardOne(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.selectBoardOne(map);
+	}
+
 }

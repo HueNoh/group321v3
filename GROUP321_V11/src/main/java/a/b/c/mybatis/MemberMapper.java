@@ -77,12 +77,15 @@ public interface MemberMapper {
 	public int addMembers(Map map);
 
 	public int removeMembers(Map map);
-	
+
 	public List selectLink(Map map);
+
 	public List profile(Map map);
-	
+
 	public int insertLink(Map map);
-	
+
 	public int deleteLink(Map map);
-	
+
+	public Map selectBoardOne(Map map);
+
 }

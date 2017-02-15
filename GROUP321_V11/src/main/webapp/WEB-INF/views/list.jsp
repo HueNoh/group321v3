@@ -1153,7 +1153,7 @@
 		<!-- 		<button id="testDatepicker" style="width: 80px; height: 20px;"></button> -->
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
+	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">${title}</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<div class="content">

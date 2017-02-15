@@ -12,6 +12,16 @@
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
 <style>
+.board {
+	position: relative;
+}
+.boardDelBtn {
+	display: block;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+
 </style>
 <script>
 	history.pushState(null, null, location.href);
@@ -94,6 +104,16 @@
 				aTag.setAttribute('href', '/main/list?b_num=' + b_num);
 				aTag.appendChild(createAText);
 				div.appendChild(aTag);
+				
+				//hs
+				var aTagDelBtn = document.createElement('a');
+				aTagDelBtn.className = 'boardDelBtn';
+				var aTagDelBtnText = document.createTextNode('x');
+				aTagDelBtn.appendChild(aTagDelBtnText);
+				//aTagDelBtn.setAttribute('href', '/main/deleteBoard?b_num=' + b_num);
+				aTagDelBtn.setAttribute('href', '#');
+				aTagDelBtn.setAttribute('onclick', 'deleteBoard('+ b_num +');');
+				div.appendChild(aTagDelBtn);
 
 				document.getElementById('viewBoard').appendChild(div);
 
@@ -150,7 +170,25 @@
 				addBoard($('#CBTitle').val());
 			}
 		});
+		
 	});
+	
+	function deleteBoard(b_num){
+		$.ajax({
+			method : 'post',
+			url : '/main/deleteBoard',
+			data : {
+				b_num : b_num
+			}
+		}).done(function(msg){
+			//alert(msg);
+			var tmp = '#board'+b_num;
+			
+			if(msg==0){
+				$(tmp).remove();
+			}
+		});
+	};
 	
 </script>
 </head>

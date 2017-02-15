@@ -64,4 +64,8 @@ public interface MemberServiceInterface {
 	public int insertLink(Map map);
 
 	public int deleteLink(Map map);
+
+	public Map selectBoardOne(Map map);
+
+	public int deleteBoard(Map map);
 }

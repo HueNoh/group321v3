@@ -86,4 +86,6 @@ public interface MemberDaoInterface {
 
 	public int deleteLink(Map map);
 
+	public Map selectBoardOne(Map map);
+	
 }

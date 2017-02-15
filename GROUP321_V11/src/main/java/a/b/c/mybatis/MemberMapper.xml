@@ -56,13 +56,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="deleteBoard" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call deleteBoard(#{bnum})
+		call deleteBoard(#{b_num})
 		}
 	</select>
 	<!-- 보드 보기 -->
 	<select id="selectBoard" statementType="CALLABLE" resultType="java.util.HashMap">
 		{
 		call selectBoard()
+		}
+	</select>
+	<!-- 보드 1 보기 -->
+	<select id="selectBoardOne" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		{
+		call selectBoardOne(#{b_num})
 		}
 	</select>
 	<!-- 리스트 생성 -->
