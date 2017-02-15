@@ -93,7 +93,6 @@
 				var aTag = document.createElement('a');
 				var contentText = document.createTextNode(msg);
 
-				aTag.setAttribute('href', '#');
 				aTag.setAttribute('onclick', 'profile(\'' + id + '\')');
 				aTag.setAttribute('style', 'color: white; font-size: 20px');
 

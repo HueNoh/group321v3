@@ -17,40 +17,50 @@
 <link rel="stylesheet" href="/resources/css/websocket.atj.css">
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
-.viewList, #addList {
-	width: 200px;
+.listBorder, .addListBorder {
+	width: 250px;
 	height: 100%;
 	margin: 5px;
+	float: left;
+}
+
+.viewList, #addList {
+	width: 250px;
 	border: 1px solid black;
 	float: left;
 }
 
 #cardReply {
-	max overflow-y: aute;
+	overflow-y: auto;
 }
 
 .list {
-	width: 200px;
-	height: 100%;
-	min-height: 10px;
+	width: 100%;
+	max-height:; min-height : 10px;
 	float: left;
+	min-height: 10px; float : left;
+	overflow-y: auto;
 }
 
 .list-card:hover {
 	cursor: pointer;
 }
 
-.list_body {
-	width: 90%;
+.viewList .list_foot, .viewList .addCard, .viewList .list_title {
+	width: 100%;
 }
 
-.list_foot {
-	width: 90%;
+#mainList {
+	float: left;
 }
 
-#content, #mainList {
+.content {
+	overflow: hidden;
+}
+
+#content, #mainList, .content {
 	height: 100%;
-	background-color: yellowgreen;
+	background-color: #257db1;
 }
 
 .g3-container {
@@ -277,7 +287,6 @@
 }
 </style>
 <script>
-	
 	document.onkeydown = refl;
 	function refl() {
 		if (event.keyCode == 116) {
@@ -312,18 +321,22 @@
 	};
 
 	var numOfList = 0; // 전체 리스트 갯수
-	var cardl_num=0;
+	var cardl_num = 0;
 	var cardId = 0;
 	window.onload = function() {
-		var users = ${users};
+		var users = $
+		{
+			users
+		}
+		;
 
-		
 		userConnection(users);
 		$('#mainList').sortable(
 				{
 					update : function(ev, ui) {
-
+						console.log(ev);
 						var result = $('#mainList').sortable('toArray');
+						console.log(result);
 						send('mainList', 'listMove', '${sessionScope.id}',
 								'${sessionScope.b_num}', '0', '0');
 						var moveData = new Object();
@@ -359,31 +372,36 @@
 
 		viewMsg();
 		inUsers();
+
 	};
 
 	function setWidthOnload(num) {
 
-		var currentWidth = $('.g3-container').width();
-		var margin = $(".viewList").css("margin").replace('px', '');
-		var borderWidth = $('.viewList').css("borderWidth").replace('px', '');
-		var listWidth = $('.viewList').width() + margin * 2 + borderWidth * 2;
-		var afterWidth = currentWidth + listWidth * (num - 10);
+		var margin = $(".listBorder").css("margin").replace('px', '');
+		var borderWidth = $('.listBorder').css("borderWidth").replace('px', '');
+		var listWidth = $('.listBorder').width() + margin * 2 + borderWidth * 2;
+		var mainWidth = num * listWidth;
+		var addListBorderWidth = $('.addListBorder').width() + 10;
+		var contentWidth = mainWidth + addListBorderWidth;
 
-		if (((num + 1) * listWidth) > currentWidth) {
-
-			$('.g3-container').css('width', afterWidth);
-		}
+		$('#mainList').css('width', mainWidth);
+		$('.content').css('width', contentWidth);
+		$('.g3-container').css('width', contentWidth);
 	}
 
 	function setWidthAddList(num) {
 		var currentWidth = $('.g3-container').width();
-		var margin = $(".viewList").css("margin").replace('px', '');
-		var borderWidth = $('.viewList').css("borderWidth").replace('px', '');
-		var listWidth = $('.viewList').width() + margin * 2 + borderWidth * 2;
+		var margin = $(".listBorder").css("margin").replace('px', '');
+		var borderWidth = $('.listBorder').css("borderWidth").replace('px', '');
+		var listWidth = $('.listBorder').width() + margin * 2 + borderWidth * 2;
 		var afterWidth = currentWidth + listWidth;
 
-		if (((num + 1) * listWidth) > currentWidth) {
+		var mainWidth = num * listWidth;
 
+		$('#mainList').css('width', mainWidth);
+
+		if (((num + 1) * listWidth) > currentWidth) {
+			$('.content').css('width', afterWidth);
 			$('.g3-container').css('width', afterWidth);
 		}
 
@@ -430,10 +448,10 @@
 		$('#addCardTitle' + id).val('');
 		cardId = id;
 		cardl_num = lnum;
-		
+
 	}
-	
-	function addCardDetail(){
+
+	function addCardDetail() {
 		if ($('#addCardTitle' + cardId).val()) {
 			var title = $('#addCardTitle' + cardId).val();
 			$.ajax({
@@ -445,50 +463,45 @@
 					bnum : b_num,
 					lnum : cardl_num
 
-					}
-			}).done(function(msg) {
-					console.log(msg);
-					var cardArr = JSON
-							.parse(msg);
+				}
+			}).done(
+					function(msg) {
+						console.log(msg);
+						var cardArr = JSON.parse(msg);
 
-					var newCard = document
-							.createElement('div');
-					var c_num = cardArr.c_num;
+						var newCard = document.createElement('div');
+						var c_num = cardArr.c_num;
 
-					newCard.id = c_num;
-					newCard.className = 'list-card';
-					newCard.onclick = function() {
+						newCard.id = c_num;
+						newCard.className = 'list-card';
+						newCard.onclick = function() {
 
-						cardView(b_num, cardl_num,
-								c_num)
+							cardView(b_num, cardl_num, c_num)
 
-					};
-					// 카드 내부의 label div 생성!!!
-					for (var j = 1; j <= 7; j++) {
-						var labelDiv = document.createElement('div');
-						labelDiv.id = 'labelDiv' + c_num+ '_' + j;
-						newCard.append(labelDiv);
-					}
+						};
+						// 카드 내부의 label div 생성!!!
+						for (var j = 1; j <= 7; j++) {
+							var labelDiv = document.createElement('div');
+							labelDiv.id = 'labelDiv' + c_num + '_' + j;
+							newCard.append(labelDiv);
+						}
 
-					var createCardText = document.createTextNode(cardArr.title);
+						var createCardText = document
+								.createTextNode(cardArr.title);
 
-					newCard.appendChild(createCardText);
-					document.getElementById('list' + cardId).appendChild(newCard);
+						newCard.appendChild(createCardText);
+						document.getElementById('list' + cardId).appendChild(
+								newCard);
 
-					var cardHtml = $('#list'
-							+ cardId)[0].innerHTML;
-					send(
-							'cardCreate',
-							'cardCreate',
-							'${sessionScope.id}',
-							'${sessionScope.b_num}',
-							'0', '0');
-					$('#addCardContainer' + cardId).toggle();
-					$('#addCardTitle' + cardId).val('');
-				});
-			}
+						var cardHtml = $('#list' + cardId)[0].innerHTML;
+						send('cardCreate', 'cardCreate', '${sessionScope.id}',
+								'${sessionScope.b_num}', '0', '0');
+						$('#addCardContainer' + cardId).toggle();
+						$('#addCardTitle' + cardId).val('');
+					});
+		}
 	}
-	
+
 	function cardView(b_num, l_num, c_num) {
 		$('#cardReply').empty();
 		$('#commentArea').val('');
@@ -502,14 +515,14 @@
 			}
 		}).done(
 				function(msg) {
-
+					console.log(msg);
 					var detail = JSON.parse(msg);
 
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
 					//hs
 					var cardLink = detail[2];
-					console.log('cardLink=' + cardLink);
+					console.log('cardLink=' + cardLink[0]);
 
 					handelDesc(0); // description textarea 숨기기
 					console.log(detail);
@@ -528,12 +541,13 @@
 
 					$.each(cardReply, function(i) {
 
-						createReplyDiv([ i ].seq, cardReply[i].content,
+						createReplyDiv(cardReply[i].seq, cardReply[i].content,
 								cardReply[i].m_id);
 
 					});
 
 					//hs
+					$('#attachLink').children().empty();
 					$.each(cardLink, function(i) {
 						var node = document.createElement('div');
 						var textNode = document
@@ -700,8 +714,13 @@
 		div.className = 'list';
 
 		var viewList = document.createElement('div');
-		viewList.id = id;
+		viewList.id = 'viewList' + id;
 		viewList.className = 'viewList';
+
+		var listBorder = document.createElement('div');
+		listBorder.id = id;
+		listBorder.className = 'listBorder';
+
 		//nhs
 		var list_title = document.createElement('div');
 		list_title.className = 'list_title';
@@ -746,9 +765,14 @@
 		viewList.appendChild(list_title);
 
 		viewList.appendChild(div);
+
 		viewList.appendChild(list_foot);
 
-		document.getElementById('mainList').appendChild(viewList);
+		listBorder.append(viewList);
+
+		document.getElementById('mainList').appendChild(listBorder);
+
+		$('.list').css('max-height', $('.listBorder').height() * 0.8);
 	}
 
 	function listSearch(b_num) {
@@ -777,7 +801,7 @@
 
 			});
 
-			numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
+			numOfList = $('.listBorder').length; // 전체 viewList의 갯수 획득
 
 			console.log('length_onload: ' + numOfList);
 
@@ -992,8 +1016,6 @@
 				$('#popup_layer, #overlay_t').hide();
 			}
 		});
-		
-	
 
 	});
 
@@ -1003,13 +1025,15 @@
 			div.id = users[i];
 			div.className = 'user';
 
-			var content = document.createElement('div');
-
+			var aTag = document.createElement('a');
 			var contentText = document.createTextNode(users[i]);
 
-			content.appendChild(contentText);
+			aTag.setAttribute('onclick', 'profile(\'' + users[i] + '\')');
+			aTag.setAttribute('style', 'color: white; font-size: 20px');
 
-			div.append(content);
+			aTag.append(contentText);
+
+			div.append(aTag);
 			$('#user').append(div);
 		});
 	}
@@ -1092,8 +1116,6 @@
 	function openMsg() {
 		var bodyHeight = document.body.offsetHeight - 150;
 
-		console.log(document.body.offsetHeight);
-		console.log(bodyHeight);
 		document.getElementById("msgOff").style.top = bodyHeight + "px";
 
 	}
@@ -1125,7 +1147,7 @@
 
 
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1 style="top: -10px;" onclick="unConnect();">PROJECT 321</h1></a> <a href="#" class="btn_board"> <img alt="board" src="/resources/images/btn_board.png" class="btn-board"> <span>&nbsp;&nbsp;Boards</span>
+		<a href="/main/board"><h1 style="top: -10px;" onclick="unConnect();">PROJECT 321</h1></a> <a href="#" class="btn_board"> <span>Boards</span>
 		</a>
 		<form action="#" method="post" id="sch_main_wrap">
 			<fieldset>
@@ -1139,14 +1161,15 @@
 	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
-			<p></p>
 			<div class="content">
 				<div id="mainList" class="mainList"></div>
-				<div id="addList">
-					<div>Create</div>
-					<div id="CBContainer">
-						<textarea id="CBTitle" style="width: 95%;"></textarea>
-						<button id="CBSubmit">SAVE</button>
+				<div class="addListBorder">
+					<div id="addList">
+						<div>Create</div>
+						<div id="CBContainer">
+							<textarea id="CBTitle" style="width: 95%;"></textarea>
+							<button id="CBSubmit">SAVE</button>
+						</div>
 					</div>
 				</div>
 			</div>

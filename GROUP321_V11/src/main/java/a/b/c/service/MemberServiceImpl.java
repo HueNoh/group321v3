@@ -78,6 +78,7 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		List linkList = memberDao.selectLink((Map) list2.get(0));
 		list2.add(linkList);
 		System.out.println("linkList=" + linkList);
+		System.out.println("list :"+ list2);
 		return list2;
 	}
 
