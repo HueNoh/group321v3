@@ -210,6 +210,7 @@
 #invite{
 	min-height: 50%;
 	overflow-y: aute;
+	background-color: #448cb7;
 }
 
 #searchUser {
@@ -226,7 +227,6 @@
 .user-inUsers, .user-searchUsers {
 	height: 30px;
 	width: 100%;
-	border: 1px solid #999;
 }
 
 .searchUsers, .inUsers {
