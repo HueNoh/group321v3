@@ -147,7 +147,7 @@ public class MainController {
 	@ResponseBody
 	public String createCard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		List list = memberService.insertCard(map);
 		Map lastBoard = (Map) list.get(list.size() - 1);
 		return new Gson().toJson(lastBoard);

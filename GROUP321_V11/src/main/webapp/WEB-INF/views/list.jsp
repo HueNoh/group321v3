@@ -7,15 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <title>List</title>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script src="/resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="/resources/css/slidebars.css">
 <link rel="stylesheet" href="/resources/css/slidebars.atj.css">
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" href="/resources/css/common.css">
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/css/websocket.atj.css">
 <!-- <link rel="stylesheet" href="/resources/css/jquery-ui.css"> -->
 <style>
@@ -273,8 +271,13 @@
 	border: 2px solid grey;
 	width: 90%;
 }
+
+.addCardContainer {
+	display: none;
+}
 </style>
 <script>
+	
 	document.onkeydown = refl;
 	function refl() {
 		if (event.keyCode == 116) {
@@ -309,10 +312,12 @@
 	};
 
 	var numOfList = 0; // 전체 리스트 갯수
-
+	var cardl_num=0;
+	var cardId = 0;
 	window.onload = function() {
 		var users = ${users};
 
+		
 		userConnection(users);
 		$('#mainList').sortable(
 				{
@@ -403,44 +408,7 @@
 					//nhs
 					var l_title = arrList.title;
 
-					var div = document.createElement('div');
-					div.id = 'list' + id;
-					div.className = 'list';
-
-					var viewList = document.createElement('div');
-					viewList.id = id;
-					viewList.className = 'viewList';
-					//nhs
-					var list_title = document.createElement('div');
-					list_title.className = 'list_title';
-					list_title.innerHTML = l_title;
-
-					var list_foot = document.createElement('div');
-					list_foot.className = 'list_foot';
-
-					var addCardDiv = document.createElement('div');
-					addCardDiv.className = 'addCard';
-
-					var aTag = document.createElement('a');
-					var createAText = document.createTextNode('addCard');
-					aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
-							+ ',\'' + id + '\')');
-
-					aTag.appendChild(createAText);
-
-					addCardDiv.appendChild(aTag);
-
-					list_foot.appendChild(addCardDiv);
-
-					viewList.appendChild(list_title);
-
-					//nhs
-					viewList.appendChild(list_title);
-
-					viewList.appendChild(div);
-					viewList.appendChild(list_foot);
-
-					document.getElementById('mainList').appendChild(viewList);
+					listView(id, l_title, arrList.l_num);
 
 					numOfList = $('.viewList').length;
 					setWidthAddList(numOfList);
@@ -456,52 +424,71 @@
 
 	}
 
-	function addCard(l_num, id) {
-		$.ajax({
-			method : 'post',
-			url : '/main/createCard',
-			data : {
-				id : '${sessionScope.id}',
-				title : 'TestTitle',
-				bnum : b_num,
-				lnum : l_num
+	function addCard(lnum, id) {
+		$('#addCardContainer' + id).toggle();
+		$('#addCardTitle' + id).focus();
+		$('#addCardTitle' + id).val('');
+		cardId = id;
+		cardl_num = lnum;
+		
+	}
+	
+	function addCardDetail(){
+		if ($('#addCardTitle' + cardId).val()) {
+			var title = $('#addCardTitle' + cardId).val();
+			$.ajax({
+				method : 'post',
+				url : '/main/createCard',
+				data : {
+					id : '${sessionScope.id}',
+					title : title,
+					bnum : b_num,
+					lnum : cardl_num
 
-			}
+					}
+			}).done(function(msg) {
+					console.log(msg);
+					var cardArr = JSON
+							.parse(msg);
 
-		}).done(
-				function(msg) {
-					var cardArr = JSON.parse(msg);
-
-					var newCard = document.createElement('div');
+					var newCard = document
+							.createElement('div');
 					var c_num = cardArr.c_num;
 
 					newCard.id = c_num;
 					newCard.className = 'list-card';
 					newCard.onclick = function() {
 
-						cardView(b_num, l_num, c_num)
+						cardView(b_num, cardl_num,
+								c_num)
 
 					};
 					// 카드 내부의 label div 생성!!!
 					for (var j = 1; j <= 7; j++) {
 						var labelDiv = document.createElement('div');
-						labelDiv.id = 'labelDiv' + c_num + '_' + j;
+						labelDiv.id = 'labelDiv' + c_num+ '_' + j;
 						newCard.append(labelDiv);
 					}
 
-					var createCardText = document
-							.createTextNode('card' + c_num);
+					var createCardText = document.createTextNode(cardArr.title);
 
 					newCard.appendChild(createCardText);
-					document.getElementById('list' + id).appendChild(newCard);
+					document.getElementById('list' + cardId).appendChild(newCard);
 
-					var cardHtml = $('#list' + id)[0].innerHTML;
-					send('cardCreate', 'cardCreate', '${sessionScope.id}',
-							'${sessionScope.b_num}', '0', '0');
+					var cardHtml = $('#list'
+							+ cardId)[0].innerHTML;
+					send(
+							'cardCreate',
+							'cardCreate',
+							'${sessionScope.id}',
+							'${sessionScope.b_num}',
+							'0', '0');
+					$('#addCardContainer' + cardId).toggle();
+					$('#addCardTitle' + cardId).val('');
 				});
-
+			}
 	}
-
+	
 	function cardView(b_num, l_num, c_num) {
 		$('#cardReply').empty();
 		$('#commentArea').val('');
@@ -707,6 +694,63 @@
 		});
 	}
 
+	function listView(id, l_title, l_num) {
+		var div = document.createElement('div');
+		div.id = 'list' + id;
+		div.className = 'list';
+
+		var viewList = document.createElement('div');
+		viewList.id = id;
+		viewList.className = 'viewList';
+		//nhs
+		var list_title = document.createElement('div');
+		list_title.className = 'list_title';
+		list_title.innerHTML = l_title;
+
+		var list_foot = document.createElement('div');
+		list_foot.className = 'list_foot';
+
+		var addCardDiv = document.createElement('div');
+		addCardDiv.className = 'addCard';
+
+		var addCardContainer = document.createElement('div');
+		addCardContainer.id = 'addCardContainer' + id;
+		addCardContainer.className = 'addCardContainer';
+
+		var addCardTextarea = document.createElement('textarea');
+		addCardTextarea.id = 'addCardTitle' + id;
+		addCardTextarea.className = 'addCardTitle';
+		addCardTextarea.setAttribute('style', 'width: 95%;');
+
+		var addCardSubmit = document.createElement('input');
+		addCardSubmit.id = 'addCardSubmit' + id;
+		addCardSubmit.className = 'addCardSubmit';
+		addCardSubmit.setAttribute('type', 'button');
+		addCardSubmit.setAttribute('value', '저장');
+		addCardSubmit.setAttribute('onclick', 'addCardDetail()');
+
+		var aTag = document.createElement('a');
+		var createAText = document.createTextNode('addCard');
+		aTag.setAttribute('onClick', 'addCard(' + l_num + ',\'' + id + '\')');
+
+		aTag.appendChild(createAText);
+
+		addCardContainer.append(addCardTextarea);
+		addCardContainer.append(addCardSubmit);
+
+		addCardDiv.appendChild(aTag);
+		addCardDiv.appendChild(addCardContainer);
+		list_foot.appendChild(addCardDiv);
+
+		//nhs
+		viewList.appendChild(list_title);
+
+		viewList.appendChild(div);
+		viewList.appendChild(list_foot);
+
+		document.getElementById('mainList').appendChild(viewList);
+	}
+
 	function listSearch(b_num) {
 		$.ajax({
 			url : '/main/searchList',
@@ -714,68 +758,32 @@
 			data : {
 				bnum : b_num
 			}
-		}).done(
-				function(msg) {
+		}).done(function(msg) {
 
-					var listArr = JSON.parse(msg);
-					$.each(listArr, function(i) {
+			var listArr = JSON.parse(msg);
+			$.each(listArr, function(i) {
 
-						var l_num = listArr[i].l_num;
-						var id = l_num;
-						//nhs
-						var l_title = listArr[i].title;
+				var l_num = listArr[i].l_num;
+				var id = l_num;
+				//nhs
+				var l_title = listArr[i].title;
 
-						var div = document.createElement('div');
-						div.id = 'list' + id;
-						div.className = 'list';
+				listView(id, l_title, l_num);
 
-						var viewList = document.createElement('div');
-						viewList.id = id;
-						viewList.className = 'viewList';
-						//nhs
-						var list_title = document.createElement('div');
-						list_title.className = 'list_title';
-						list_title.innerHTML = l_title;
+				/*
+				cardSearch >> 데이터베이스에 있는 해당리스트의 카드들을 불러온다.
+				 */
+				cardSearch(b_num, l_num, id);
 
-						var list_foot = document.createElement('div');
-						list_foot.className = 'list_foot';
+			});
 
-						var addCardDiv = document.createElement('div');
-						addCardDiv.className = 'addCard';
+			numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
 
-						var aTag = document.createElement('a');
-						var createAText = document.createTextNode('addCard');
+			console.log('length_onload: ' + numOfList);
 
-						/*
-						cardSearch >> 데이터베이스에 있는 해당리스트의 카드들을 불러온다.
-						 */
-						cardSearch(b_num, l_num, id);
+			setWidthOnload(numOfList); // Onload 시 전체 width 설정
 
-						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
-								+ id + '\')');
-						aTag.appendChild(createAText);
-
-						addCardDiv.appendChild(aTag);
-						list_foot.appendChild(addCardDiv);
-
-						//nhs
-						viewList.appendChild(list_title);
-
-						viewList.appendChild(div);
-						viewList.appendChild(list_foot);
-
-						document.getElementById('mainList').appendChild(
-								viewList);
-
-					});
-
-					numOfList = $('.viewList').length; // 전체 viewList의 갯수 획득
-
-					console.log('length_onload: ' + numOfList);
-
-					setWidthOnload(numOfList); // Onload 시 전체 width 설정
-
-				});
+		});
 
 	}
 
@@ -848,7 +856,7 @@
 					cardDiv.append(labelDiv);
 				}
 
-				var createCardText = document.createTextNode('card' + c_num);
+				var createCardText = document.createTextNode(cardArr[i].title);
 
 				cardDiv.appendChild(createCardText);
 
@@ -935,11 +943,11 @@
 		//리스트 타이틀
 		$('#CBContainer').css('display', 'none');
 		$('#addList').click(function() {
+			console.log('b');
 			$('#CBContainer').toggle();
 			$('#CBTitle').focus();
 			$('#CBTitle').val('');
 		});
-
 		$('#CBSubmit').click(function() {
 			if ($('#CBTitle').val()) {
 				addList($('#CBTitle').val());
@@ -984,6 +992,8 @@
 				$('#popup_layer, #overlay_t').hide();
 			}
 		});
+		
+	
 
 	});
 
@@ -1115,10 +1125,7 @@
 
 
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1 style="top: -10px;"
-				onclick="unConnect();">PROJECT 321</h1></a> <a href="#"
-			class="btn_board"> <img alt="board"
-			src="/resources/images/btn_board.png" class="btn-board"> <span>&nbsp;&nbsp;Boards</span>
+		<a href="/main/board"><h1 style="top: -10px;" onclick="unConnect();">PROJECT 321</h1></a> <a href="#" class="btn_board"> <img alt="board" src="/resources/images/btn_board.png" class="btn-board"> <span>&nbsp;&nbsp;Boards</span>
 		</a>
 		<form action="#" method="post" id="sch_main_wrap">
 			<fieldset>
@@ -1129,9 +1136,7 @@
 		<!-- 		<button id="testDatepicker" style="width: 80px; height: 20px;"></button> -->
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div
-		style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board
-		Title</div>
+	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<p></p>
@@ -1153,13 +1158,10 @@
 				<ul class="side-menu">
 					<h2 class="title">Menu</h2>
 					<li class="link"><a href="#" class="link_tag1">Filter</a></li>
-					<li class="link" onclick="getHistory();"><a href="#"
-						class="link_tag2" id="myBtn">History</a></li>
-					<li class="link"><a href="#" onclick="openChat();"
-						class="link_tag3 js-close-right-slidebar">Chatting</a></li>
+					<li class="link" onclick="getHistory();"><a href="#" class="link_tag2" id="myBtn">History</a></li>
+					<li class="link"><a href="#" onclick="openChat();" class="link_tag3 js-close-right-slidebar">Chatting</a></li>
 					<li class="link"><a href="#" class="link_tag4">File</a></li>
-					<li class="link"><a href="#" onclick="inviteMember()"
-						class="link_tag5 js-close-right-slidebar">Members</a></li>
+					<li class="link"><a href="#" onclick="inviteMember()" class="link_tag5 js-close-right-slidebar">Members</a></li>
 				</ul>
 			</ul>
 		</div>
@@ -1190,32 +1192,23 @@
 
 						<h1>card title</h1>
 						<div class="label_div">
-							<input id="selected_label1" type="button" onclick="label('1')">
-							<input id="selected_label2" type="button" onclick="label('2')">
-							<input id="selected_label3" type="button" onclick="label('3')">
-							<input id="selected_label4" type="button" onclick="label('4')">
-							<input id="selected_label5" type="button" onclick="label('5')">
-							<input id="selected_label6" type="button" onclick="label('6')">
-							<input id="selected_label7" type="button" onclick="label('7')">
+							<input id="selected_label1" type="button" onclick="label('1')"> <input id="selected_label2" type="button" onclick="label('2')"> <input id="selected_label3" type="button" onclick="label('3')"> <input id="selected_label4" type="button" onclick="label('4')"> <input id="selected_label5" type="button" onclick="label('5')"> <input id="selected_label6" type="button" onclick="label('6')"> <input id="selected_label7" type="button" onclick="label('7')">
 						</div>
 
 						<div id="contentId">
 							<!-- 					<div class="card-desc"> -->
 							<!-- 							<a href="#" class="	 glyphicon-pencil content_tag"	onclick="createDescriptionDiv();">&nbsp;description...</a> -->
-							<a href="#" class="	 glyphicon-pencil content_tag"
-								onclick="handelDesc(1);">&nbsp;content...</a>
+							<a href="#" class="	 glyphicon-pencil content_tag" onclick="handelDesc(1);">&nbsp;content...</a>
 							<div class="content_div"></div>
 							<div class="content_area" id="content_area">
 								<div class="content_text">
 									<textarea rows="10" cols="80" class="content_textarea"></textarea>
 								</div>
 								<div>
-									<button value="SAVE" style="width: 40px; height: 30px;"
-										onclick="sendDesc();">
+									<button value="SAVE" style="width: 40px; height: 30px;" onclick="sendDesc();">
 										<img alt="send" src="/resources/images/btn_send.png">
 									</button>
-									<button value="X" style="width: 40px; height: 30px;"
-										onclick="handelDesc(0);">
+									<button value="X" style="width: 40px; height: 30px;" onclick="handelDesc(0);">
 										<img alt="send" src="/resources/images/btn_cancel.png">
 									</button>
 								</div>
@@ -1231,9 +1224,7 @@
 					<div class="card-detail-sidebar">
 						<button onclick="labelView();" class="btn-label-view dropdown">
 							<!-- 						<input type="button" onclick="labelView();" class="btn-label-view dropdown"> -->
-							<span class="btn_label_toggle"><img alt="label"
-								src="/resources/images/btn_label.png" width="20px" height="20px"
-								class="btn-label">&nbsp;Label</span>
+							<span class="btn_label_toggle"><img alt="label" src="/resources/images/btn_label.png" width="20px" height="20px" class="btn-label">&nbsp;Label</span>
 						</button>
 						<div class="submenu_hidden">
 							<ul class="submenu">
@@ -1267,35 +1258,25 @@
 								height="20px" class="btn-attachment">&nbsp;Attachment</span>
 						</button> -->
 						<button id="insertLink">
-							<span><img alt="label"
-								src="/resources/images/btn_attachment.png" width="20px"
-								height="20px" class="btn-attachment">&nbsp;Attachment</span>
+							<span><img alt="label" src="/resources/images/btn_attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
 							<div id="overlay_t"></div>
 							<div id="popup_layer">
-								<input type="text" id="insertLinkInput"
-									placeholder="attach link"> <input type="button"
-									id="linkSubmit" class="close" value="save">
+								<input type="text" id="insertLinkInput" placeholder="attach link"> <input type="button" id="linkSubmit" class="close" value="save">
 								<!-- <button id="linkSubmit">SAVE</button> -->
 							</div>
 						</button>
 						<br> <br>
 						<button>
-							<span><img alt="label"
-								src="/resources/images/btn_delete.png" width="20px"
-								height="20px" class="btn-delete">&nbsp;Delete</span>
+							<span><img alt="label" src="/resources/images/btn_delete.png" width="20px" height="20px" class="btn-delete">&nbsp;Delete</span>
 						</button>
 						<br> <br>
 						<!-- 						<input type="text" id="date_picker"> -->
 						<button>
-							<span><img alt="label"
-								src="/resources/images/btn_calendar.png" width="20px"
-								height="20px" class="btn-calendar">&nbsp;&nbsp;&nbsp;Calendar</span>
+							<span><img alt="label" src="/resources/images/btn_calendar.png" width="20px" height="20px" class="btn-calendar">&nbsp;&nbsp;&nbsp;Calendar</span>
 						</button>
 						<br> <br>
 						<button>
-							<span><img alt="label"
-								src="/resources/images/btn_delete.png" width="20px"
-								height="20px" class="btn-delete">&nbsp;empty2</span>
+							<span><img alt="label" src="/resources/images/btn_delete.png" width="20px" height="20px" class="btn-delete">&nbsp;empty2</span>
 						</button>
 						<br> <br>
 					</div>
@@ -1309,8 +1290,7 @@
 	</div>
 
 </body>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="/resources/js/jquery-ui.js"></script>
 <script src="/resources/js/slidebars.js"></script>
 <script src="/resources/js/scripts.js"></script>
