@@ -273,6 +273,11 @@
 	border: 2px solid grey;
 	width: 90%;
 }
+
+.addCardContainer {
+	display: none;
+}
+
 </style>
 <script>
 	document.onkeydown = refl;
@@ -311,7 +316,11 @@
 	var numOfList = 0; // 전체 리스트 갯수
 
 	window.onload = function() {
-		var users = ${users};
+		var users = $
+		{
+			users
+		}
+		;
 
 		userConnection(users);
 		$('#mainList').sortable(
@@ -421,12 +430,27 @@
 					var addCardDiv = document.createElement('div');
 					addCardDiv.className = 'addCard';
 
+					var addCardContainer = document.createElement('div');
+					addCardContainer.className = 'addCardContainer';
+
+					var addCardTextarea = document.createElement('textarea');
+					addCardTextarea.className = 'addCardTitle';
+					addCardTextarea.setAttribute('style', 'width: 95%;');
+
+					var addCardSubmit = document.createElement('input');
+					addCardSubmit.className = 'addCardSubmit';
+					addCardSubmit.setAttribute('type', 'button');
+					addCardSubmit.setAttribute('value', '저장');
+
+					addCardContainer.append(addCardTextarea);
+					addCardContainer.append(addCardSubmit);
+
+					addCardDiv.append(addCardContainer);
+
 					var aTag = document.createElement('a');
 					var createAText = document.createTextNode('addCard');
-					aTag.setAttribute('href', '#');
-					aTag.setAttribute('className', 'aaaa');
-					aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
-							+ ',\'' + id + '\')');
+					/* aTag.setAttribute('onClick', 'addCard(' + arrList.l_num
+							+ ',\'' + id + '\')'); */
 
 					aTag.appendChild(createAText);
 
@@ -459,7 +483,13 @@
 	}
 
 	function addCard(l_num, id) {
-		$.ajax({
+		
+		$('#addCardContainer'+id).toggle();
+		$('#addCardTitle'+id).focus();
+		$('#addCardTitle'+id).val('');
+		
+		
+		/* $.ajax({
 			method : 'post',
 			url : '/main/createCard',
 			data : {
@@ -500,7 +530,7 @@
 					var cardHtml = $('#list' + id)[0].innerHTML;
 					send('cardCreate', 'cardCreate', '${sessionScope.id}',
 							'${sessionScope.b_num}', '0', '0');
-				});
+				}); */
 
 	}
 
@@ -744,7 +774,24 @@
 
 						var addCardDiv = document.createElement('div');
 						addCardDiv.className = 'addCard';
+						
+						var addCardContainer = document.createElement('div');
+						addCardContainer.id= 'addCardContainer'+id;
+						addCardContainer.className = 'addCardContainer';
 
+						var addCardTextarea = document.createElement('textarea');
+						addCardTextarea.id = 'addCardTitle'+id;
+						addCardTextarea.className = 'addCardTitle';
+						addCardTextarea.setAttribute('style', 'width: 95%;');
+
+						var addCardSubmit = document.createElement('input');
+						addCardSubmit.id = 'addCardSubmit'+id;
+						addCardSubmit.className = 'addCardSubmit';
+						addCardSubmit.setAttribute('type', 'button');
+						addCardSubmit.setAttribute('value', '저장');
+
+						
+						
 						var aTag = document.createElement('a');
 						var createAText = document.createTextNode('addCard');
 
@@ -753,9 +800,7 @@
 						 */
 						cardSearch(b_num, l_num, id);
 
-						aTag.setAttribute('href', '#');
-						aTag.setAttribute('className', 'aaaa');
-						aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
+					aTag.setAttribute('onClick', 'addCard(' + l_num + ',\''
 								+ id + '\')');
 						aTag.appendChild(createAText);
 
@@ -949,6 +994,8 @@
 				addList($('#CBTitle').val());
 			}
 		});
+
+	
 
 		//링크 등록
 		$('#insertLink').click(function() {
