@@ -78,4 +78,10 @@ public interface MemberDaoInterface {
 
 	public int removeMembers(Map map);
 
+	public List selectLink(Map map);
+
+	public int insertLink(Map map);
+
+	public int deleteLink(Map map);
+
 }
