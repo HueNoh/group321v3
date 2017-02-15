@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="updateBoard" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call updateBoard(#{title}, #{bnum})
+		call updateBoard(#{title}, #{b_num})
 		}
 	</select>
 	<!-- 보드 삭제 -->
@@ -75,28 +75,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="insertList" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call insertList(#{id}, #{title}, #{bnum})
+		call insertList(#{id}, #{title}, #{b_num})
 		}
 	</select>
 	<!-- 리스트 타이틀 수정 -->
 	<select id="updateList" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call updateList(#{title}, #{bnum}, #{lnum})
+		call updateList(#{title}, #{b_num}, #{l_num})
 		}
 	</select>
 	<!-- 리스트 삭제 -->
 	<select id="deleteList" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call deleteList(#{bnum}, #{lnum})
+		call deleteList(#{b_num}, #{l_num})
 		}
 	</select>
 	<!-- 리스트 보기 -->
 	<select id="selectList" statementType="CALLABLE" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		{
-		call selectList(#{bnum})
+		call selectList(#{b_num})
 		}
 	</select>
 
@@ -104,50 +104,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="insertCard" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call insertCard(#{id}, #{title}, #{bnum}, #{lnum})
+		call insertCard(#{id}, #{title}, #{b_num}, #{l_num})
 		}
 	</select>
 	<!-- 카드 타이틀 수정 -->
 	<select id="updateCard" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call updateCard(#{title}, #{bnum}, #{lnum},#{cnum})
+		call updateCard(#{title}, #{b_num}, #{l_num},#{c_num})
 		}
 	</select>
 	<!-- 카드 삭제 -->
 	<select id="deleteCard" statementType="CALLABLE" resultType="int"
 		parameterType="java.util.HashMap">
 		{
-		call deleteCard(#{bnum}, #{lnum},#{cnum})
+		call deleteCard(#{b_num}, #{l_num},#{c_num})
 		}
 	</select>
 	<!-- 카드 보기 -->
 	<select id="selectCard" statementType="CALLABLE" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		{
-		call selectCard(#{bnum},#{lnum})
+		call selectCard(#{b_num},#{l_num})
 		}
 	</select>
 	<select id="selectCardDetail" statementType="CALLABLE"
 		resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call
-		selectCardDetail(#{bnum},#{lnum},#{cnum})
+		selectCardDetail(#{b_num},#{l_num},#{c_num})
 		}
 	</select>
 	<select id="moveList" statementType="CALLABLE" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		{
 		call
-		moveList(#{listArr},#{length},#{bnum})
+		moveList(#{listArr},#{length},#{b_num})
 		}
 	</select>
 	<select id="moveCard" statementType="CALLABLE" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
 		{
 		call
-		moveCard(#{cardArr}, #{length}, #{bnum}, #{lnum},
-		#{cnum})
+		moveCard(#{cardArr}, #{length}, #{b_num}, #{l_num},
+		#{c_num})
 		}
 	</select>
 	<!-- 히스토리 -->
@@ -155,7 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		parameterType="java.util.HashMap">
 		{
 		call
-		insertHistory(#{bnum}, #{msg})
+		insertHistory(#{b_num}, #{msg})
 		}
 	</select>
 
@@ -163,7 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		parameterType="java.util.HashMap">
 		{
 		call
-		selectHistory(#{bnum})
+		selectHistory(#{b_num})
 		}
 	</select>
 
@@ -274,7 +274,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectBoardMembers" resultType="java.util.HashMap"
 		parameterType="java.util.HashMap">
-		call selectMembers(#{bnum})
+		call selectMembers(#{b_num})
 	</select>
 
 	<select id="searchMembers" resultType="java.util.HashMap"
@@ -286,12 +286,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="addMembers" resultType="int" parameterType="java.util.HashMap">
 		call
-		addMembers(#{id}, #{bnum});
+		addMembers(#{id}, #{b_num});
 
 	</select>
 	<select id="removeMembers" resultType="int" parameterType="java.util.HashMap">
 		call
-		removeMembers(#{id}, #{bnum});
+		removeMembers(#{id}, #{b_num});
 	</select>
 
 	<select id="selectLink" resultType="java.util.HashMap"

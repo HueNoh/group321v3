@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<p>${bnum}</p>
-<p>${lnum}</p>
-<p>${cnum}</p>
+<p>${b_num}</p>
+<p>${l_num}</p>
+<p>${c_num}</p>
 <script>
 	
 </script>

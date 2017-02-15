@@ -59,7 +59,7 @@ public class MainController {
 		model.addAttribute("title", memberService.selectBoardOne(map).get("title"));
 		
 		map.put("id", userId);
-		map.put("bnum", b_num);
+		map.put("b_num", b_num);
 
 		if (null != session.getAttribute("id")) {
 			if (inBoardMemberSet.contains(userId)) {
@@ -175,8 +175,8 @@ public class MainController {
 			@RequestParam Map map) {
 		session = request.getSession(false);
 
-		session.setAttribute("l_num", map.get("lnum"));
-		session.setAttribute("c_num", map.get("cnum"));
+		session.setAttribute("l_num", map.get("l_num"));
+		session.setAttribute("c_num", map.get("c_num"));
 
 		System.out.println(map);
 
