@@ -239,6 +239,12 @@ public class MemberDaoImpl implements MemberDaoInterface {
 	}
 
 	@Override
+	public List profile(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.profile(map);
+	}
+
+	@Override
 	public int insertLink(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.insertLink(map);

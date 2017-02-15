@@ -22,9 +22,12 @@
 					if (12 > date.getHours()) {
 						amPm = '오전';
 						h = date.getHours();
-					} else {
+					} else if (12 < date.getHours()) {
 						amPm = '오후';
 						h = date.getHours() - 12;
+					} else {
+						amPm = '오후';
+						h = date.getHours();
 					}
 
 					var regDate = amPm + ' ' + h + ':' + m;
@@ -87,12 +90,16 @@
 				div.id = id;
 				div.className = 'user';
 
+				var aTag = document.createElement('a');
 				var contentText = document.createTextNode(msg);
-				div.append(contentText);
-				$('#user').append(div);
 
-				/* 	var users=${users};
-					userConnection(users); */
+				aTag.setAttribute('href', '#');
+				aTag.setAttribute('onclick', 'profile(\'' + id + '\')');
+				aTag.setAttribute('style', 'color: white; font-size: 20px');
+
+				aTag.append(contentText);
+				div.append(aTag);
+				$('#user').append(div);
 
 			} else if ("unConnec" == access) {
 				$('#' + id).remove();

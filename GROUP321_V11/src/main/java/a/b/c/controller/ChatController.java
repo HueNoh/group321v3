@@ -107,10 +107,13 @@ public class ChatController {
 				if (12 > Integer.valueOf((String) dateList.get(0))) {
 					amPm = "오전";
 					h = (String) dateList.get(0);
-				} else {
+				} else if (12 < Integer.valueOf((String) dateList.get(0))) {
 					amPm = "오후";
 					int temp = Integer.valueOf((String) dateList.get(0)) - 12;
 					h = temp + "";
+				} else {
+					amPm = "오후";
+					h = (String) dateList.get(0);
 				}
 				obj.addProperty("date", amPm + " " + h + ":" + m);
 				obj.addProperty("m_id", (String) map2.get("m_id"));

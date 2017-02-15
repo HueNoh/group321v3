@@ -27,7 +27,9 @@
 	float: left;
 }
 
-
+#cardReply {
+	max overflow-y: aute;
+}
 
 .list {
 	width: 200px;
@@ -37,7 +39,7 @@
 }
 
 .list-card:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .list_body {
@@ -155,19 +157,19 @@
 
 .submenu>li>span {
 	font-size: 20px;
-    font-weight: bold;
-    color: black;
+	font-weight: bold;
+	color: black;
 }
 
 .submenu:first-child {
 	text-align: center;
 }
 /* id=label_text */
-#label_text { 
+#label_text {
 	border-radius: 5px;
-    margin-bottom: 5px;
-    width: 188px;
-    height: 30px;
+	margin-bottom: 5px;
+	width: 188px;
+	height: 30px;
 }
 
 .submenu>li:nth-child(3) {
@@ -207,7 +209,7 @@
 	box-shadow: 2px 2px 1px lightslategrey;
 }
 
-#invite{
+#invite {
 	min-height: 50%;
 	overflow-y: aute;
 	background-color: #448cb7;
@@ -226,7 +228,8 @@
 
 .user-inUsers, .user-searchUsers {
 	height: 30px;
-	width: 100%;
+	width: calc(100% -20px);
+	margin-left: 20px;
 }
 
 .searchUsers, .inUsers {
@@ -240,38 +243,36 @@
 	width: 20%;
 }
 
-.list > .list-card > div { 
- 	display: none; 
+.list>.list-card>div {
+	display: none;
 	float: left;
-    width: 18px;
-    height: 3px;
-    margin-right: 4px;
+	width: 18px;
+	height: 3px;
+	margin-right: 4px;
 }
 
-#popup_layer { 
-width:400px;
-height: 100px;
-padding: 2em;
-margin-bottom:30px; 
-background:#fff; 
-border:solid 1px #ccc; 
-position:absolute; 
-top:260px; 
-left:50%;
-margin-left: -200px; 
-
-box-shadow: 0px 1px 20px #333; 
-z-index:999; 
-display:none;
+#popup_layer {
+	width: 400px;
+	height: 100px;
+	padding: 2em;
+	margin-bottom: 30px;
+	background: #fff;
+	border: solid 1px #ccc;
+	position: absolute;
+	top: 260px;
+	left: 50%;
+	margin-left: -200px;
+	box-shadow: 0px 1px 20px #333;
+	z-index: 999;
+	display: none;
 }
+
 #attachLink {
 	height: 10em;
 	overflow-y: scroll;
 	border: 2px solid grey;
 	width: 90%;
 }
-
-
 </style>
 <script>
 	document.onkeydown = refl;
@@ -375,7 +376,7 @@ display:none;
 		var borderWidth = $('.viewList').css("borderWidth").replace('px', '');
 		var listWidth = $('.viewList').width() + margin * 2 + borderWidth * 2;
 		var afterWidth = currentWidth + listWidth;
-	
+
 		if (((num + 1) * listWidth) > currentWidth) {
 
 			$('.g3-container').css('width', afterWidth);
@@ -486,10 +487,10 @@ display:none;
 					// 카드 내부의 label div 생성!!!
 					for (var j = 1; j <= 7; j++) {
 						var labelDiv = document.createElement('div');
-						labelDiv.id = 'labelDiv'+c_num+'_'+j;
+						labelDiv.id = 'labelDiv' + c_num + '_' + j;
 						newCard.append(labelDiv);
 					}
-					
+
 					var createCardText = document
 							.createTextNode('card' + c_num);
 
@@ -518,13 +519,13 @@ display:none;
 				function(msg) {
 
 					var detail = JSON.parse(msg);
-					
+
 					var cardInfo = detail[0];
 					var cardReply = detail[1];
 					//hs
 					var cardLink = detail[2];
-					console.log('cardLink='+cardLink);
-					
+					console.log('cardLink=' + cardLink);
+
 					handelDesc(0); // description textarea 숨기기
 					console.log(detail);
 					var content = cardInfo.content;
@@ -542,26 +543,25 @@ display:none;
 
 					$.each(cardReply, function(i) {
 
-						createReplyDiv(cardReply[i].seq, cardReply[i].content,
+						createReplyDiv([ i ].seq, cardReply[i].content,
 								cardReply[i].m_id);
 
 					});
-					
+
 					//hs
-					$.each(cardLink, function(i){
+					$.each(cardLink, function(i) {
 						var node = document.createElement('div');
-						var textNode = document.createTextNode(cardLink[i].content);
+						var textNode = document
+								.createTextNode(cardLink[i].content);
 						var aTag = document.createElement('a');
 						aTag.href = cardLink[i].content;
 						aTag.appendChild(textNode);
-						aTag.target='_blank';
+						aTag.target = '_blank';
 						node.appendChild(aTag);
 						//console.log(node);
-						
+
 						$('#attachLink').append(node);
 					});
-					
-					
 
 					document.getElementById('cardNum').value = c_num;
 
@@ -673,16 +673,16 @@ display:none;
 	}
 
 	function labelView() {
-// 		console.log('inside');
-// 		$('.btn_label_toggle').next("div").toggleClass('submenu_hidden');
-		if($('.btn-label-view').next("div").hasClass('submenu_hidden')) {
+		// 		console.log('inside');
+		// 		$('.btn_label_toggle').next("div").toggleClass('submenu_hidden');
+		if ($('.btn-label-view').next("div").hasClass('submenu_hidden')) {
 			$('.btn-label-view').next("div").removeClass('submenu_hidden');
-// 			$('.btn_label_toggle').next("div").show();
+			// 			$('.btn_label_toggle').next("div").show();
 		} else {
 			$('.btn-label-view').next("div").addClass('submenu_hidden');
-// 			$('.btn_label_toggle').next("div").hide();
+			// 			$('.btn_label_toggle').next("div").hide();
 		}
-		
+
 	}
 
 	function getHistory() {
@@ -792,30 +792,33 @@ display:none;
 				lnum : l_num,
 				cnum : c_num
 			}
-		}).done(function(msg) {
+		}).done(
+				function(msg) {
 
-			var detail = JSON.parse(msg);
-			var cardInfo = detail[0];
-			var cardReply = detail[1];
-			
-			var label = cardInfo.label;
-			
-			if (label == null) {
-				label = "0,0,0,0,0,0,0";
-			}
-			
-			var labelArr = label.split(',');
-			
-			console.log('labelSet: '+labelArr);
-			
-			for(var i=1; i<=7; i++) {
-				if('0' != labelArr[i-1]) {
-					$('#labelDiv'+c_num+'_'+i).css('background-color',
-							rgb2hex($('#label' + i).css("background-color")));
-					$('#labelDiv'+c_num+'_'+i).show();
-				}
-			}
-		});
+					var detail = JSON.parse(msg);
+					var cardInfo = detail[0];
+					var cardReply = detail[1];
+
+					var label = cardInfo.label;
+
+					if (label == null) {
+						label = "0,0,0,0,0,0,0";
+					}
+
+					var labelArr = label.split(',');
+
+					console.log('labelSet: ' + labelArr);
+
+					for (var i = 1; i <= 7; i++) {
+						if ('0' != labelArr[i - 1]) {
+							$('#labelDiv' + c_num + '_' + i).css(
+									'background-color',
+									rgb2hex($('#label' + i).css(
+											"background-color")));
+							$('#labelDiv' + c_num + '_' + i).show();
+						}
+					}
+				});
 
 	}
 
@@ -841,14 +844,13 @@ display:none;
 				};
 
 				labelSet(b_num, l_num, c_num);
-				
+
 				// 카드 내부의 label div 생성!!!
 				for (var j = 1; j <= 7; j++) {
 					var labelDiv = document.createElement('div');
-					labelDiv.id = 'labelDiv'+c_num+'_'+j;
+					labelDiv.id = 'labelDiv' + c_num + '_' + j;
 					cardDiv.append(labelDiv);
 				}
-				
 
 				var createCardText = document.createTextNode('card' + c_num);
 
@@ -947,19 +949,19 @@ display:none;
 				addList($('#CBTitle').val());
 			}
 		});
-		
+
 		//링크 등록
-		$('#insertLink').click(function(){ 
-	        $('#popup_layer, #overlay_t').toggle();
-	        $('#insertLinkInput').focus();
-	        $('#insertLinkInput').val('');
-	        $('#popup_layer').css("top", "40%"); 	         
-	    }); 
-	    $('#overlay_t, .close').click(function(){ 
-	        $('#popup_layer, #overlay_t').hide(); 
-	    });
-	    $('#linkSubmit').click(function(){
-	    	if($('#insertLinkInput').val()){
+		$('#insertLink').click(function() {
+			$('#popup_layer, #overlay_t').toggle();
+			$('#insertLinkInput').focus();
+			$('#insertLinkInput').val('');
+			$('#popup_layer').css("top", "40%");
+		});
+		$('#overlay_t, .close').click(function() {
+			$('#popup_layer, #overlay_t').hide();
+		});
+		$('#linkSubmit').click(function() {
+			if ($('#insertLinkInput').val()) {
 				$.ajax({
 					method : 'post',
 					url : '/main/insertLink',
@@ -967,25 +969,25 @@ display:none;
 						c_key : $('#cardNum')[0].value,
 						content : $('#insertLinkInput').val()
 					}
-				}).done(function(msg){
+				}).done(function(msg) {
 					$('#popup_layer, #overlay_t').hide();
 					var insertLink = JSON.parse(msg);
-					
+
 					var node = document.createElement('div');
 					var textNode = document.createTextNode(insertLink.content);
 					var aTag = document.createElement('a');
 					aTag.href = insertLink.content;
 					aTag.appendChild(textNode);
-					aTag.target='_blank';
+					aTag.target = '_blank';
 					node.appendChild(aTag);
-					
+
 					$('#attachLink').prepend(node);
-					
+
 				});
-	    	}else{
-	    		$('#popup_layer, #overlay_t').hide();
-	    	}
-	    });
+			} else {
+				$('#popup_layer, #overlay_t').hide();
+			}
+		});
 
 	});
 
@@ -1009,12 +1011,12 @@ display:none;
 	function label(num) {
 		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
 		$('#selected_label' + num).css('background-color', backgroundColor);
-		
+
 		var labelText = $('#label_text').val();
-		
-// 		$('#label'+num).value(labelText);
-		$('#label'+num).children('span').text(labelText);
-		
+
+		// 		$('#label'+num).value(labelText);
+		$('#label' + num).children('span').text(labelText);
+
 		var isNone = $('#selected_label' + num).css('display');
 
 		$.ajax({
@@ -1023,40 +1025,42 @@ display:none;
 			data : {
 				c_key : $('#cardNum')[0].value
 			}
-		}).done(function(msg) {
-			var detail = JSON.parse(msg);
+		}).done(
+				function(msg) {
+					var detail = JSON.parse(msg);
 
-			var label = detail.label;
-			console.log(detail);
-			
-			var c_num = $('#cardNum')[0].value;
+					var label = detail.label;
+					console.log(detail);
 
-			var labelArr;
-			$('#labelDiv'+c_num+'_'+num).css('background-color', backgroundColor);
-			if ('none' != isNone) {
-				labelArr = makeLabelArr(label, num, 'del');
-				$('#selected_label' + num).hide();
-				$('#labelDiv'+c_num+'_'+num).hide();
-			} else {
-				labelArr = makeLabelArr(label, num, 'ins');
-				$('#selected_label' + num).show();
-				$('#labelDiv'+c_num+'_'+num).show();
-			}
+					var c_num = $('#cardNum')[0].value;
 
-			var tempArr = labelArr.toString();
+					var labelArr;
+					$('#labelDiv' + c_num + '_' + num).css('background-color',
+							backgroundColor);
+					if ('none' != isNone) {
+						labelArr = makeLabelArr(label, num, 'del');
+						$('#selected_label' + num).hide();
+						$('#labelDiv' + c_num + '_' + num).hide();
+					} else {
+						labelArr = makeLabelArr(label, num, 'ins');
+						$('#selected_label' + num).show();
+						$('#labelDiv' + c_num + '_' + num).show();
+					}
 
-			$.ajax({
-				method : 'post',
-				url : '/main/updateLabel',
-				data : {
-					c_key : $('#cardNum')[0].value,
-					label : tempArr
-				}
-			}).done(function(msg) {
+					var tempArr = labelArr.toString();
 
-			});
+					$.ajax({
+						method : 'post',
+						url : '/main/updateLabel',
+						data : {
+							c_key : $('#cardNum')[0].value,
+							label : tempArr
+						}
+					}).done(function(msg) {
 
-		});
+					});
+
+				});
 	}
 	function makeLabelArr(label, num, action) {
 		var backgroundColor = rgb2hex($('#label' + num).css("background-color"));
@@ -1098,9 +1102,10 @@ display:none;
 		document.getElementById("invite").style.width = "0px";
 
 	}
-	function profile(){
-		alert("프로필")
-		
+
+	function profile(id) {
+		window.open('profile?profileId=' + id, '',
+				'width=400, height=300, left=500, top=400');
 	}
 </script>
 <jsp:include page="listWebSocket.jsp" flush="false"></jsp:include>
@@ -1162,8 +1167,6 @@ display:none;
 				</ul>
 			</ul>
 		</div>
-
-
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 				<span id="hisClose" class="close">&times;</span>
@@ -1233,8 +1236,8 @@ display:none;
 						<button onclick="labelView();" class="btn-label-view dropdown">
 							<!-- 						<input type="button" onclick="labelView();" class="btn-label-view dropdown"> -->
 							<span class="btn_label_toggle"><img alt="label"
-							src="/resources/images/btn_label.png" width="20px" height="20px"
-							class="btn-label">&nbsp;Label</span>
+								src="/resources/images/btn_label.png" width="20px" height="20px"
+								class="btn-label">&nbsp;Label</span>
 						</button>
 						<div class="submenu_hidden">
 							<ul class="submenu">
@@ -1258,7 +1261,7 @@ display:none;
 							</ul>
 						</div>
 
-						
+
 
 
 						<br> <br>
@@ -1268,11 +1271,14 @@ display:none;
 								height="20px" class="btn-attachment">&nbsp;Attachment</span>
 						</button> -->
 						<button id="insertLink">
-							<span><img alt="label" src="/resources/images/btn-attachment.png" width="20px" height="20px" class="btn-attachment">&nbsp;Attachment</span>
-							<div id="overlay_t"></div> 
+							<span><img alt="label"
+								src="/resources/images/btn_attachment.png" width="20px"
+								height="20px" class="btn-attachment">&nbsp;Attachment</span>
+							<div id="overlay_t"></div>
 							<div id="popup_layer">
-								<input type="text" id="insertLinkInput" placeholder="attach link">
-								<input type="button" id="linkSubmit" class="close" value="save">
+								<input type="text" id="insertLinkInput"
+									placeholder="attach link"> <input type="button"
+									id="linkSubmit" class="close" value="save">
 								<!-- <button id="linkSubmit">SAVE</button> -->
 							</div>
 						</button>

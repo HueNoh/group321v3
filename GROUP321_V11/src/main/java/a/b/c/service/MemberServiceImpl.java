@@ -70,14 +70,14 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		for (int i = 0; i < list.size(); i++) {
 			map2.put(i, list.get(i));
 		}
-		
+
 		List list2 = memberDao.selectCardDetail(map);
 		list2.add(map2);
-		System.out.println("list2.get(0)="+list2.get(0));
-		//hs
+		System.out.println("list2.get(0)=" + list2.get(0));
+		// hs
 		List linkList = memberDao.selectLink((Map) list2.get(0));
 		list2.add(linkList);
-		System.out.println("linkList="+linkList);
+		System.out.println("linkList=" + linkList);
 		return list2;
 	}
 
@@ -265,6 +265,12 @@ public class MemberServiceImpl implements MemberServiceInterface {
 	public List selectLink(Map map) {
 		// TODO Auto-generated method stub
 		return memberDao.selectLink(map);
+	}
+
+	@Override
+	public List profile(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.profile(map);
 	}
 
 	@Override

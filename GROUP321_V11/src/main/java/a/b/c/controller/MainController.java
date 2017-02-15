@@ -159,37 +159,37 @@ public class MainController {
 	public String selectCardDetail(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
 		session = request.getSession(false);
-		
+
 		session.setAttribute("l_num", map.get("lnum"));
 		session.setAttribute("c_num", map.get("cnum"));
-		
+
 		System.out.println(map);
 
 		List list = memberService.selectCardDetail(map);
 		System.out.println(list);
 		return new Gson().toJson(list);
 	}
-	
-	@RequestMapping(value = "/selectLink", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+
+	@RequestMapping(value = "/selectLink", method = { RequestMethod.GET,
+			RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String selectLink(@RequestParam Map map) {
-		
+
 		List list = memberService.selectLink(map);
-		
+
 		return new Gson().toJson(list);
 	}
-	
-	@RequestMapping(value = "/insertLink", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+
+	@RequestMapping(value = "/insertLink", method = { RequestMethod.GET,
+			RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertLink(@RequestParam Map map) {
-		System.out.println("insertLinkMap: "+map);
+		System.out.println("insertLinkMap: " + map);
 		int result = memberService.insertLink(map);
 		List list = memberService.selectLink(map);
-		
-		
+
 		return new Gson().toJson(list.get(0));
 	}
-	
 
 	@RequestMapping(value = "/moveList", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
@@ -315,12 +315,33 @@ public class MainController {
 		int result = memberService.addMembers(map);
 		return new Gson().toJson(result);
 	}
+
 	@RequestMapping(value = "/boardOut", method = { RequestMethod.POST,
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String boardOut(Model model, @RequestParam Map map) {
-		
+
 		int result = memberService.removeMembers(map);
 		return new Gson().toJson(result);
+	}
+
+	@RequestMapping(value = "/profile", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	public String profile(Locale locale, Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam Map map) {
+		System.out.println("profile");
+		String m_id = request.getParameter("profileId");
+
+		map.put("m_id", m_id);
+		List list = memberService.profile(map);
+		map = (Map) list.get(0);
+		System.out.println(map);
+		
+		model.addAttribute("name", map.get("m_name"));
+		model.addAttribute("regdate", map.get("regdate"));
+		model.addAttribute("id", map.get("m_id"));
+
+		return "profile";
+
 	}
 }

@@ -80,6 +80,8 @@ public interface MemberDaoInterface {
 
 	public List selectLink(Map map);
 
+	public List profile(Map map);
+
 	public int insertLink(Map map);
 
 	public int deleteLink(Map map);

@@ -287,18 +287,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		call
 		removeMembers(#{id}, #{bnum});
 	</select>
-	
-	<select id="selectLink" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+	<select id="selectLink" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
 		call selectLink(#{c_key});
 	</select>
-	
+
 	<select id="insertLink" resultType="int" parameterType="java.util.HashMap">
-		call insertLink(#{c_key}, #{content});
-	</select>
-	
-	<select id="deleteLink" resultType="int" parameterType="java.util.HashMap">
-		call deleteLink(#{c_key}, #{seq});
+		call
+		insertLink(#{c_key}, #{content});
 	</select>
 
+	<select id="deleteLink" resultType="int" parameterType="java.util.HashMap">
+		call
+		deleteLink(#{c_key}, #{seq});
+	</select>
+
+	<select id="profile" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT *
+		FROM tb_member_detail
+		<if test="null != m_id">
+			WHERE m_id=#{m_id}
+		</if>
+	</select>
 
 </mapper>

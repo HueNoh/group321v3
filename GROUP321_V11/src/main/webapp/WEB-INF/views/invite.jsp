@@ -17,8 +17,15 @@
 
 				var div = document.createElement('div');
 				div.className = 'inUsers';
+
+				var aTag = document.createElement('a');
 				var content = document.createTextNode(msg[i].m_id);
-				div.appendChild(content);
+
+				aTag.setAttribute('onclick', 'profile(\''+msg[i].m_id+'\')');
+				aTag.setAttribute('style', 'color: white; font-size: 20px');
+
+				aTag.appendChild(content);
+				div.appendChild(aTag);
 				userDiv.append(div);
 
 				if ('${sessionScope.id}' == msg[i].m_id) {
@@ -63,52 +70,63 @@
 					bnum : b_num,
 					result : result
 				}
-			}).done(function(msg) {
-				$('#resultUser').empty();
-				console.log(msg);
-				if (0 == msg.length) {
-					$('#resultUser').empty();
-					id = '<p>검색결과가 없습니다.</p>';
-					$('#resultUser').append(id);
-				} else {
+			}).done(
+					function(msg) {
+						$('#resultUser').empty();
+						console.log(msg);
+						if (0 == msg.length) {
+							$('#resultUser').empty();
+							id = '<p>검색결과가 없습니다.</p>';
+							$('#resultUser').append(id);
+						} else {
 
-					$.each(msg, function(i) {
-						var userDiv = document.createElement('div');
-						userDiv.className = 'user-searchUsers';
+							$.each(msg, function(i) {
+								var userDiv = document.createElement('div');
+								userDiv.className = 'user-searchUsers';
 
-						var div = document.createElement('div');
-						div.className = 'searchUsers';
-						var content = document.createTextNode(msg[i].m_id);
-						div.appendChild(content);
+								var div = document.createElement('div');
+								div.className = 'searchUsers';
 
-						var buttonDiv = document.createElement('div');
-						buttonDiv.className = 'inviteButton';
-						var button = document.createElement('input');
-						button.type = 'button';
-						button.value = '초대';
-						button.onclick = function() {
+								var aTag = document.createElement('a');
+								var content = document
+										.createTextNode(msg[i].m_id);
 
-							var choice = confirm(msg[i].m_id + "님을 초대하시겠습니까?")
+								aTag.setAttribute('onclick', 'profile(\''+msg[i].m_id+'\')');
+								aTag.setAttribute('style',
+										'color: white; font-size: 20px');
 
-							if (choice) {
-								invite(msg[i].m_id);
-							} else {
-								console.log('취소');
-							}
+								aTag.appendChild(content);
+								div.appendChild(aTag);
 
-						};
+								var buttonDiv = document.createElement('div');
+								buttonDiv.className = 'inviteButton';
+								var button = document.createElement('input');
+								button.type = 'button';
+								button.value = '초대';
+								button.onclick = function() {
 
-						buttonDiv.append(button);
+									var choice = confirm(msg[i].m_id
+											+ "님을 초대하시겠습니까?")
 
-						userDiv.append(div);
-						userDiv.append(buttonDiv);
+									if (choice) {
+										invite(msg[i].m_id);
+									} else {
+										console.log('취소');
+									}
 
-						$('#resultUser').append(userDiv);
+								};
 
+								buttonDiv.append(button);
+
+								userDiv.append(div);
+								userDiv.append(buttonDiv);
+
+								$('#resultUser').append(userDiv);
+
+							});
+						}
+						$('#userSearch').val('');
 					});
-				}
-				$('#userSearch').val('');
-			});
 		}
 	}
 	function invite(id) {
