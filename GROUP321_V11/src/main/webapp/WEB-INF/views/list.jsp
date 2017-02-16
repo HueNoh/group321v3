@@ -180,8 +180,10 @@
 	text-align: center;
 }
 
+
 /* id=label_text */
 #label_text {
+
 	border-radius: 5px;
 	margin-bottom: 5px;
 	width: 188px;
@@ -1242,9 +1244,9 @@ background-color: #448cb7;
 			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
 
-		<div id="filter" class="side-filter">
+		 <div id="filter" class="side-filter">
 			<jsp:include page="filter.jsp" flush="false"></jsp:include>
-		</div>
+		</div> 
 		
 		<div id="invite" class="side-invite">
 			<jsp:include page="invite.jsp" flush="false"></jsp:include>
