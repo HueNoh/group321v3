@@ -331,9 +331,7 @@
 		$('#mainList').sortable(
 				{
 					update : function(ev, ui) {
-						console.log(ev);
 						var result = $('#mainList').sortable('toArray');
-						console.log(result);
 						send('mainList', 'listMove', '${sessionScope.id}',
 								'${sessionScope.b_num}', '0', '0');
 						var moveData = new Object();
@@ -358,11 +356,8 @@
 								length : result.length,
 								b_num : b_num
 							}
-
 						}).done();
-
 					}
-
 				});
 
 		listSearch(b_num);
@@ -377,6 +372,7 @@
 		var margin = $(".listBorder").css("margin").replace('px', '');
 		var borderWidth = $('.listBorder').css("borderWidth").replace('px', '');
 		var listWidth = $('.listBorder').width() + margin * 2 + borderWidth * 2;
+		
 		var mainWidth = num * listWidth;
 		var addListBorderWidth = $('.addListBorder').width() + 10;
 		var contentWidth = mainWidth + addListBorderWidth;
@@ -462,7 +458,6 @@
 
 				}
 			}).done(function(msg) {
-				console.log(msg);
 				var cardArr = JSON.parse(msg);
 
 				var newCard = document.createElement('div');
@@ -471,8 +466,7 @@
 				newCard.id = c_num;
 				newCard.className = 'list-card';
 				newCard.onclick = function() {
-
-					cardView(b_num, cardl_num, c_num)
+					cardView(b_num, cardl_num, c_num);
 
 				};
 				// 카드 내부의 label div 생성!!!
@@ -510,21 +504,17 @@
 				c_num : c_num
 			}
 		}).done(function(msg) {
-			console.log(msg);
 			var detail = JSON.parse(msg);
 
 			var cardInfo = detail[0];
 			var cardReply = detail[1];
 			//hs
 			var cardLink = detail[2];
-			console.log('cardLink=' + cardLink[0]);
 
 			handelDesc(0); // description textarea 숨기기
-			console.log(detail);
 			var content = cardInfo.content;
 
 			var label = cardInfo.label;
-			// 					console.log('label: ' + label);
 
 			labelShow(label);
 
@@ -552,7 +542,6 @@
 				aTag.appendChild(textNode);
 				aTag.target = '_blank';
 				node.appendChild(aTag);
-				//console.log(node);
 
 				$('#attachLink').append(node);
 			});
@@ -803,7 +792,6 @@
 
 			numOfList = $('.listBorder').length; // 전체 viewList의 갯수 획득
 
-			console.log('length_onload: ' + numOfList);
 
 			setWidthOnload(numOfList); // Onload 시 전체 width 설정
 
@@ -834,7 +822,6 @@
 
 			var labelArr = label.split(',');
 
-			console.log('labelSet: ' + labelArr);
 
 			for (var i = 1; i <= 7; i++) {
 				if ('0' != labelArr[i - 1]) {
@@ -850,6 +837,7 @@
 	}
 
 	function cardSearch(b_num, l_num, id) {
+		
 		$.ajax({
 			url : '/main/searchCard',
 			method : 'post',
@@ -863,7 +851,7 @@
 			$.each(cardArr, function(i) {
 				var cardDiv = document.createElement('div');
 				var c_num = cardArr[i].c_num;
-
+				
 				cardDiv.id = c_num;
 				cardDiv.className = 'list-card';
 				cardDiv.onclick = function() {
@@ -917,6 +905,7 @@
 					$.ajax({
 						url : '/main/moveCard',
 						method : 'post',
+						dataType : 'json',
 						data : {
 
 							b_num : b_num,
@@ -964,7 +953,6 @@
 		//리스트 타이틀
 		$('#CBContainer').css('display', 'none');
 		$('#addList').click(function() {
-			console.log('b');
 			$('#CBContainer').toggle();
 			$('#CBTitle').focus();
 			$('#CBTitle').val('');
@@ -1056,7 +1044,6 @@
 			var detail = JSON.parse(msg);
 
 			var label = detail.label;
-			console.log(detail);
 
 			var c_num = $('#cardNum')[0].value;
 

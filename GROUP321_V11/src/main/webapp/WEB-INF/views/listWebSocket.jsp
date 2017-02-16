@@ -65,10 +65,8 @@
 				}
 
 			} else if ("cardMove" == access) {
-				if (id != '${sessionScope.id}') {
 					$('#mainList').html('');
 					listSearch(b_num);
-				}
 			} else if ('listCreate' == access) {
 				if (id != '${sessionScope.id}') {
 

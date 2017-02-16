@@ -223,7 +223,8 @@ public class MainController {
 			@RequestParam Map map) {
 		map.put("cardArr", map.get("msg"));
 		List list = memberService.moveCard(map);
-		return new Gson().toJson("aa");
+		System.out.println(map);
+		return new Gson().toJson(map);
 	}
 
 	@RequestMapping(value = "/addCardReply", method = { RequestMethod.POST,
