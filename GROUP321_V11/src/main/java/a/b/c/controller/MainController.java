@@ -372,9 +372,8 @@ public class MainController {
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String searchLabel(Model model, @RequestParam Map map) {
-		System.out.println(map);
 		List list = memberService.searchLabel(map);
-		System.out.println(list);
+		System.out.println("filter: "+list);
 		return new Gson().toJson(list);
 	}
 
