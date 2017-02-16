@@ -7,7 +7,7 @@
 			method : "post",
 			dataType : "json",
 			data : {
-				bnum : b_num
+				b_num : b_num
 			}
 		}).done(function(msg) {
 			$.each(msg, function(i) {
@@ -67,7 +67,7 @@
 				method : "post",
 				dataType : "json",
 				data : {
-					bnum : b_num,
+					b_num : b_num,
 					result : result
 				}
 			}).done(
@@ -135,7 +135,7 @@
 			method : "post",
 			dataType : "json",
 			data : {
-				bnum : b_num,
+				b_num : b_num,
 				id : id
 			}
 		}).done(function(msg) {
@@ -154,7 +154,7 @@
 			method : "post",
 			dataType : "json",
 			data : {
-				bnum : b_num,
+				b_num : b_num,
 				id : id
 			}
 		}).done(function(msg) {

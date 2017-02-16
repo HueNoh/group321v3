@@ -356,7 +356,7 @@
 							data : {
 								data : msg,
 								length : result.length,
-								bnum : b_num
+								b_num : b_num
 							}
 
 						}).done();
@@ -411,7 +411,7 @@
 			data : {
 				id : '${sessionScope.id}',
 				title : title,
-				bnum : b_num
+				b_num : b_num
 
 			}
 
@@ -439,12 +439,12 @@
 
 	}
 
-	function addCard(lnum, id) {
+	function addCard(l_num, id) {
 		$('#addCardContainer' + id).toggle();
 		$('#addCardTitle' + id).focus();
 		$('#addCardTitle' + id).val('');
 		cardId = id;
-		cardl_num = lnum;
+		cardl_num = l_num;
 
 	}
 
@@ -457,8 +457,8 @@
 				data : {
 					id : '${sessionScope.id}',
 					title : title,
-					bnum : b_num,
-					lnum : cardl_num
+					b_num : b_num,
+					l_num : cardl_num
 
 				}
 			}).done(function(msg) {
@@ -505,9 +505,9 @@
 			method : 'post',
 			url : '/main/selectCardDetail',
 			data : {
-				bnum : b_num,
-				lnum : l_num,
-				cnum : c_num
+				b_num : b_num,
+				l_num : l_num,
+				c_num : c_num
 			}
 		}).done(function(msg) {
 			console.log(msg);
@@ -684,7 +684,7 @@
 			method : 'post',
 			url : '/main/selectHistory',
 			data : {
-				bnum : b_num,
+				b_num : b_num,
 				id : '${sessionScope.id}'
 			}
 		}).done(function(msg) {
@@ -780,7 +780,7 @@
 			url : '/main/searchList',
 			method : 'post',
 			data : {
-				bnum : b_num
+				b_num : b_num
 			}
 		}).done(function(msg) {
 
@@ -816,9 +816,9 @@
 			method : 'post',
 			url : '/main/selectCardDetail',
 			data : {
-				bnum : b_num,
-				lnum : l_num,
-				cnum : c_num
+				b_num : b_num,
+				l_num : l_num,
+				c_num : c_num
 			}
 		}).done(function(msg) {
 
@@ -854,8 +854,8 @@
 			url : '/main/searchCard',
 			method : 'post',
 			data : {
-				bnum : b_num,
-				lnum : l_num
+				b_num : b_num,
+				l_num : l_num
 			}
 		}).done(function(msg) {
 			var cardArr = JSON.parse(msg);
@@ -919,9 +919,9 @@
 						method : 'post',
 						data : {
 
-							bnum : b_num,
-							lnum : id,
-							cnum : ev.toElement.id,
+							b_num : b_num,
+							l_num : id,
+							c_num : ev.toElement.id,
 							msg : cardArr,
 							length : result1.length
 						}
@@ -1154,7 +1154,7 @@
 		<!-- 		<button id="testDatepicker" style="width: 80px; height: 20px;"></button> -->
 		<a href="#" class="js-toggle-right-slidebar">☰</a>
 	</header>
-	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">Board Title</div>
+	<div style="position: fixed; height: 50px; margin-top: 50px; font-size: 40px;">${title}</div>
 	<div id="content">
 		<div class="g3-container" canvas="container" align="right">
 			<div class="content">

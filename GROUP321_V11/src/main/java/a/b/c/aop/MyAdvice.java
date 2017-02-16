@@ -60,57 +60,58 @@ public class MyAdvice {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String userId = (String) request.getSession().getAttribute("id");
 //		String userId = request.getParameter("id");
-		String bnum = request.getParameter("bnum");
+		String b_num = request.getParameter("b_num");
 		String title = request.getParameter("title");
 		String methodName = joinPoint.getSignature().getName();
 		String msg = null;
+		System.out.println(b_num);
 		Map map = new HashMap();
 		msg = userId+" ";
 		/*if (methodName.equals("createBoard")){
 			msg += "님이 "+title+"보드를 생성하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else */if (methodName.equals("createList")) {
 			msg += "님이 "+title+"리스트를 생성하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else if (methodName.equals("createCard")) {
 			msg += "님이 "+title+"카드를 생성하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else if (methodName.equals("deleteBoard")) {
 			msg += "님이 보드를 삭제하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else if (methodName.equals("deleteList")) {
 			msg += "님이 리스트를 삭제하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else if (methodName.equals("deleteCard")) {
 			msg += "님이 카드를 삭제하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else if (methodName.equals("moveList")) {
 			msg += "님이 리스트를 이동하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);
 		} else if (methodName.equals("moveCard")) {
 			msg += "님이 카드를 이동하였습니다.";
-			map.put("bnum", bnum);
+			map.put("b_num", b_num);
 			map.put("id", userId);
 			map.put("msg", msg);
 			memberService.insertHistory(map);

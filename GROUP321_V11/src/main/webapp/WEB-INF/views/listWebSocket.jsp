@@ -75,8 +75,8 @@
 					$('#mainList').html('');
 					listSearch(b_num);
 					$.each($('#' + msg)[0].childNodes, function(i) {
-						var lnum = this.id;
-						listSortable(lnum);
+						var l_num = this.id;
+						listSortable(l_num);
 					});
 				}
 			} else if ("cardCreate" == access) {
