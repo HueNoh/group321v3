@@ -240,7 +240,7 @@
 
 			$('.display').append(div);
 		}
-
+		console.log($('.display'));
 		$('.display').scrollTop($('.display')[0].scrollHeight);
 
 	}
@@ -259,10 +259,11 @@
 			$.each(data, function(i) {
 				var regdate = data[i].date;
 				chat(data[i].content, data[i].m_id, regdate);
+				console.log($('.display')[0].scrollHeight);
+				$('.display').scrollTop($('.display')[0].scrollHeight);
 			});
 
-			$('.display').scrollTop($('.display')[0].scrollHeight);
-
+			
 		});
 	}
 
@@ -294,5 +295,6 @@
 		div.append(content);
 		div.append(writer);
 		$('.display').append(div);
+		$('.display').scrollTop($('.display')[0].scrollHeight);
 	}
 </script>
