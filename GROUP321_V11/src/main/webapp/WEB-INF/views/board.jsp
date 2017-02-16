@@ -6,8 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <title>Board</title>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script src="/resources/js/jquery-3.1.1.js"></script>
 <link rel="stylesheet" href="/resources/css/style.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/common.css">
@@ -15,13 +14,13 @@
 .board {
 	position: relative;
 }
+
 .boardDelBtn {
 	display: block;
 	position: absolute;
 	right: 5px;
 	top: 5px;
 }
-
 </style>
 <script>
 	history.pushState(null, null, location.href);
@@ -93,29 +92,10 @@
 			var jArr = JSON.parse(msg);
 			$.each(jArr, function(i) {
 				var b_num = jArr[i].b_num;
-				var div = document.createElement('div');
 				var text = '';
-				div.id = 'board' + b_num;
-				div.className = 'board';
-
-				var aTag = document.createElement('a');
-				var createAText = document.createTextNode(jArr[i].title + '_' + b_num);
-
-				aTag.setAttribute('href', '/main/list?b_num=' + b_num);
-				aTag.appendChild(createAText);
-				div.appendChild(aTag);
 				
-				//hs
-				var aTagDelBtn = document.createElement('a');
-				aTagDelBtn.className = 'boardDelBtn';
-				var aTagDelBtnText = document.createTextNode('x');
-				aTagDelBtn.appendChild(aTagDelBtnText);
-				//aTagDelBtn.setAttribute('href', '/main/deleteBoard?b_num=' + b_num);
-				aTagDelBtn.setAttribute('href', '#');
-				aTagDelBtn.setAttribute('onclick', 'deleteBoard('+ b_num +');');
-				div.appendChild(aTagDelBtn);
-
-				document.getElementById('viewBoard').appendChild(div);
+				boardView('viewBoard', b_num, jArr[i].title);
+				
 
 			});
 
@@ -136,24 +116,40 @@
 
 			var arrBoard = JSON.parse(msg);
 
-			var div = document.createElement('div');
-			div.id = 'board' + arrBoard.b_num;
-			div.className = 'board';
-
-			var aTag = document.createElement('a');
-			var createAText = document.createTextNode(arrBoard.title + '_' + arrBoard.b_num);
-
-			aTag.setAttribute('href', '/main/list?b_num=' + arrBoard.b_num);
-			aTag.appendChild(createAText);
-			div.appendChild(aTag);
-
-			document.getElementById('createBoard').appendChild(div);
+			boardView('createBoard', arrBoard.b_num,arrBoard.title);
+			
+			
 
 			var boardHtml = $('#board' + arrBoard.b_num)[0].outerHTML;
 			send(boardHtml, 'boardCreate', 'createBoard');
 
 		});
 	};
+	
+	function boardView(boardDiv, b_num,title){
+		var div = document.createElement('div');
+		div.id = 'board' + b_num;
+		div.className = 'board';
+
+		var aTag = document.createElement('a');
+		var createAText = document.createTextNode(title + '_' + b_num);
+
+		aTag.setAttribute('href', '/main/list?b_num=' + b_num);
+		aTag.appendChild(createAText);
+		div.appendChild(aTag);
+		
+		//hs
+		var aTagDelBtn = document.createElement('a');
+		aTagDelBtn.className = 'boardDelBtn';
+		var aTagDelBtnText = document.createTextNode('x');
+		aTagDelBtn.appendChild(aTagDelBtnText);
+		//aTagDelBtn.setAttribute('href', '/main/deleteBoard?b_num=' + b_num);
+		aTagDelBtn.setAttribute('href', '#');
+		aTagDelBtn.setAttribute('onclick', 'deleteBoard('+ b_num +');');
+		div.appendChild(aTagDelBtn);
+		
+		document.getElementById(boardDiv).appendChild(div);
+	}
 	
 	//hs
 	$(function(){
@@ -195,8 +191,7 @@
 <body>
 	<!-- 상단바 -->
 	<header id="header" class="clearfix">
-		<a href="/main/board"><h1>PROJECT 321</h1></a> <a href="#"
-			class="btn_board"><span>Boards</span></a>
+		<a href="/main/board"><h1>PROJECT 321</h1></a> <a href="#" class="btn_board"><span>Boards</span></a>
 		<form action="#" method="post" id="sch_main_wrap">
 			<fieldset>
 				<input type="text" name="sch_main" id="sch_main">
@@ -220,7 +215,6 @@
 			</div>
 		</div>
 	</div>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 </body>
 </html>
