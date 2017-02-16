@@ -221,6 +221,15 @@ public class MemberDaoImpl implements MemberDaoInterface {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		return mapper.searchMembers(map);
 	}
+	
+	public List searchFilter(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.searchFilter(map);
+	}
+	public List searchLabel(Map map) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		return mapper.searchLabel(map);
+	}
 
 	public int addMembers(Map map) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);

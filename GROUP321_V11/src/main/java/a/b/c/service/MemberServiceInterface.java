@@ -53,6 +53,10 @@ public interface MemberServiceInterface {
 
 	public List searchMembers(Map map);
 
+	public List searchFilter(Map map);
+
+	public List searchLabel(Map map);
+
 	public int addMembers(Map map);
 
 	public int removeMembers(Map map);

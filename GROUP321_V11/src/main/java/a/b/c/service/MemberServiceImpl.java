@@ -267,6 +267,16 @@ public class MemberServiceImpl implements MemberServiceInterface {
 		// TODO Auto-generated method stub
 		return memberDao.selectLink(map);
 	}
+	@Override
+	public List searchFilter(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.searchFilter(map);
+	}
+	@Override
+	public List searchLabel(Map map) {
+		// TODO Auto-generated method stub
+		return memberDao.searchLabel(map);
+	}
 
 	@Override
 	public List profile(Map map) {

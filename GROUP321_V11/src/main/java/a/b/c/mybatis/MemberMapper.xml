@@ -4,57 +4,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="a.b.c.mybatis.MemberMapper">
 	<!-- 로그인 체크 -->
-	<select id="loginChk" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="loginChk" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call loginChk(#{id},#{pw})
 		}
 	</select>
 	<!-- 중복확인 -->
-	<select id="chkIdDup" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="chkIdDup" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call chkIdDup(#{id})
 		}
 	</select>
 	<!-- 회원등록 -->
-	<select id="insertMember" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="insertMember" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call insertMember(#{id}, #{pw}, #{name})
 		}
 	</select>
 	<!-- 회원삭제 -->
-	<select id="deleteMember" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="deleteMember" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call deleteMember(#{id})
 		}
 	</select>
 	<!-- 회원 리스트 -->
-	<select id="selectMember" statementType="CALLABLE" resultType="java.util.List"
-		parameterType="java.util.HashMap">
+	<select id="selectMember" statementType="CALLABLE" resultType="java.util.List" parameterType="java.util.HashMap">
 		{
 		call selectMember()
 		}
 	</select>
 	<!-- 보드 생성 -->
-	<select id="insertBoard" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="insertBoard" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call insertBoard(#{id}, #{title})
 		}
 	</select>
 	<!-- 보드 타이틀 수정 -->
-	<select id="updateBoard" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="updateBoard" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call updateBoard(#{title}, #{b_num})
 		}
 	</select>
 	<!-- 보드 삭제 -->
-	<select id="deleteBoard" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="deleteBoard" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call deleteBoard(#{b_num})
 		}
@@ -72,78 +64,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		}
 	</select>
 	<!-- 리스트 생성 -->
-	<select id="insertList" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="insertList" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call insertList(#{id}, #{title}, #{b_num})
 		}
 	</select>
 	<!-- 리스트 타이틀 수정 -->
-	<select id="updateList" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="updateList" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call updateList(#{title}, #{b_num}, #{l_num})
 		}
 	</select>
 	<!-- 리스트 삭제 -->
-	<select id="deleteList" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="deleteList" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call deleteList(#{b_num}, #{l_num})
 		}
 	</select>
 	<!-- 리스트 보기 -->
-	<select id="selectList" statementType="CALLABLE" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectList" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call selectList(#{b_num})
 		}
 	</select>
 
 	<!-- 카드 생성 -->
-	<select id="insertCard" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="insertCard" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call insertCard(#{id}, #{title}, #{b_num}, #{l_num})
 		}
 	</select>
 	<!-- 카드 타이틀 수정 -->
-	<select id="updateCard" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="updateCard" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call updateCard(#{title}, #{b_num}, #{l_num},#{c_num})
 		}
 	</select>
 	<!-- 카드 삭제 -->
-	<select id="deleteCard" statementType="CALLABLE" resultType="int"
-		parameterType="java.util.HashMap">
+	<select id="deleteCard" statementType="CALLABLE" resultType="int" parameterType="java.util.HashMap">
 		{
 		call deleteCard(#{b_num}, #{l_num},#{c_num})
 		}
 	</select>
 	<!-- 카드 보기 -->
-	<select id="selectCard" statementType="CALLABLE" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectCard" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call selectCard(#{b_num},#{l_num})
 		}
 	</select>
-	<select id="selectCardDetail" statementType="CALLABLE"
-		resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	<select id="selectCardDetail" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call
 		selectCardDetail(#{b_num},#{l_num},#{c_num})
 		}
 	</select>
-	<select id="moveList" statementType="CALLABLE" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="moveList" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call
 		moveList(#{listArr},#{length},#{b_num})
 		}
 	</select>
-	<select id="moveCard" statementType="CALLABLE" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="moveCard" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call
 		moveCard(#{cardArr}, #{length}, #{b_num}, #{l_num},
@@ -151,24 +132,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		}
 	</select>
 	<!-- 히스토리 -->
-	<select id="insertHistory" statementType="CALLABLE" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="insertHistory" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call
 		insertHistory(#{b_num}, #{msg})
 		}
 	</select>
 
-	<select id="selectHistory" statementType="CALLABLE" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectHistory" statementType="CALLABLE" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		{
 		call
 		selectHistory(#{b_num})
 		}
 	</select>
 
-	<select id="selectBoardMember" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectBoardMember" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 
 		SELECT *
 		FROM tb_board_members
@@ -196,16 +174,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		,#{content}
 		)
 	</insert>
-	<select id="msgSelect" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="msgSelect" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		SELECT *
 		FROM tb_chat
 		WHERE
 		b_num=#{b_num}
 	</select>
 
-	<select id="maxCh_num" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="maxCh_num" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		select MAX(seq) seq
 		from tb_chat
 		<if test="null!= b_num">
@@ -234,8 +210,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		tb_card_reply
 	</select>
 
-	<select id="selectCardReply" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectCardReply" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		select *
 		from tb_card_reply
 		where
@@ -243,8 +218,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</select>
 
-	<select id="updateContent" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="updateContent" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		update tb_card
 		set content = #{content}
 		where c_key =
@@ -257,28 +231,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c_key = #{c_key}
 	</select>
 
-	<select id="updateLabel" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="updateLabel" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		update tb_card
 		set label = #{label}
 		where c_key = #{c_key}
 	</select>
 
-	<select id="memberConnection" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="memberConnection" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		update tb_member_connection
 		set b_num = #{b_num}
 		where
 		m_id = #{m_id}
 	</select>
 
-	<select id="selectBoardMembers" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectBoardMembers" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		call selectMembers(#{b_num})
 	</select>
 
-	<select id="searchMembers" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="searchMembers" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		select m_id
 		from tb_member
 		where m_id like #{result}
@@ -294,8 +264,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		removeMembers(#{id}, #{b_num});
 	</select>
 
-	<select id="selectLink" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="selectLink" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		call selectLink(#{c_key});
 	</select>
 
@@ -309,8 +278,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		deleteLink(#{c_key}, #{seq});
 	</select>
 
-	<select id="profile" resultType="java.util.HashMap"
-		parameterType="java.util.HashMap">
+	<select id="profile" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		SELECT *
 		FROM tb_member_detail
 		<if test="null != m_id">
@@ -318,4 +286,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 
+	<select id="searchFilter" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select *
+		from tb_board
+		where b_num = #{b_num}
+		and cate = 'C'
+		and title like #{result}
+	</select>
+
+	<select id="searchLabel" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select a.*, b.label
+		from tb_board a, tb_card b
+		where a.b_num = #{b_num}
+		and a.cate = 'C'
+		and a.c_num = b.c_key
+		
+		and b.label regexp #{result}
+		order by a.seq
+
+	</select>
 </mapper>

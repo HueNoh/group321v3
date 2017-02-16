@@ -73,6 +73,9 @@ public interface MemberMapper {
 	public List selectBoardMembers(Map map);
 
 	public List searchMembers(Map map);
+	
+	public List searchFilter(Map map);
+	public List searchLabel(Map map);
 
 	public int addMembers(Map map);
 

@@ -64,6 +64,7 @@
 	$('.js-toggle-right-slidebar').on('click', function(event) {
 		closeChat();
 		closeInviteMember();
+		closeFilter();
 		event.stopPropagation();
 		controller.toggle('slidebar-2');
 	});

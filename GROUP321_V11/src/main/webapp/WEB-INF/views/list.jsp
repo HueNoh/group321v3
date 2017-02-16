@@ -180,32 +180,35 @@
 	width: 188px;
 	height: 30px;
 }
-
-.submenu>li:nth-child(3) {
+.labels{
+width: 100px;
+margin-top: 10px;
+}
+#label1 {
 	background-color: #CD3861;
 }
 
-.submenu>li:nth-child(4) {
+#label2 {
 	background-color: #E56D29;
 }
 
-.submenu>li:nth-child(5) {
+#label3 {
 	background-color: #FFE641;
 }
 
-.submenu>li:nth-child(6) {
+#label4 {
 	background-color: #68D168;
 }
 
-.submenu>li:nth-child(7) {
+#label5 {
 	background-color: #52E4DC;
 }
 
-.submenu>li:nth-child(8) {
+#label6 {
 	background-color: #3296FF;
 }
 
-.submenu>li:nth-child(9) {
+#label7 {
 	background-color: #6A5ACD;
 }
 
@@ -216,6 +219,10 @@
 	border-radius: 5px;
 	border: 1px;
 	box-shadow: 2px 2px 1px lightslategrey;
+}
+
+#filter{
+background-color: #448cb7;
 }
 
 #invite {
@@ -1102,6 +1109,14 @@
 		document.getElementById("msgOff").style.top = bodyHeight + "px";
 
 	}
+	
+	function openFilter() {
+		document.getElementById("filter").style.width = "300px";
+	}
+	function closeFilter() {
+		document.getElementById("filter").style.width = "0px";
+
+	}
 
 	function closeMsg() {
 		document.getElementById("msgOff").style.top = "100%";
@@ -1163,7 +1178,7 @@
 				<a class="menu-icon" href="#"><i class="icon-reorder"></i></a>
 				<ul class="side-menu">
 					<h2 class="title">Menu</h2>
-					<li class="link"><a href="#" class="link_tag1">Filter</a></li>
+					<li class="link"><a href="#" class="link_tag1 js-close-right-slidebar" onclick="openFilter();">Filter</a></li>
 					<li class="link" onclick="getHistory();"><a href="#" class="link_tag2" id="myBtn">History</a></li>
 					<li class="link"><a href="#" onclick="openChat();" class="link_tag3 js-close-right-slidebar">Chatting</a></li>
 					<li class="link"><a href="#" class="link_tag4">File</a></li>
@@ -1181,6 +1196,10 @@
 			<jsp:include page="chat.jsp" flush="false"></jsp:include>
 		</div>
 
+		<div id="filter" class="side-filter">
+			<jsp:include page="filter.jsp" flush="false"></jsp:include>
+		</div>
+		
 		<div id="invite" class="side-invite">
 			<jsp:include page="invite.jsp" flush="false"></jsp:include>
 		</div>

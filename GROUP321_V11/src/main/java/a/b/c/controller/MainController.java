@@ -1,11 +1,13 @@
 package a.b.c.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,13 +53,12 @@ public class MainController {
 		Set inBoardMemberSet = inBoardMember.getInstanceSet();
 		String userId = (String) session.getAttribute("id");
 		int b_num = Integer.valueOf((String) map.get("b_num"));
-		
-		System.out.println("list map: "+map);
+
 		session.setAttribute("b_num", b_num);
 		model.addAttribute("b_num", b_num);
-		
+
 		model.addAttribute("title", memberService.selectBoardOne(map).get("title"));
-		
+
 		map.put("id", userId);
 		map.put("b_num", b_num);
 
@@ -95,18 +96,15 @@ public class MainController {
 		}
 
 	}
-	
-	@RequestMapping(value = "/deleteBoard", method = {RequestMethod.GET, RequestMethod.POST})
+
+	@RequestMapping(value = "/deleteBoard", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public int deleteBoard(@RequestParam Map map){
+	public int deleteBoard(@RequestParam Map map) {
 		int result = memberService.deleteBoard(map);
-		System.out.println("deleteBoard map: "+map);
-		System.out.println(result);
 		return result;
-		
+
 	}
-	
-	
+
 	@RequestMapping(value = "/searchBoard", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String searchBoard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
@@ -162,7 +160,6 @@ public class MainController {
 	@ResponseBody
 	public String createCard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		List list = memberService.insertCard(map);
 		Map lastBoard = (Map) list.get(list.size() - 1);
 		return new Gson().toJson(lastBoard);
@@ -178,10 +175,7 @@ public class MainController {
 		session.setAttribute("l_num", map.get("l_num"));
 		session.setAttribute("c_num", map.get("c_num"));
 
-		System.out.println(map);
-
 		List list = memberService.selectCardDetail(map);
-		System.out.println(list);
 		return new Gson().toJson(list);
 	}
 
@@ -199,7 +193,6 @@ public class MainController {
 			RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertLink(@RequestParam Map map) {
-		System.out.println("insertLinkMap: " + map);
 		int result = memberService.insertLink(map);
 		List list = memberService.selectLink(map);
 
@@ -223,7 +216,6 @@ public class MainController {
 			@RequestParam Map map) {
 		map.put("cardArr", map.get("msg"));
 		List list = memberService.moveCard(map);
-		System.out.println(map);
 		return new Gson().toJson(map);
 	}
 
@@ -300,7 +292,6 @@ public class MainController {
 	public String selectHistory(Model model, @RequestParam Map map) {
 
 		List list = memberService.selectHistory(map);
-		System.out.println("히스토리가져오기:" + list);
 		return new Gson().toJson(list);
 	}
 
@@ -345,14 +336,12 @@ public class MainController {
 			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
 	public String profile(Locale locale, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam Map map) {
-		System.out.println("profile");
 		String m_id = request.getParameter("profileId");
 
 		map.put("m_id", m_id);
 		List list = memberService.profile(map);
 		map = (Map) list.get(0);
-		System.out.println(map);
-		
+
 		model.addAttribute("name", map.get("m_name"));
 		model.addAttribute("regdate", map.get("regdate"));
 		model.addAttribute("id", map.get("m_id"));
@@ -360,4 +349,24 @@ public class MainController {
 		return "profile";
 
 	}
+
+	@RequestMapping(value = "/searchFilter", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String searchFilter(Model model, @RequestParam Map map) {
+
+		List list = memberService.searchFilter(map);
+		return new Gson().toJson(list);
+	}
+
+	@RequestMapping(value = "/searchLabel", method = { RequestMethod.POST,
+			RequestMethod.GET }, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String searchLabel(Model model, @RequestParam Map map) {
+		System.out.println(map);
+		List list = memberService.searchLabel(map);
+		System.out.println(list);
+		return new Gson().toJson(list);
+	}
+
 }
