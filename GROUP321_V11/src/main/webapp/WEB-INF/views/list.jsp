@@ -179,6 +179,7 @@
 .submenu:first-child {
 	text-align: center;
 }
+
 /* id=label_text */
 #label_text {
 	border-radius: 5px;
@@ -186,6 +187,7 @@
 	width: 188px;
 	height: 30px;
 }
+
 .labels{
 width: 100px;
 margin-top: 10px;
