@@ -51,6 +51,12 @@
 	width: 100%;
 }
 
+.list_title {
+	font-weight: bold;
+	text-indent: 1em;
+	text-align: left;
+}
+
 #mainList {
 	float: left;
 }
@@ -285,6 +291,14 @@
 
 .addCardContainer {
 	display: none;
+}
+
+.ListDelBtn {
+	display: block;
+	position: absolute;
+	top: 1px;
+	right: 5px;
+	font-weight: bold;
 }
 </style>
 <script>
@@ -749,6 +763,14 @@
 		list_foot.append(addCardArea);
 		list_foot.appendChild(addCardDiv);
 		
+		//리스트 삭제 버튼
+		var aTagDelListBtn = document.createElement('a');
+		aTagDelListBtn.className = 'ListDelBtn';
+		var aTagDelListText = document.createTextNode('x');
+		aTagDelListBtn.appendChild(aTagDelListText);
+		aTagDelListBtn.setAttribute('href','#');
+		aTagDelListBtn.setAttribute('onclick','deleteList('+b_num+','+l_num+')');
+		viewList.appendChild(aTagDelListBtn);
 
 		//nhs
 		viewList.appendChild(list_title);
@@ -1003,6 +1025,28 @@
 		});
 
 	});
+	
+	//리스트삭제
+	function deleteList(b_num, l_num){
+		$.ajax({
+			method : 'post',
+			url : '/main/deleteList',
+			data : {
+				b_num : b_num,
+				l_num : l_num
+			}
+		}).done(function(msg){
+			var tmp = '#'+l_num+'.listBorder';
+			var mainListWidth = $('#mainList').width();
+			var viewListWidth = $('.viewList').width();
+			if(msg==0){
+				//리스트 요소 삭제
+				$(tmp).remove();
+				//배경 너비 삭제
+				$('#mainList').css('width',mainListWidth-viewListWidth);
+			}
+		});
+	}
 
 	function userConnection(users) {
 		$.each(users, function(i) {

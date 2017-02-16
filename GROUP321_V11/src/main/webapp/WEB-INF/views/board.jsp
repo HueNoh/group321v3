@@ -20,6 +20,7 @@
 	position: absolute;
 	right: 5px;
 	top: 5px;
+	font-weight: bold;
 }
 </style>
 <script>
