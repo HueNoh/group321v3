@@ -72,4 +72,6 @@ public interface MemberServiceInterface {
 	public Map selectBoardOne(Map map);
 
 	public int deleteBoard(Map map);
+	
+	public int deleteList(Map map);
 }

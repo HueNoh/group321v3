@@ -105,6 +105,15 @@ public class MainController {
 
 	}
 
+	@RequestMapping(value = "/deleteList", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public int deleteList(@RequestParam Map map) {
+
+		int result = memberService.deleteList(map);
+		return result;
+
+	}
+
 	@RequestMapping(value = "/searchBoard", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String searchBoard(Locale locale, Model model, HttpSession session, HttpServletRequest request,
